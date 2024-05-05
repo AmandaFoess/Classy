@@ -5,7 +5,7 @@ Navigation Doc - https://reactnative.dev/docs/navigation
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import FeedScreen from "./pages/feed";
+import FeedScreen from "./pages/feed/feedScreen";
 import ProfileScreen from "./pages/profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
