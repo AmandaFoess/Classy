@@ -2,7 +2,7 @@ import * as React from "react";
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import { Bookmark, Heart, Comment } from "../../assets/icons";
 
-const ActivityCard = () => {
+const ActivityCard = ({ name, course, rank }) => {
   return (
     <View style={styles.feedUpdateslikebookmarked}>
       <View style={styles.profilePicSallerParent}>
@@ -13,14 +13,14 @@ const ActivityCard = () => {
         />
         <View style={[styles.abcRankedCs103Parent, styles.wrapperSpaceBlock]}>
           <Text style={styles.abcRankedCsContainer}>
-            <Text style={styles.abc}>ABC</Text>
+            <Text style={styles.abc}>{name}</Text>
             <Text style={styles.ranked}>{` ranked `}</Text>
-            <Text style={styles.abc}>{`CS 103 `}</Text>
+            <Text style={styles.abc}>{course}</Text>
           </Text>
           <Text style={[styles.spring2024, styles.textTypo]}>Spring 2024</Text>
         </View>
         <View style={[styles.wrapper, styles.wrapperFlexBox]}>
-          <Text style={[styles.text, styles.textTypo]}>7.1</Text>
+          <Text style={[styles.text, styles.textTypo]}>{rank}</Text>
         </View>
       </View>
       <View style={[styles.frameParent, styles.wrapperFlexBox]}>
