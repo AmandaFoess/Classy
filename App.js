@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import FeedScreen from "./pages/feed/feedScreen";
-import ProfileScreen from "./pages/profile";
+import UserProfile from "./pages/user profile/profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CourseHomePage from "./pages/courseProfile/CourseProfile";
 import SearchBarPage from "./pages/search/SearchBarPage";
@@ -44,9 +44,9 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Feed" component={FeedScreen} />
+        <Tab.Screen name="Profile" component={UserProfile} />
         <Tab.Screen name="Course Profile" component={CourseHomePage} />
         <Tab.Screen name="Search" component={SearchBarPage} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
