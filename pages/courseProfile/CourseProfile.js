@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   twoColumnResize: {
-    height: 62,
+    minHeight: 80,
     backgroundColor: "rgba(255, 255, 255, 0)",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -401,9 +401,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   twoColumnResize1: {
-    height: 65,
+    minHeight: 60,
     backgroundColor: "rgba(255, 255, 255, 0)",
-    padding: 20,
+    padding: 10,
     overflow: "hidden",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
   twoColumnResize2: {
     height: 52,
     backgroundColor: "rgba(255, 255, 255, 0)",
-    padding: 20,
+    padding: 10,
     overflow: "hidden",
     justifyContent: "space-between",
     flexDirection: "row",
