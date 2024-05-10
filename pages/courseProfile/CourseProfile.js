@@ -1,54 +1,75 @@
 import * as React from "react";
 import { Image, StyleSheet, View, Pressable, Text } from "react-native";
+import { Add, Bookmark } from "../../assets/icons";
 
-const CourseHomepage = () => {
+const Profile = {
+  courseCode: "CS106A",
+  courseName: "Introduction to Programming",
+  courseUnits: "5",
+  courseRequirements: "AQR",
+  autumn: {
+    offered: "Yes",
+    professorName: "Parlante, N",
+  },
+  winter: {
+    offered: "Yes",
+    professorName: "Parlante, N",
+  },
+  spring: {
+    offered: "Yes",
+    professorName: "Sahami, M",
+  },
+  courseDescription: `Introduction to the engineering of computer applications emphasizing modern software engineering principles: object-oriented design, decomposition, encapsulation, abstraction, and testing. Emphasis is on good programming style and the built-in facilities of respective languages. No prior programming experience required. Alternative versions of CS106A may be available which cover most of the same material but in different programming languages.`,
+  reviewScore: "9.8",
+  reviewText: `I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.`,
+};
+
+const CourseHomePage = () => {
   return (
     <View style={styles.finalCourseHomepage}>
+      {/* Header */}
       <View style={styles.backButtonParent}>
+        <Add style={styles.addAndSaveonSavedPage3} />
         <Pressable
-          style={[styles.backButton, styles.backButtonSpaceBlock]}
-          onPress={() => {}}
-        >
-          <Image
-            style={styles.vectorIcon}
-            resizeMode="cover"
-            source="Vector.png"
-          />
-        </Pressable>
-        <Pressable
-          style={[styles.buttonpressed, styles.classDetailsSpaceBlock]}
+          style={[styles.buttondefault, styles.classDetailsSpaceBlock]}
           onPress={() => {}}
         >
           <Text style={[styles.recommend, styles.reqs1Typo]}>RECOMMEND</Text>
         </Pressable>
-        <Image
-          style={styles.addAndSaveonSavedPage3}
-          resizeMode="cover"
-          source="add and save/on saved page3.png"
-        />
+        <Bookmark style={styles.addAndSaveonSavedPage3} />
       </View>
+
+      {/* Header */}
       <View style={[styles.data, styles.dataSpaceBlock]}>
         <View style={[styles.twoColumnResize, styles.twoSpaceBlock1]}>
           <View style={styles.ugReqs}>
-            <Text style={[styles.reqs, styles.reqsTypo]}>CS106A</Text>
+            <Text style={[styles.reqs, styles.reqsTypo]}>
+              {Profile.courseCode}
+            </Text>
           </View>
         </View>
         <View style={[styles.twoColumnResize1, styles.twoSpaceBlock]}>
           <View style={styles.ugReqs1}>
             <Text style={[styles.reqs1, styles.reqs1Typo]}>
-              Introduction to Programming
+              {Profile.courseName}
             </Text>
           </View>
         </View>
         <View style={[styles.twoColumnResize2, styles.twoSpaceBlock]}>
           <View style={styles.ugReqs}>
-            <Text style={[styles.reqs1, styles.reqs1Typo]}>Units: 5</Text>
+            <Text style={[styles.reqs1, styles.reqs1Typo]}>
+              Units: {Profile.courseUnits}
+            </Text>
           </View>
           <View style={styles.ugReqs}>
-            <Text style={[styles.reqs1, styles.reqs1Typo]}>UG Reqs: AQR</Text>
+            <Text style={[styles.reqs1, styles.reqs1Typo]}>
+              UG Reqs: {Profile.courseRequirements}
+            </Text>
           </View>
         </View>
       </View>
+
+      {/* Table */}
       <View style={[styles.timeOfferedTableWrapper, styles.dataSpaceBlock]}>
         <View style={styles.ugReqs1}>
           <View style={styles.table}>
@@ -84,17 +105,23 @@ const CourseHomepage = () => {
               </View>
               <View style={[styles.cell5, styles.cellBorder1]}>
                 <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>Yes</Text>
+                  <Text style={[styles.text4, styles.textFlexBox]}>
+                    {Profile.autumn.offered}
+                  </Text>
                 </View>
               </View>
               <View style={[styles.cell5, styles.cellBorder1]}>
                 <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>Yes</Text>
+                  <Text style={[styles.text4, styles.textFlexBox]}>
+                    {Profile.winter.offered}
+                  </Text>
                 </View>
               </View>
               <View style={[styles.cell5, styles.cellBorder1]}>
                 <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>Yes</Text>
+                  <Text style={[styles.text4, styles.textFlexBox]}>
+                    {Profile.spring.offered}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -109,21 +136,21 @@ const CourseHomepage = () => {
               <View style={[styles.cell5, styles.cellBorder1]}>
                 <View style={styles.content}>
                   <Text style={[styles.text4, styles.textFlexBox]}>
-                    Parlante, N
+                    {Profile.autumn.professorName}
                   </Text>
                 </View>
               </View>
               <View style={[styles.cell5, styles.cellBorder1]}>
                 <View style={styles.content}>
                   <Text style={[styles.text4, styles.textFlexBox]}>
-                    Parlante, N
+                    {Profile.winter.professorName}
                   </Text>
                 </View>
               </View>
               <View style={[styles.cell5, styles.cellBorder1]}>
                 <View style={styles.content}>
                   <Text style={[styles.text4, styles.textFlexBox]}>
-                    Sahami, M
+                    {Profile.spring.professorName}
                   </Text>
                 </View>
               </View>
@@ -316,8 +343,7 @@ const styles = StyleSheet.create({
   recommend: {
     fontSize: 14,
   },
-  buttonpressed: {
-    backgroundColor: "#aeb1ba",
+  buttondefault: {
     height: 27,
     justifyContent: "center",
     flexDirection: "row",
@@ -337,9 +363,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 43,
     paddingVertical: 31,
     justifyContent: "space-between",
-    alignItems: "center",
     flexDirection: "row",
     alignSelf: "stretch",
+    alignItems: "center",
     overflow: "hidden",
     backgroundColor: "#fff",
   },
@@ -366,8 +392,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   ugReqs1: {
-    alignItems: "center",
     alignSelf: "stretch",
+    alignItems: "center",
     flex: 1,
   },
   twoColumnResize1: {
@@ -376,8 +402,8 @@ const styles = StyleSheet.create({
     padding: 20,
     overflow: "hidden",
     justifyContent: "space-between",
-    alignItems: "center",
     flexDirection: "row",
+    alignItems: "center",
   },
   twoColumnResize2: {
     height: 52,
@@ -535,14 +561,15 @@ const styles = StyleSheet.create({
   },
   finalCourseHomepage: {
     width: "100%",
-    height: 1402,
+    height: 1626,
     paddingHorizontal: 25,
     paddingTop: 27,
     paddingBottom: 44,
+    alignItems: "center",
     overflow: "hidden",
     flex: 1,
     backgroundColor: "#fff",
   },
 });
 
-export default CourseHomepage;
+export default CourseHomePage;
