@@ -18,9 +18,9 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Feed" component={FeedScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
         <Tab.Screen name="Course Profile" component={CourseHomePage} />
         <Tab.Screen name="Search" component={SearchBarPage} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
