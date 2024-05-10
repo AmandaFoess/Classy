@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, StyleSheet, View, Pressable, Text } from "react-native";
+import { ScrollView, Image, StyleSheet, View, Pressable, Text } from "react-native";
 import { Add, Bookmark } from "../../assets/icons";
 
 const Profile = {
@@ -26,6 +26,8 @@ const Profile = {
 
 const CourseHomePage = () => {
   return (
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.iphone1415ProMax2}>
     <View style={styles.finalCourseHomepage}>
       {/* Header */}
       <View style={styles.backButtonParent}>
@@ -248,6 +250,8 @@ const CourseHomePage = () => {
         </View>
       </View>
     </View>
+    </View>
+    </ScrollView>
   );
 };
 
@@ -380,7 +384,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   twoColumnResize: {
-    height: 62,
+    minHeight: 80,
     backgroundColor: "rgba(255, 255, 255, 0)",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -397,9 +401,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   twoColumnResize1: {
-    height: 65,
+    minHeight: 60,
     backgroundColor: "rgba(255, 255, 255, 0)",
-    padding: 20,
+    padding: 10,
     overflow: "hidden",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -408,7 +412,7 @@ const styles = StyleSheet.create({
   twoColumnResize2: {
     height: 52,
     backgroundColor: "rgba(255, 255, 255, 0)",
-    padding: 20,
+    padding: 10,
     overflow: "hidden",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -561,12 +565,12 @@ const styles = StyleSheet.create({
   },
   finalCourseHomepage: {
     width: "100%",
-    height: 1626,
+    //height: 1626,
     paddingHorizontal: 25,
     paddingTop: 27,
     paddingBottom: 44,
     alignItems: "center",
-    overflow: "hidden",
+    //overflow: "hidden",
     flex: 1,
     backgroundColor: "#fff",
   },
