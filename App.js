@@ -47,7 +47,6 @@ export default function App() {
         <Tab.Screen name="Profile" component={UserProfile} />
         <Tab.Screen name="Course Profile" component={CourseHomePage} />
         <Tab.Screen name="Search" component={SearchBarPage} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
