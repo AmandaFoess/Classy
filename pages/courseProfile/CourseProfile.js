@@ -31,14 +31,16 @@ const CourseHomePage = () => {
     <View style={styles.finalCourseHomepage}>
       {/* Header */}
       <View style={styles.backButtonParent}>
-        <Add style={styles.addAndSaveonSavedPage3} />
         <Pressable
           style={[styles.buttondefault, styles.classDetailsSpaceBlock]}
           onPress={() => {}}
         >
           <Text style={[styles.recommend, styles.reqs1Typo]}>RECOMMEND</Text>
         </Pressable>
-        <Bookmark style={styles.addAndSaveonSavedPage3} />
+        <View style={[styles.addAndSave, styles.addAndSaveFlexBox]}>
+          <Bookmark style={styles.addAndSaveonSavedPage3} />
+          <Add style={styles.addAndSaveonSavedPage3} />
+        </View>
       </View>
 
       {/* Header */}
@@ -131,7 +133,7 @@ const CourseHomePage = () => {
               <View style={[styles.cell4, styles.cellBorder]}>
                 <View style={styles.content}>
                   <Text style={[styles.text4, styles.textFlexBox]}>
-                    Professor
+                    Teacher
                   </Text>
                 </View>
               </View>
@@ -261,8 +263,11 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   classDetailsSpaceBlock: {
-    padding: 10,
-    alignItems: "center",
+    justifyContent: "center",
+alignItems: "center",
+flexDirection: "row",
+top: "50%",
+position: "absolute"
   },
   reqs1Typo: {
     textAlign: "center",
@@ -346,33 +351,35 @@ const styles = StyleSheet.create({
   },
   recommend: {
     fontSize: 14,
+fontFamily: "Inter-Regular",
+color: "#000",
+textAlign: "center"
   },
-  buttondefault: {
-    height: 27,
-    justifyContent: "center",
-    flexDirection: "row",
-    width: 113,
-    borderWidth: 1,
-    borderColor: "#aeb1ba",
-    borderStyle: "solid",
-    borderRadius: 30,
-    padding: 10,
-  },
+  /* buttondefault: {
+      marginTop: -13.5,
+      marginLeft: -56.5,
+      left: "50%",
+      borderRadius: 30,
+      borderStyle: "solid",
+      borderColor: "#aeb1ba",
+      borderWidth: 1,
+      width: "auto",
+      height: "auto",
+      padding: 10,
+      overflow: "hidden"
+  }, */
   addAndSaveonSavedPage3: {
-    width: 56,
+    width: 80,
     height: 29,
   },
-  backButtonParent: {
-    height: 87,
-    paddingHorizontal: 43,
-    paddingVertical: 31,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignSelf: "stretch",
-    alignItems: "center",
-    overflow: "hidden",
-    backgroundColor: "#fff",
-  },
+  /* backButtonParent: {
+    backgroundColor: "#000",
+    flex: 1,
+    width: "100%",
+    height: "auto",
+    padding: 10,
+    //overflow: "hidden"
+  }, */
   reqs: {
     fontSize: 36,
     color: "#8d7272",
@@ -463,6 +470,7 @@ const styles = StyleSheet.create({
   },
   cell5: {
     backgroundColor: "rgba(255, 255, 255, 0)",
+    minWidth: 80,
   },
   table: {
     borderRadius: 4,
@@ -574,6 +582,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  addAndSaveFlexBox: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    top: "50%",
+    position: "absolute",
+    marginTop: -14.5,
+    right: 0,
+    paddingHorizontal: 20,
+    paddingVertical: 0
+    },
 });
 
 export default CourseHomePage;
