@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollView, Image, StyleSheet, View, Pressable, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Pressable, Text } from "react-native";
 import { Add, Bookmark } from "../../assets/icons";
 
 const Profile = {
@@ -24,235 +24,249 @@ const Profile = {
   reviewText: `I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.`,
 };
 
+const Header = () => (
+  <View style={styles.backButtonParent}>
+    <Pressable style={styles.buttondefault} onPress={() => {}}>
+      <Text style={styles.recommend}>RECOMMEND</Text>
+    </Pressable>
+    {/* <View style={[styles.addAndSave, styles.addAndSaveFlexBox]}>
+      <Bookmark style={styles.addAndSaveonSavedPage3} />
+      <Add style={styles.addAndSaveonSavedPage3} />
+    </View> */}
+  </View>
+);
+
+const DataSpaceBlock = () => (
+  <View style={[styles.data, styles.dataSpaceBlock]}>
+    <View style={[styles.twoColumnResize, styles.twoSpaceBlock1]}>
+      <View style={styles.ugReqs}>
+        <Text style={[styles.reqs, styles.reqsTypo]}>{Profile.courseCode}</Text>
+      </View>
+    </View>
+    <View style={[styles.twoColumnResize1, styles.twoSpaceBlock]}>
+      <View style={styles.ugReqs1}>
+        <Text style={[styles.reqs1, styles.reqs1Typo]}>
+          {Profile.courseName}
+        </Text>
+      </View>
+    </View>
+    <View style={[styles.twoColumnResize2, styles.twoSpaceBlock]}>
+      <View style={styles.ugReqs}>
+        <Text style={[styles.reqs1, styles.reqs1Typo]}>
+          Units: {Profile.courseUnits}
+        </Text>
+      </View>
+      <View style={styles.ugReqs}>
+        <Text style={[styles.reqs1, styles.reqs1Typo]}>
+          UG Reqs: {Profile.courseRequirements}
+        </Text>
+      </View>
+    </View>
+  </View>
+);
+
 const CourseHomePage = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.iphone1415ProMax2}>
-    <View style={styles.finalCourseHomepage}>
-      {/* Header */}
-      <View style={styles.backButtonParent}>
-        <Pressable
-          style={[styles.buttondefault, styles.classDetailsSpaceBlock]}
-          onPress={() => {}}
-        >
-          <Text style={[styles.recommend, styles.reqs1Typo]}>RECOMMEND</Text>
-        </Pressable>
-        <View style={[styles.addAndSave, styles.addAndSaveFlexBox]}>
-          <Bookmark style={styles.addAndSaveonSavedPage3} />
-          <Add style={styles.addAndSaveonSavedPage3} />
-        </View>
-      </View>
+        <View style={styles.finalCourseHomepage}>
+          {/* Header */}
+          <Header />
 
-      {/* Header */}
-      <View style={[styles.data, styles.dataSpaceBlock]}>
-        <View style={[styles.twoColumnResize, styles.twoSpaceBlock1]}>
-          <View style={styles.ugReqs}>
-            <Text style={[styles.reqs, styles.reqsTypo]}>
-              {Profile.courseCode}
-            </Text>
-          </View>
-        </View>
-        <View style={[styles.twoColumnResize1, styles.twoSpaceBlock]}>
-          <View style={styles.ugReqs1}>
-            <Text style={[styles.reqs1, styles.reqs1Typo]}>
-              {Profile.courseName}
-            </Text>
-          </View>
-        </View>
-        <View style={[styles.twoColumnResize2, styles.twoSpaceBlock]}>
-          <View style={styles.ugReqs}>
-            <Text style={[styles.reqs1, styles.reqs1Typo]}>
-              Units: {Profile.courseUnits}
-            </Text>
-          </View>
-          <View style={styles.ugReqs}>
-            <Text style={[styles.reqs1, styles.reqs1Typo]}>
-              UG Reqs: {Profile.courseRequirements}
-            </Text>
-          </View>
-        </View>
-      </View>
+          <DataSpaceBlock />
 
-      {/* Table */}
-      <View style={[styles.timeOfferedTableWrapper, styles.dataSpaceBlock]}>
-        <View style={styles.ugReqs1}>
-          <View style={styles.table}>
-            <View style={styles.row}>
-              <View style={[styles.cell, styles.cellBorder]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text, styles.textFlexBox]} />
+          {/* Table */}
+          <View style={[styles.timeOfferedTableWrapper, styles.dataSpaceBlock]}>
+            <View style={styles.ugReqs1}>
+              <View style={styles.table}>
+                <View style={styles.row}>
+                  <View style={[styles.cell, styles.cellBorder]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text, styles.textFlexBox]} />
+                    </View>
+                  </View>
+                  <View style={[styles.cell1, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text, styles.textFlexBox]}>
+                        Autumn
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.cell1, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text, styles.textFlexBox]}>
+                        Winter
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.cell1, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text, styles.textFlexBox]}>
+                        Spring
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-              </View>
-              <View style={[styles.cell1, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text, styles.textFlexBox]}>Autumn</Text>
+                <View style={styles.row}>
+                  <View style={[styles.cell4, styles.cellBorder]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        Offered?
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.cell5, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {Profile.autumn.offered}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.cell5, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {Profile.winter.offered}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.cell5, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {Profile.spring.offered}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-              </View>
-              <View style={[styles.cell1, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text, styles.textFlexBox]}>Winter</Text>
-                </View>
-              </View>
-              <View style={[styles.cell1, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text, styles.textFlexBox]}>Spring</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={[styles.cell4, styles.cellBorder]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>
-                    Offered?
-                  </Text>
-                </View>
-              </View>
-              <View style={[styles.cell5, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>
-                    {Profile.autumn.offered}
-                  </Text>
-                </View>
-              </View>
-              <View style={[styles.cell5, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>
-                    {Profile.winter.offered}
-                  </Text>
-                </View>
-              </View>
-              <View style={[styles.cell5, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>
-                    {Profile.spring.offered}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={[styles.cell4, styles.cellBorder]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>
-                    Teacher
-                  </Text>
-                </View>
-              </View>
-              <View style={[styles.cell5, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>
-                    {Profile.autumn.professorName}
-                  </Text>
-                </View>
-              </View>
-              <View style={[styles.cell5, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>
-                    {Profile.winter.professorName}
-                  </Text>
-                </View>
-              </View>
-              <View style={[styles.cell5, styles.cellBorder1]}>
-                <View style={styles.content}>
-                  <Text style={[styles.text4, styles.textFlexBox]}>
-                    {Profile.spring.professorName}
-                  </Text>
+                <View style={styles.row}>
+                  <View style={[styles.cell4, styles.cellBorder]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        Teacher
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.cell5, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {Profile.autumn.professorName}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.cell5, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {Profile.winter.professorName}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={[styles.cell5, styles.cellBorder1]}>
+                    <View style={styles.content}>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {Profile.spring.professorName}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-        </View>
-      </View>
-      <View style={styles.dataSpaceBlock}>
-        <Text
-          style={[styles.description, styles.nameFlexBox]}
-        >{`Introduction to the engineering of computer applications emphasizing modern software engineering principles: object-oriented design, decomposition, encapsulation, abstraction, and testing. Emphasis is on good programming style and the built-in facilities of respective languages. No prior programming experience required. Alternative versions of CS106A may be available which cover most of the same material but in different programming languages.
+          <View style={styles.dataSpaceBlock}>
+            <Text
+              style={[styles.description, styles.nameFlexBox]}
+            >{`Introduction to the engineering of computer applications emphasizing modern software engineering principles: object-oriented design, decomposition, encapsulation, abstraction, and testing. Emphasis is on good programming style and the built-in facilities of respective languages. No prior programming experience required. Alternative versions of CS106A may be available which cover most of the same material but in different programming languages.
 
 
 `}</Text>
-      </View>
-      <View style={[styles.classDetails, styles.dataSpaceBlock]}>
-        <Text style={[styles.name, styles.nameFlexBox]}>Reviews</Text>
-      </View>
-      <View style={[styles.instanceParent, styles.dataSpaceBlock]}>
-        <View style={styles.instanceGroup}>
-          <View
-            style={[styles.piperflemingWrapper, styles.piperflemingSpaceBlock]}
-          >
-            <View style={styles.piperfleming}>
-              <Text style={[styles.piperfleming1, styles.piperflemingTypo]}>
-                @piperfleming
-              </Text>
-            </View>
           </View>
-          <View
-            style={[
-              styles.piperflemingContainer,
-              styles.piperflemingSpaceBlock,
-            ]}
-          >
-            <View style={styles.piperfleming2}>
-              <Text
-                style={[styles.piperfleming3, styles.piperflemingTypo]}
-              >{`Parlante, N
+          <View style={[styles.classDetails, styles.dataSpaceBlock]}>
+            <Text style={[styles.name, styles.nameFlexBox]}>Reviews</Text>
+          </View>
+          <View style={[styles.instanceParent, styles.dataSpaceBlock]}>
+            <View style={styles.instanceGroup}>
+              <View
+                style={[
+                  styles.piperflemingWrapper,
+                  styles.piperflemingSpaceBlock,
+                ]}
+              >
+                <View style={styles.piperfleming}>
+                  <Text style={[styles.piperfleming1, styles.piperflemingTypo]}>
+                    @piperfleming
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={[
+                  styles.piperflemingContainer,
+                  styles.piperflemingSpaceBlock,
+                ]}
+              >
+                <View style={styles.piperfleming2}>
+                  <Text
+                    style={[styles.piperfleming3, styles.piperflemingTypo]}
+                  >{`Parlante, N
                       											Fall 2022`}</Text>
+                </View>
+              </View>
+              <View style={[styles.frameWrapper, styles.wrapperFlexBox]}>
+                <View style={[styles.wrapper, styles.wrapperFlexBox]}>
+                  <Text style={[styles.text12, styles.reqsTypo]}>9.8</Text>
+                </View>
+              </View>
             </View>
-          </View>
-          <View style={[styles.frameWrapper, styles.wrapperFlexBox]}>
-            <View style={[styles.wrapper, styles.wrapperFlexBox]}>
-              <Text style={[styles.text12, styles.reqsTypo]}>9.8</Text>
-            </View>
-          </View>
-        </View>
-        <View style={[styles.courseDescription1, styles.twoSpaceBlock]}>
-          <Text
-            style={[styles.reqs1, styles.reqs1Typo]}
-          >{`I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.
+            <View style={[styles.courseDescription1, styles.twoSpaceBlock]}>
+              <Text
+                style={[styles.reqs1, styles.reqs1Typo]}
+              >{`I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.
                         												
                         												
                         												`}</Text>
-        </View>
-      </View>
-      <View style={[styles.instanceParent, styles.dataSpaceBlock]}>
-        <View style={styles.instanceGroup}>
-          <View
-            style={[styles.piperflemingWrapper, styles.piperflemingSpaceBlock]}
-          >
-            <View style={styles.piperfleming}>
-              <Text style={[styles.piperfleming1, styles.piperflemingTypo]}>
-                @piperfleming
-              </Text>
             </View>
           </View>
-          <View
-            style={[
-              styles.piperflemingContainer,
-              styles.piperflemingSpaceBlock,
-            ]}
-          >
-            <View style={styles.piperfleming2}>
-              <Text
-                style={[styles.piperfleming3, styles.piperflemingTypo]}
-              >{`Parlante, N
+          <View style={[styles.instanceParent, styles.dataSpaceBlock]}>
+            <View style={styles.instanceGroup}>
+              <View
+                style={[
+                  styles.piperflemingWrapper,
+                  styles.piperflemingSpaceBlock,
+                ]}
+              >
+                <View style={styles.piperfleming}>
+                  <Text style={[styles.piperfleming1, styles.piperflemingTypo]}>
+                    @piperfleming
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={[
+                  styles.piperflemingContainer,
+                  styles.piperflemingSpaceBlock,
+                ]}
+              >
+                <View style={styles.piperfleming2}>
+                  <Text
+                    style={[styles.piperfleming3, styles.piperflemingTypo]}
+                  >{`Parlante, N
                       											Fall 2022`}</Text>
+                </View>
+              </View>
+              <View style={[styles.frameWrapper, styles.wrapperFlexBox]}>
+                <View style={[styles.wrapper, styles.wrapperFlexBox]}>
+                  <Text style={[styles.text12, styles.reqsTypo]}>9.8</Text>
+                </View>
+              </View>
             </View>
-          </View>
-          <View style={[styles.frameWrapper, styles.wrapperFlexBox]}>
-            <View style={[styles.wrapper, styles.wrapperFlexBox]}>
-              <Text style={[styles.text12, styles.reqsTypo]}>9.8</Text>
-            </View>
-          </View>
-        </View>
-        <View style={[styles.courseDescription1, styles.twoSpaceBlock]}>
-          <Text
-            style={[styles.reqs1, styles.reqs1Typo]}
-          >{`I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.
+            <View style={[styles.courseDescription1, styles.twoSpaceBlock]}>
+              <Text
+                style={[styles.reqs1, styles.reqs1Typo]}
+              >{`I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.
                         												
                         												
                         												`}</Text>
+            </View>
+          </View>
         </View>
       </View>
-    </View>
-    </View>
     </ScrollView>
   );
 };
@@ -264,10 +278,10 @@ const styles = StyleSheet.create({
   },
   classDetailsSpaceBlock: {
     justifyContent: "center",
-alignItems: "center",
-flexDirection: "row",
-top: "50%",
-position: "absolute"
+    alignItems: "center",
+    flexDirection: "row",
+    top: "50%",
+    position: "absolute",
   },
   reqs1Typo: {
     textAlign: "center",
@@ -351,35 +365,33 @@ position: "absolute"
   },
   recommend: {
     fontSize: 14,
-fontFamily: "Inter-Regular",
-color: "#000",
-textAlign: "center"
+    fontFamily: "Inter-Regular",
+    color: "#000",
+    textAlign: "center",
   },
-  /* buttondefault: {
-      marginTop: -13.5,
-      marginLeft: -56.5,
-      left: "50%",
-      borderRadius: 30,
-      borderStyle: "solid",
-      borderColor: "#aeb1ba",
-      borderWidth: 1,
-      width: "auto",
-      height: "auto",
-      padding: 10,
-      overflow: "hidden"
-  }, */
+  buttondefault: {
+    borderRadius: 30,
+    borderStyle: "solid",
+    borderColor: "#aeb1ba",
+    borderWidth: 1,
+    width: "auto",
+    height: "auto",
+    padding: 10,
+    overflow: "hidden",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
   addAndSaveonSavedPage3: {
     width: 80,
     height: 29,
   },
-  /* backButtonParent: {
-    backgroundColor: "#000",
+  backButtonParent: {
+    backgroundColor: "#ggg",
     flex: 1,
     width: "100%",
     height: "auto",
     padding: 10,
-    //overflow: "hidden"
-  }, */
+  },
   reqs: {
     fontSize: 36,
     color: "#8d7272",
@@ -573,13 +585,12 @@ textAlign: "center"
   },
   finalCourseHomepage: {
     width: "100%",
-    //height: 1626,
     paddingHorizontal: 25,
     paddingTop: 27,
     paddingBottom: 44,
     alignItems: "center",
-    //overflow: "hidden",
     flex: 1,
+    flexDirection: "column",
     backgroundColor: "#fff",
   },
   addAndSaveFlexBox: {
@@ -591,8 +602,8 @@ textAlign: "center"
     marginTop: -14.5,
     right: 0,
     paddingHorizontal: 20,
-    paddingVertical: 0
-    },
+    paddingVertical: 0,
+  },
 });
 
 export default CourseHomePage;

@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "expo": "^51.0.1"
+    "expo": "^51.0.2"
   },
   "private": true
 }
