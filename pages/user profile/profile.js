@@ -15,7 +15,12 @@ const fakeData = [
 	{ course: "Psychology", professorName: "Dr. White", quarterYearOffered: "Fall 2022", rank: 9.1 },
 	{ course: "Sociology", professorName: "Prof. Davis", quarterYearOffered: "Spring 2022", rank: 7.2 }
   ];
-  
+  // Convert the dataSet object to an array
+const fakeDataArray = Object.values(fakeData);
+
+// Sort the fakeDataArray by rank in descending order
+fakeDataArray.sort((a, b) => b.rank - a.rank);
+
 function UserProfile() {
   	
   	return (
@@ -61,43 +66,15 @@ function UserProfile() {
           					<View style={[styles.newListNavBarChild, styles.newChildPosition]} />
           					<View style={[styles.newListNavBarItem, styles.newChildPosition]} />
         				</View>
-        				<View style={[styles.myClassesSortMetricNavBa1, styles.classesSpaceBlock]}>
-          					<View style={styles.classesLayout}>
-            						<Text style={[styles.myClasses7, styles.classesTypo]}>Overall Ranking</Text>
-          					</View>
-          					<View style={[styles.myClasses2, styles.classesLayout]}>
-            						<Text style={[styles.myClasses9, styles.classesTypo]}>Difficulty</Text>
-          					</View>
-          					<View style={[styles.myClasses2, styles.classesLayout]}>
-            						<Text style={[styles.myClasses11, styles.classesTypo]}>Fun!</Text>
-          					</View>
-        				</View>
       			</View>
 				<FlatList
-        			data={fakeData}
+        			data={fakeDataArray}
         			keyExtractor={(item) => item.class}
         			renderItem={({ item }) => (
           				<SingleClassRanking course={item.course} quarterYearOffered={item.quarterYearOffered} rank={item.rank} professorName={item.professorName}/>
         			)}
         			ListEmptyComponent={<Text>No students found</Text>}
       			/>
-      			<View style={styles.updatedNavigationBar}>
-        				<View style={styles.navigationBar}>
-          					<View style={styles.navItemFlexBox}>
-            						<Image style={styles.feedIcon} resizeMode="cover" source="feed icon.png" />
-            						<Text style={[styles.profile1, styles.profileTypo]}>Feed</Text>
-          					</View>
-          					<View style={[styles.navItem1, styles.navItemFlexBox]}>
-            						<Image style={styles.feedIcon} resizeMode="cover" source="search icon.png" />
-            						<Text style={[styles.profile1, styles.profileTypo]}>Search</Text>
-          					</View>
-          					<View style={[styles.navItem1, styles.navItemFlexBox]}>
-            						<Image style={styles.feedIcon} resizeMode="cover" source="profile pls.png" />
-            						<Text style={[styles.profile3, styles.profileTypo]}>Profile</Text>
-          					</View>
-        				</View>
-        				<View style={[styles.updatedNavigationBarChild, styles.newChildPosition]} />
-      			</View>
     		</View>);
 };
 
@@ -321,8 +298,8 @@ const styles = StyleSheet.create({
   	},
   	profile: {
     		width: 384,
-    		height: 406,
-    		paddingTop: 60,
+    		height: 360,
+    		paddingTop: 10,
     		alignItems: "center",
     		backgroundColor: "#fff"
   	},
@@ -404,10 +381,6 @@ const styles = StyleSheet.create({
     		height: "2.08%",
     		top: "-1.04%",
     		bottom: "98.96%"
-  	},
-  	updatedNavigationBar: {
-    		height: 48,
-    		alignSelf: "stretch"
   	},
   	completedOverallRankingPag: {
     		height: 857,
