@@ -1,5 +1,7 @@
 import * as React from "react";
 import {Image, StyleSheet, Pressable, View, Text} from "react-native";
+import { Heart } from "../../assets/icons";
+import { Comment } from "../../assets/icons";
 
 const CommentScreen = () => {
   	
@@ -30,9 +32,10 @@ const CommentScreen = () => {
         				<View style={[styles.likeCommentBookmarkBar, styles.unlikedParentSpaceBlock]}>
           					<View style={[styles.unlikedParent, styles.unlikedParentSpaceBlock]}>
             						<View style={styles.unliked}>
-              							<Image style={styles.vectorIcon} resizeMode="cover" source= "Heart" />
+              							<Heart/>
             						</View>
-            						<Image style={[styles.mdiLightcommentIcon, styles.iconLayout]} resizeMode="cover" source="mdi-light:comment.png" />
+                                        <Comment/>
+            						{/* <Image style={[styles.mdiLightcommentIcon, styles.iconLayout]} resizeMode="cover" source="mdi-light:comment.png" /> */}
           					</View>
           					<View style={styles.bookmarkedWrapper}>
             						<Image style={[styles.bookmarkedIcon, styles.iconLayout]} resizeMode="cover" source="Bookmarked.png" />
@@ -263,14 +266,14 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         backgroundColor: "#f4f5f8",
-        width: 100,
-        height: 100,
+        width: 70,
+        height: 70,
         marginTop: 10,
         overflow: "hidden"
   },
   es: {
     marginLeft: -40,
-    top: 30,
+    top: 15,
     left: "50%",
     fontSize: 34,
     width: 80,

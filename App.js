@@ -14,6 +14,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import RecommendCourse from "./pages/courseProfile/recommendCourse";
 import SearchBarRecommend from "./pages/courseProfile/SearchBarRecommend";
 import CommentScreen from "./pages/feed/CommentScreen";
+import addCourse from "./pages/user profile/addCourse";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,6 +49,8 @@ export default function App() {
           <Tab.Screen name="Profile" component={UserProfile} />
           <Tab.Screen name="Course Profile" component={CourseHomePage} />
           <Tab.Screen name="Search" component={SearchStack} />
+          <Tab.Screen name="Comment Screen" component={CommentScreen} />
+          <Tab.Screen name="Add Class" component={addCourse} />
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
