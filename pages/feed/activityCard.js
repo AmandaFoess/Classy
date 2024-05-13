@@ -2,64 +2,57 @@ import * as React from "react";
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import { Bookmark, Heart, Comment } from "../../assets/icons";
 
-const ActivityCard = ({ name, course, rank }) => {
+const MAX_TEXT_LENGTH = 20; // Maximum characters for student name and class
+
+const ActivityCard = ({ name, course, rank }) => {  
+  const rankedTextComponent = (name, course) => (
+    <Text style={styles.abcRankedCsContainer} >
+      <Text style={styles.abc}>{name}</Text>
+      <Text style={styles.ranked}>{` ranked `}</Text>
+      <Text style={styles.abc}>{course}</Text>
+    </Text>
+  );
+
+
   return (
     <View style={styles.feedUpdateslikebookmarked}>
       <View style={styles.profilePicSallerParent}>
         <Image
           style={styles.profilePicSaller}
           resizeMode="cover"
-          source="Profile Pic- Saller.png"
+          source={require("/Users/evyshen/Documents/GitHub/Classy/assets/RichardSallerPic.png")}
         />
-        <View style={[styles.abcRankedCs103Parent, styles.wrapperSpaceBlock]}>
-          <Text style={styles.abcRankedCsContainer}>
-            <Text style={styles.abc}>{name}</Text>
-            <Text style={styles.ranked}>{` ranked `}</Text>
-            <Text style={styles.abc}>{course}</Text>
-          </Text>
-          <Text style={[styles.spring2024, styles.textTypo]}>Spring 2024</Text>
+        <View style={styles.abcRankedCs103Parent} >
+        {rankedTextComponent(name, course)}
+          <Text style={[styles.spring2024] }>Spring 2024</Text>
         </View>
-        <View style={[styles.wrapper, styles.wrapperFlexBox]}>
-          <Text style={[styles.text, styles.textTypo]}>{rank}</Text>
+        <View style={styles.rankingWrapper}>
+          <Text style={[styles.rank]}>{rank}</Text>
         </View>
       </View>
-      <View style={[styles.frameParent, styles.wrapperFlexBox]}>
-        <View style={styles.frameGroup}>
-          <View style={styles.vectorWrapper}>
+      <View style={[styles.reactionsParent]}>
+        <View style={styles.reactions}>
+        <Pressable style = {styles.iconWrapper}>
             <Heart />
-          </View>
-          <Pressable style={styles.mdiLightcomment} onPress={() => {}}>
+            </Pressable>
+          <Pressable onPress={() => {}}>
             <Comment />
           </Pressable>
-        </View>
-        <View>
+          <Pressable  >
           <Bookmark />
-        </View>
+          </Pressable>
       </View>
+    </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapperSpaceBlock: {
-    marginLeft: 21,
-    justifyContent: "center",
-  },
-  textTypo: {
-    fontFamily: "Inter-ExtraLight",
-    fontWeight: "200",
-    textAlign: "center",
-    fontSize: 20,
-  },
-  wrapperFlexBox: {
-    paddingHorizontal: 9,
-    alignItems: "center",
-    flexDirection: "row",
-    overflow: "hidden",
-  },
   profilePicSaller: {
-    width: 69,
-    height: 67,
+    width: 65,
+    height: 65,
+    borderRadius: 50,
+    marginLeft: 10,
   },
   abc: {
     fontWeight: "600",
@@ -67,66 +60,75 @@ const styles = StyleSheet.create({
   },
   ranked: {
     fontFamily: "Inter-Regular",
+    
   },
   abcRankedCsContainer: {
-    textAlign: "center",
+    textAlign: "left",
     fontSize: 20,
-    color: "#0c0000",
+    // color: "#0c0000",
+    // borderColor: "purple",
+    // borderWidth: 5,
+    width: 50,
+    
   },
   spring2024: {
     marginTop: 10,
     color: "#0c0000",
+    // borderColor: "orange",
+    // borderWidth: 5,
+    alignItems: "left",
+    fontFamily: "Inter-ExtraLight",
     fontWeight: "200",
+    fontSize: 20,
   },
   abcRankedCs103Parent: {
+    width: 230,
+    height: 100,
     padding: 10,
-    overflow: "hidden",
+    // borderColor: "green",
+    // borderWidth: 5,
+    justifyContent: "center",
+    marginLeft: 20,
+    marginTop: 20,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "space-evenly",
   },
-  text: {
+  rank: {
     color: "#0b0b0b",
-  },
-  wrapper: {
+    fontSize: 20,
+    fontFamily: "Inter-ExtraLight",
+   },
+  rankingWrapper: {
     borderRadius: 50,
     borderColor: "#0f0e0e",
-    borderWidth: 1,
     width: 50,
     height: 50,
-    paddingVertical: 11,
+    // paddingVertical: 11,
     marginLeft: 21,
     justifyContent: "center",
-    backgroundColor: "rgba(255, 255, 255, 0)",
     paddingHorizontal: 9,
     borderStyle: "solid",
+    alignItems: "center",
+    // borderColor: "blue",
+    borderWidth: 1.6,
+    backgroundColor: "white",  
   },
   profilePicSallerParent: {
-    width: 387,
+    // width: 387,
     height: 123,
-    paddingHorizontal: 19,
+    paddingHorizontal: 0,
     paddingVertical: 20,
     alignItems: "center",
     flexDirection: "row",
+    margineLeft: 20,
+    // borderColor: "red",
+    // borderWidth: 5,
     backgroundColor: "rgba(255, 255, 255, 0)",
-    overflow: "hidden",
+    // overflow: "hidden",
   },
-  vectorIcon: {
-    width: 28,
-    height: 23,
-  },
-  vectorWrapper: {
-    paddingHorizontal: 7,
-    paddingVertical: 9,
-    overflow: "hidden",
-  },
-  icon: {
-    height: "100%",
-    width: "100%",
-  },
-  mdiLightcomment: {
-    width: 33,
-    height: 31,
-    marginLeft: 3,
-  },
-  frameGroup: {
+  
+  reactions: {
     backgroundColor: "rgba(245, 245, 245, 0)",
     paddingHorizontal: 15,
     paddingVertical: 10,
@@ -134,12 +136,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     overflow: "hidden",
+    // borderColor: "red",
+    // borderWidth: 5,
+    width: 120,
   },
-  frameParent: {
+  iconWrapper: {
+    padding: 10,
+
+  },
+  reactionsParent: {
     height: 61,
-    justifyContent: "flex-end",
-    marginTop: -17,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    marginTop: -20,
     paddingVertical: 0,
+    // borderColor: "pink",
+    // borderWidth: 5,
+    // width: 30,
   },
   feedUpdateslikebookmarked: {
     backgroundColor: "rgba(202, 209, 212, 0.09)",
@@ -152,6 +165,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: "100%",
     borderStyle: "solid",
+    // borderColor: "green",
+    // borderWidth: 5,
   },
 });
 

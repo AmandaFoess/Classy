@@ -16,8 +16,12 @@ const students = [
   { name: "Isabel Walker", course: "Economics", rank: 8 },
   { name: "Jack Hall", course: "Art", rank: 4 },
 ];
-
 function FeedScreen({ navigation }) {
+  // Function to truncate text if it exceeds a certain length
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  };
+
   return (
     <View>
       <FlatList
@@ -25,8 +29,8 @@ function FeedScreen({ navigation }) {
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
           <ActivityCard
-            name={item.name}
-            course={item.course}
+            name={truncateText(item.name, 15)} // Truncate to 15 characters
+            course={truncateText(item.course, 20)} // Truncate to 20 characters
             rank={item.rank}
           />
         )}
@@ -35,5 +39,4 @@ function FeedScreen({ navigation }) {
     </View>
   );
 }
-
 export default FeedScreen;
