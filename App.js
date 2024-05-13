@@ -22,7 +22,7 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={({ route }) => ({
-            headerStatusBarHeight: 20,
+            headerShown: false,
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
               if (route.name === "Feed") {
@@ -39,16 +39,14 @@ export default function App() {
               }
               return <Ionicons name={iconName} size={size} color={color} />;
             },
+            tabBarActiveTintColor: "blue",
+            tabBarInactiveTintColor: "gray",
           })}
-          tabBarOptions={{
-            activeTintColor: "blue",
-            inactiveTintColor: "gray",
-          }}
         >
           <Tab.Screen name="Feed" component={FeedScreen} />
           <Tab.Screen name="Profile" component={UserProfile} />
           <Tab.Screen name="Course Profile" component={CourseHomePage} />
-          <Tab.Screen name="Search" component={SearchBarPage} />
+          <Tab.Screen name="Search" component={SearchStack} />
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
