@@ -1,42 +1,38 @@
 import React, { useState } from "react";
 import { View, FlatList, Text } from "react-native";
 import { SearchBar } from "react-native-elements";
-import ActivityCard from "../feed/activityCard";
 import { StyleSheet } from "react-native";
 import { Pressable } from "react-native";
 import Item from "./SearchItem";
-
-// Test data
-const students = [
-  { name: "Alice Smith", course: "Mathematics", rank: 8 },
-  { name: "Bob Johnson", course: "Physics", rank: 7 },
-  { name: "Carol Martinez", course: "Chemistry", rank: 9 },
-  { name: "David Lee", course: "Biology", rank: 6 },
-  { name: "Eva Brown", course: "English", rank: 8 },
-  { name: "Frank White", course: "History", rank: 5 },
-  { name: "Grace Davis", course: "Geography", rank: 7 },
-  { name: "Henry Lopez", course: "Computer Science", rank: 10 },
-  { name: "Isabel Walker", course: "Economics", rank: 8 },
-  { name: "Jack Hall", course: "Art", rank: 4 },
-];
+import { Usernames, Courses, MyCourses } from "../../assets/data";
+import { useEffect } from "react";
 
 function SearchBarPage({ navigation }) {
   const [search, setSearch] = useState("");
-  const [filteredStudents, setFilteredStudents] = useState(students);
-  const [activeSection, setActiveSection] = React.useState(students);
+  const [filteredList, setFilteredList] = useState(Usernames);
+  const [activeSection, setActiveSection] = React.useState(Usernames);
+
+  /* const updateSearch = (search) => {
+    setSearch(search);
+    const filteredData = activeSection.filter((item) =>
+      item.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredList(filteredData);
+  }; */
+
+  useEffect(() => {
+    const filteredData = activeSection.filter((item) =>
+      item.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredList(filteredData);
+  }, [search, activeSection]); // Dependency array includes both search and activeSection
 
   const updateSearch = (search) => {
     setSearch(search);
-    const filteredData = activeSection.filter(
-      (item) =>
-        item.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.course.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilteredStudents(filteredData);
   };
 
   return (
-    <View>
+    <View style={{ flex: 1, flexDirection: "column" }}>
       <SearchBar
         placeholder="Type here..."
         onChangeText={updateSearch}
@@ -46,31 +42,55 @@ function SearchBarPage({ navigation }) {
         inputContainerStyle={{ backgroundColor: "transparent" }} // To ensure the input field aligns with your styling
         inputStyle={{ backgroundColor: "transparent" }} // Additional styling can be added if needed
       />
-      <View style={styles.frameParent}>
+      <View style={styles.searchNavBar}>
         <Pressable
           style={[styles.classesWrapper, styles.wrapperFlexBox]}
-          onPress={() => setActiveSection("Classes")}
+          onPress={() => setActiveSection(Courses)}
         >
-          <Text style={[styles.classes, styles.classesTypo]}>
-            Classes (Active: {activeSection === "Classes" ? "Yes" : "No"})
+          <Text
+            style={[
+              styles.classes,
+              styles.classesTypo,
+              activeSection === Courses && styles.bold, // Conditionally apply the bold style
+            ]}
+          >
+            All Classes
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[styles.classesWrapper, styles.wrapperFlexBox]}
+          onPress={() => setActiveSection(MyCourses)}
+        >
+          <Text
+            style={[
+              styles.classes,
+              styles.classesTypo,
+              activeSection === MyCourses && styles.bold, // Conditionally apply the bold style
+            ]}
+          >
+            My Classes
           </Text>
         </Pressable>
         <Pressable
           style={[styles.me3mbersWrapper, styles.wrapperFlexBox]}
-          onPress={() => setActiveSection(students)}
+          onPress={() => setActiveSection(Usernames)}
         >
-          <Text style={[styles.members, styles.classesTypo]}>
-            Members (Active: {activeSection === students ? "Yes" : "No"})
+          <Text
+            style={[
+              styles.classes,
+              styles.classesTypo,
+              activeSection === Usernames && styles.bold, // Conditionally apply the bold style
+            ]}
+          >
+            Members
           </Text>
         </Pressable>
       </View>
       <FlatList
-        data={filteredStudents}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => (
-          <Item name={item.name} course={item.course} rank={item.rank} />
-        )}
-        ListEmptyComponent={<Text>No students found</Text>}
+        data={filteredList}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => <Item value={item} />}
+        ListEmptyComponent={<Text>"{search}" not found.</Text>}
       />
     </View>
   );
@@ -82,13 +102,22 @@ const styles = StyleSheet.create({
     height: 24,
   },
   searchIconParent: {
-    borderRadius: 30,
     backgroundColor: "#fff",
-    borderStyle: "solid",
     borderColor: "#000",
-    paddingHorizontal: 12,
     paddingVertical: 4,
-    margin: 5,
+  },
+  searchNavBar: {
+    alignSelf: "stretch",
+    justifyContent: "space-around",
+    height: "auto",
+    padding: 10,
+    width: "100%",
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: "#000",
+  },
+  bold: {
+    fontWeight: "bold",
   },
 });
 

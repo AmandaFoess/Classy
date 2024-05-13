@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ScrollView, StyleSheet, View, Pressable, Text } from "react-native";
 import { Add, Bookmark } from "../../assets/icons";
+import CourseHeader from "./Header";
 
 const Profile = {
   courseCode: "CS106A",
@@ -23,18 +24,6 @@ const Profile = {
   reviewScore: "9.8",
   reviewText: `I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.`,
 };
-
-const Header = () => (
-  <View style={styles.backButtonParent}>
-    <Pressable style={styles.buttondefault} onPress={() => {}}>
-      <Text style={styles.recommend}>RECOMMEND</Text>
-    </Pressable>
-    {/* <View style={[styles.addAndSave, styles.addAndSaveFlexBox]}>
-      <Bookmark style={styles.addAndSaveonSavedPage3} />
-      <Add style={styles.addAndSaveonSavedPage3} />
-    </View> */}
-  </View>
-);
 
 const DataSpaceBlock = () => (
   <View style={[styles.data, styles.dataSpaceBlock]}>
@@ -71,7 +60,7 @@ const CourseHomePage = () => {
       <View style={styles.iphone1415ProMax2}>
         <View style={styles.finalCourseHomepage}>
           {/* Header */}
-          <Header />
+          <CourseHeader />
 
           <DataSpaceBlock />
 

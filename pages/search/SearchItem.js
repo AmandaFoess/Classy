@@ -1,22 +1,21 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-function Item({ name, course, rank }) {
+function Item({ value }) {
   return (
     <View style={styles.item}>
-      <Text style={styles.title}>
-        {name}, {course}, {rank}
-      </Text>
+      <Text style={styles.title}>{value}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: "#f9c2ff",
+    backgroundColor: "#ddd",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    borderRadius: 20,
   },
   title: {
     fontSize: 16,
