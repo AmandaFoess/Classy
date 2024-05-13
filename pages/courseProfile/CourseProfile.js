@@ -533,7 +533,9 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     borderRadius: 33,
-    paddingHorizontal: 8,
+    width: 50,
+    height: 50,
+    paddingHorizontal: 2,
     paddingVertical: 11,
     borderWidth: 1,
     borderColor: "#aeb1ba",
@@ -544,7 +546,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   frameWrapper: {
-    width: 74,
+    width: 75,
     height: 75,
     paddingHorizontal: 20,
     paddingVertical: 13,
@@ -566,7 +568,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   instanceParent: {
-    height: 199,
+    height: 200,
     paddingHorizontal: 0,
     paddingVertical: 49,
     overflow: "hidden",
