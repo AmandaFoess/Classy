@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Text, StyleSheet, Image, View, Pressable, ScrollView} from "react-native";
 
-const addCourse = () => {
+const AddCourse = () => {
   	
   	return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -343,4 +343,4 @@ const styles = StyleSheet.create({
 }
 });
 
-export default addCourse;
+export default AddCourse;

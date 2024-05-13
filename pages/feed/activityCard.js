@@ -43,11 +43,18 @@ const ActivityCard = ({ name, course, rank }) => {
           </Pressable>
       </View>
     </View>
+    <Text style = {styles.time}>
+      Yesterday
+    </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  time: {
+    marginTop: -20,
+    paddingLeft: 10,
+  },
   profilePicSaller: {
     width: 65,
     height: 65,
@@ -68,7 +75,7 @@ const styles = StyleSheet.create({
     // color: "#0c0000",
     // borderColor: "purple",
     // borderWidth: 5,
-    width: 50,
+    // width: 50,
     
   },
   spring2024: {
