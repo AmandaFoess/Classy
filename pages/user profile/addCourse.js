@@ -91,6 +91,7 @@ const addCourse = () => {
                 <Text style={[styles.notes, styles.textTypo]}>Notes:</Text>
                 <View style={styles.commentFooter}>
                     <Image style={styles.profilePicSaller} resizeMode="cover" source="Profile Pic- Saller.png" />
+                    
                     <View>
                         <View style={styles.inputwithButton}>
                             <View style={styles.default}>
@@ -318,7 +319,28 @@ const styles = StyleSheet.create({
         alignItems: "center",
         overflow: "hidden",
         backgroundColor: "#fff"
-    }
+    },
+    esWrapper: {
+        borderRadius: 50,
+        borderWidth: 1,
+        backgroundColor: "#f4f5f8",
+        width: 70,
+        height: 70,
+        marginTop: 10,
+        overflow: "hidden"
+  },
+  es: {
+    marginLeft: -40,
+    top: 15,
+    left: "50%",
+    fontSize: 34,
+    width: 80,
+    color: "#aeb1ba",
+    fontFamily: "Inter-Medium",
+    fontWeight: "500",
+    position: "absolute",
+    textAlign: "center"
+}
 });
 
 export default addCourse;
