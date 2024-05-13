@@ -19,12 +19,12 @@ const GenericHeader = () => {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: "#fff",
-    borderBottomWidth: 0.3,
+    // borderBottomWidth: 0,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 2,
-    paddingVertical: 9,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     width: "100%",
   },
   logoText: {
@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
     color: "#3d47a6",
     width: "100%",
   },
-  ionnotificationsOutlineIcon: {
-    width: 31,
-    height: 31,
-  },
+  // ionnotificationsOutlineIcon: {
+  //   width: 31,
+  //   height: 31,
+  // },
   logo: {
     width: 40,
     height: 40,
