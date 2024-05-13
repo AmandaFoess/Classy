@@ -1,12 +1,12 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import FeedScreen from "./pages/feed/feedScreen";
 import UserProfile from "./pages/user profile/profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CourseHomePage from "./pages/courseProfile/CourseProfile";
-import SearchBarPage from "./pages/search/SearchBarPage";
+import SearchStack from "./pages/search/SearchBarPage";
 
 // Import icons from the appropriate libraries
 import { Ionicons } from "@expo/vector-icons";
@@ -19,41 +19,38 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            // Set icon based on the route name
-            if (route.name === "Feed") {
-              iconName = focused ? "home" : "home-outline";
+    <SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            headerShown: false,
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              if (route.name === "Feed") {
+                iconName = focused ? "home" : "home-outline";
+              } else if (route.name === "Course Profile") {
+                iconName = focused ? "school" : "school-outline";
+              } else if (route.name === "Search") {
+                iconName = focused ? "search" : "search-outline";
+              } else if (route.name === "Profile") {
+                iconName = focused ? "person" : "person-outline";
+                return (
+                  <MaterialIcons name={iconName} size={size} color={color} />
+                );
+              }
               return <Ionicons name={iconName} size={size} color={color} />;
-            } else if (route.name === "Course Profile") {
-              iconName = focused ? "school" : "school-outline";
-              return <Ionicons name={iconName} size={size} color={color} />;
-            } else if (route.name === "Search") {
-              iconName = focused ? "search" : "search-outline";
-              return <Ionicons name={iconName} size={size} color={color} />;
-            } else if (route.name === "Profile") {
-              iconName = focused ? "person" : "person-outline";
-              return <MaterialIcons name={iconName} size={size} color={color} />;
-            }
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: "blue",
-          inactiveTintColor: "gray",
-        }}
-      >
-        <Tab.Screen name="Feed" component={FeedScreen} />
-        <Tab.Screen name="Profile" component={UserProfile} />
-        <Tab.Screen name="Course Profile" component={CourseHomePage} />
-        <Tab.Screen name="Search" component={SearchBarPage} />
-        <Tab.Screen name="Recommendation Page" component={SearchBarRecommend} />
-        <Tab.Screen name="Comment Screen" component={CommentScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+            },
+            tabBarActiveTintColor: "blue",
+            tabBarInactiveTintColor: "gray",
+          })}
+        >
+          <Tab.Screen name="Feed" component={FeedScreen} />
+          <Tab.Screen name="Profile" component={UserProfile} />
+          <Tab.Screen name="Course Profile" component={CourseHomePage} />
+          <Tab.Screen name="Search" component={SearchStack} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
 
@@ -63,5 +60,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 20,
   },
 });

@@ -6,6 +6,9 @@ import { Pressable } from "react-native";
 import Item from "./SearchItem";
 import { Usernames, Courses, MyCourses } from "../../assets/data";
 import { useEffect } from "react";
+import CourseHomePage from "../courseProfile/CourseProfile";
+import UserProfile from "../user profile/profile";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 function SearchBarPage({ navigation }) {
   const [search, setSearch] = useState("");
@@ -13,21 +16,13 @@ function SearchBarPage({ navigation }) {
   const [activeSection, setActiveSection] = React.useState(Usernames);
   const [activePage, setActivePage] = useState("Profile");
 
-  /* const updateSearch = (search) => {
-    setSearch(search);
-    const filteredData = activeSection.filter((item) =>
-      item.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilteredList(filteredData);
-  }; */
-
   useEffect(() => {
     const filteredData = activeSection.filter((item) =>
       item.toLowerCase().includes(search.toLowerCase())
     );
     setFilteredList(filteredData);
     if (activeSection == Usernames) {
-      setActivePage("Profile");
+      setActivePage("User Profile");
     } else {
       setActivePage("Course Profile");
     }
@@ -104,6 +99,18 @@ function SearchBarPage({ navigation }) {
   );
 }
 
+const Stack = createNativeStackNavigator();
+
+function SearchStack({ navigation }) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Search Things" component={SearchBarPage} />
+      <Stack.Screen name="Course Profile" component={CourseHomePage} />
+      <Stack.Screen name="User Profile" component={UserProfile} />
+    </Stack.Navigator>
+  );
+}
+
 const styles = StyleSheet.create({
   searchIcon: {
     width: 24,
@@ -129,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchBarPage;
+export default SearchStack;
