@@ -1,44 +1,80 @@
 import * as React from "react";
 import { Text, StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
-import SingleClassRanking from "./singleClassRanking";
+import SingleClassRanking from "./singleMyClassRanking";
+import SingleUnsavedClass from "./singleRecsForYouClass"; 
+import SingleSavedClass from "./singleWantToTakeClass";
 
-const fakeData = [
-	{ course: "Mathematics", professorName: "Dr. Smith", quarterYearOffered: "Fall 2023", rank: 8.5, tag: "myClass" },
-	{ course: "Biology", professorName: "Prof. Johnson", quarterYearOffered: "Spring 2024", rank: 9.2, tag: "rec" },
-	{ course: "History", professorName: "Dr. Lee", quarterYearOffered: "Winter 2024", rank: 7.8, tag: "wantToTake" },
-	{ course: "Chemistry", professorName: "Prof. Garcia", quarterYearOffered: "Summer 2024", rank: 8.9, tag: "myClass" },
-	{ course: "Literature", professorName: "Dr. Patel", quarterYearOffered: "Fall 2024", rank: 9.6, tag: "myClass" },
-	{ course: "Physics", professorName: "Prof. Thompson", quarterYearOffered: "Spring 2023", rank: 8.0, tag: "rec" },
-	{ course: "Economics", professorName: "Dr. Brown", quarterYearOffered: "Winter 2023", rank: 7.5, tag: "wantToTake" },
-	{ course: "Computer Sci.", professorName: "Prof. Kim", quarterYearOffered: "Summer 2023", rank: 8.7, tag: "myClass" },
-	{ course: "Psychology", professorName: "Dr. White", quarterYearOffered: "Fall 2022", rank: 9.1, tag: "rec" },
-	{ course: "Sociology", professorName: "Prof. Davis", quarterYearOffered: "Spring 2022", rank: 7.2, tag: "myClass" }
+const fakeDataMyClasses = [
+	{ course: "Mathematics", professorName: "Dr. Smith", quarterYearOffered: "Fall 2023", rank: 8.5},
+	{ course: "Biology", professorName: "Prof. Johnson", quarterYearOffered: "Spring 2024", rank: 9.2},
+	{ course: "History", professorName: "Dr. Lee", quarterYearOffered: "Winter 2024", rank: 7.8},
+	{ course: "Chemistry", professorName: "Prof. Garcia", quarterYearOffered: "Summer 2024", rank: 8.9},
+	{ course: "Literature", professorName: "Dr. Patel", quarterYearOffered: "Fall 2024", rank: 9.6},
+	{ course: "Physics", professorName: "Prof. Thompson", quarterYearOffered: "Spring 2023", rank: 8.0},
+	{ course: "Economics", professorName: "Dr. Brown", quarterYearOffered: "Winter 2023", rank: 7.5},
+	{ course: "Computer Sci.", professorName: "Prof. Kim", quarterYearOffered: "Summer 2023", rank: 8.7},
+	{ course: "Psychology", professorName: "Dr. White", quarterYearOffered: "Fall 2022", rank: 9.1},
+	{ course: "Sociology", professorName: "Prof. Davis", quarterYearOffered: "Spring 2022", rank: 7.2}
   ];
-  // Convert the dataSet object to an array
-const fakeDataArray = Object.values(fakeData);
+
+  const fakeDataWantToTake = [
+    { course: "Algebra", professorName: "Dr. Johnson", quarterYearOffered: "Fall 2023" },
+    { course: "Ecology", professorName: "Prof. Garcia", quarterYearOffered: "Spring 2024" },
+    { course: "World History", professorName: "Dr. Lee", quarterYearOffered: "Winter 2024" },
+    { course: "Organic Chemistry", professorName: "Prof. Patel", quarterYearOffered: "Summer 2024" },
+    { course: "Literary Analysis", professorName: "Dr. Thompson", quarterYearOffered: "Fall 2024" },
+    { course: "Astrophysics", professorName: "Prof. Brown", quarterYearOffered: "Spring 2023" },
+    { course: "Macroeconomics", professorName: "Dr. Kim", quarterYearOffered: "Winter 2023" },
+    { course: "Computer Graphics", professorName: "Prof. White", quarterYearOffered: "Summer 2023" },
+    { course: "Cognitive Psychology", professorName: "Dr. White", quarterYearOffered: "Fall 2022" },
+    { course: "Cultural Studies", professorName: "Prof. Davis", quarterYearOffered: "Spring 2022" }
+];
+
+  const fakeDataRecs = [
+    { course: "Artificial Intelligence", professorName: "Dr. Johnson", recommender: "@emilyjane" },
+    { course: "Genetics", professorName: "Prof. Garcia", recommender: "@davidsmith" },
+    { course: "Political Science", professorName: "Dr. Lee", recommender: "@peterparker" },
+    { course: "Organic Chemistry", professorName: "Prof. Patel", recommender: "@janesmith" },
+    { course: "Literary Theory", professorName: "Dr. Thompson", recommender: "@caeleywoo" },
+    { course: "Quantum Mechanics", professorName: "Prof. Brown", recommender: "@emilyjane" },
+    { course: "Microeconomics", professorName: "Dr. Kim", recommender: "@johndoe" },
+    { course: "Database Systems", professorName: "Prof. White", recommender: "@peterparker" },
+    { course: "Abnormal Psychology", professorName: "Dr. Davis", recommender: "@janesmith" },
+    { course: "Cultural Anthropology", professorName: "Prof. Smith", recommender: "@davidsmith" }
+];
+
+// Convert the dataSet objects to an array
+const fakeDataMyClassesArray = Object.values(fakeDataMyClasses);
 
 // Sort the fakeDataArray by rank in descending order
-fakeDataArray.sort((a, b) => b.rank - a.rank);
+fakeDataMyClassesArray.sort((a, b) => b.rank - a.rank);
+
+// Convert the dataSet objects to an array
+const fakeDataWantToTakeArray = Object.values(fakeDataWantToTake);
+
+// Convert the dataSet objects to an array
+const fakeDataRecsArray = Object.values(fakeDataRecs);
 
 function UserProfile() {
 	const [activeTab, setActiveTab] = React.useState('myClasses'); // State to track active tab
 
     // Filter data based on active tab
-    const filteredData = fakeDataArray.filter(item => {
-        switch (activeTab) {
-            case 'myClasses':
-                
-				return item.tag === 'myClass'
-            case 'wantToTake':
-                // Logic to filter "Want to Take"
-                return item.tag === 'wantToTake'
-            case 'recs':
-                // Logic to filter "Recs For You"
-                return item.tag == 'rec'
-            default:
-                return true;
-        }
-    });
+	let filteredData;
+
+	switch (activeTab) {
+		case 'myClasses':
+			filteredData = fakeDataMyClassesArray;
+			break;
+		case 'wantToTake':
+			filteredData = fakeDataWantToTakeArray;
+			break;
+		case 'recs':
+			filteredData = fakeDataRecsArray;
+			break;
+		default:
+			filteredData = [];
+			break;
+	}
   	return (
     		<View style={styles.completedOverallRankingPag}>
       			<View style={styles.profile}>
@@ -82,10 +118,18 @@ function UserProfile() {
 				<FlatList
         			data={filteredData}
         			keyExtractor={(item) => item.class}
-        			renderItem={({ item }) => (
-          				<SingleClassRanking course={item.course} quarterYearOffered={item.quarterYearOffered} rank={item.rank} professorName={item.professorName}/>
-        			)}
-        			ListEmptyComponent={<Text>No students found</Text>}
+					renderItem={({ item }) => {
+						// Determine which component to render based on active tab
+						if (activeTab === 'myClasses') {
+							return <SingleClassRanking course={item.course} quarterYearOffered={item.quarterYearOffered} rank={item.rank} professorName={item.professorName} />;
+						} else if (activeTab === 'recs') {
+							return <SingleUnsavedClass course={item.course} professorName={item.professorName} recommender = {item.recommender} />;
+						} else {
+							return <SingleSavedClass course={item.course} quarterYearOffered={item.quarterYearOffered} professorName={item.professorName} />;
+
+						}						
+					}}
+					ListEmptyComponent={<Text>No classes found</Text>}
       			/>
     		</View>);
 };
@@ -132,15 +176,6 @@ const styles = StyleSheet.create({
   	classesLayout: {
     		height: 15,
     		flex: 1
-  	},
-  	newChildPosition: {
-    		borderTopWidth: 1,
-    		left: "-0.13%",
-    		right: "-0.13%",
-    		width: "100.26%",
-    		position: "absolute",
-    		borderColor: "#aeb1ba",
-    		borderStyle: "solid"
   	},
   	textTypo: {
     		fontSize: 15,
@@ -248,41 +283,10 @@ const styles = StyleSheet.create({
     		width: 355,
     		alignItems: "center"
   	},
-  	myClasses1: {
-    		left: "21.12%",
-    		color: "#000"
-  	},
-  	myClasses3: {
-    		left: "16.51%",
-    		color: "#aeb1ba"
-  	},
-  	myClasses2: {
-    		marginLeft: 10
-  	},
-  	myClasses5: {
-    		left: "17.43%",
-    		color: "#aeb1ba"
-  	},
-  	myClasses7: {
-    		left: "10.92%",
-    		color: "#000"
-  	},
-  	myClasses9: {
-    		left: "27.58%",
-    		color: "#aeb1ba"
-  	},
-  	myClasses11: {
-    		left: "39.63%",
-    		color: "#aeb1ba"
-  	},
-  	myClassesSortMetricNavBa1: {
-    		marginTop: 7,
-    		alignSelf: "stretch"
-  	},
   	profile: {
     		width: 384,
     		height: 360,
-    		paddingTop: 10,
+    		paddingTop: 5,
     		alignItems: "center",
     		backgroundColor: "#fff"
   	},
@@ -319,52 +323,6 @@ const styles = StyleSheet.create({
     		alignSelf: "stretch",
     		alignItems: "center"
   	},
-  	singleClassRankingChild: {
-    		maxWidth: "100%",
-    		height: 2,
-    		marginTop: 5,
-    		overflow: "hidden",
-    		alignSelf: "stretch",
-    		width: "100%"
-  	},
-  	singleClassRanking1: {
-    		marginTop: 10
-  	},
-  	scrollableClassList: {
-    		flex: 1,
-    		backgroundColor: "#fff"
-  	},
-  	feedIcon: {
-    		width: 24,
-    		height: 24,
-    		overflow: "hidden"
-  	},
-  	profile1: {
-    		color: "#000"
-  	},
-  	navItem1: {
-    		marginLeft: 10
-  	},
-  	profile3: {
-    		color: "#9b2727"
-  	},
-  	navigationBar: {
-    		bottom: 0,
-    		paddingVertical: 0,
-    		height: 48,
-    		paddingHorizontal: 10,
-    		left: "0%",
-    		right: "0%",
-    		flexDirection: "row",
-    		position: "absolute",
-    		width: "100%",
-    		backgroundColor: "#fff"
-  	},
-  	updatedNavigationBarChild: {
-    		height: "2.08%",
-    		top: "-1.04%",
-    		bottom: "98.96%"
-  	},
   	completedOverallRankingPag: {
     		height: 857,
     		justifyContent: "flex-end",
@@ -372,10 +330,6 @@ const styles = StyleSheet.create({
     		flex: 1,
     		backgroundColor: "#fff"
   	},
-	  topBar: {
-        height: 10, // Adjust height as needed
-        backgroundColor: '#ccc', // Color of the top bar
-    },
     newListNavBar: {
         flexDirection: 'row', // Align tabs horizontally
         justifyContent: 'space-between', // Evenly space tabs
