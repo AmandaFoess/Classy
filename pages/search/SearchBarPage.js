@@ -11,6 +11,7 @@ function SearchBarPage({ navigation }) {
   const [search, setSearch] = useState("");
   const [filteredList, setFilteredList] = useState(Usernames);
   const [activeSection, setActiveSection] = React.useState(Usernames);
+  const [activePage, setActivePage] = useState("Profile");
 
   /* const updateSearch = (search) => {
     setSearch(search);
@@ -25,6 +26,11 @@ function SearchBarPage({ navigation }) {
       item.toLowerCase().includes(search.toLowerCase())
     );
     setFilteredList(filteredData);
+    if (activeSection == Usernames) {
+      setActivePage("Profile");
+    } else {
+      setActivePage("Course Profile");
+    }
   }, [search, activeSection]); // Dependency array includes both search and activeSection
 
   const updateSearch = (search) => {
@@ -82,14 +88,16 @@ function SearchBarPage({ navigation }) {
               activeSection === Usernames && styles.bold, // Conditionally apply the bold style
             ]}
           >
-            Members
+            Users
           </Text>
         </Pressable>
       </View>
       <FlatList
         data={filteredList}
         keyExtractor={(item) => item}
-        renderItem={({ item }) => <Item value={item} />}
+        renderItem={({ item }) => (
+          <Item value={item} navigation={navigation} page={activePage} />
+        )}
         ListEmptyComponent={<Text>"{search}" not found.</Text>}
       />
     </View>
