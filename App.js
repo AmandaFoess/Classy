@@ -11,6 +11,8 @@ import SearchBarPage from "./pages/search/SearchBarPage";
 // Import icons from the appropriate libraries
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import RecommendCourse from "./pages/courseProfile/recommendCourse";
+import SearchBarRecommend from "./pages/courseProfile/SearchBarRecommend";
 
 const Tab = createBottomTabNavigator();
 
@@ -47,6 +49,7 @@ export default function App() {
         <Tab.Screen name="Profile" component={UserProfile} />
         <Tab.Screen name="Course Profile" component={CourseHomePage} />
         <Tab.Screen name="Search" component={SearchBarPage} />
+        <Tab.Screen name="Recommendation Page" component={SearchBarRecommend} />
       </Tab.Navigator>
     </NavigationContainer>
   );
