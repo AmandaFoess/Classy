@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
-function Item({ value }) {
+function Item({ value, navigation, page }) {
   return (
-    <View style={styles.item}>
+    <Pressable style={styles.item} onPress={() => navigation.navigate(page)}>
       <Text style={styles.title}>{value}</Text>
-    </View>
+    </Pressable>
   );
 }
 
