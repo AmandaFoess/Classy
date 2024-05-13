@@ -16,6 +16,7 @@ const MAX_TEXT_LENGTH = 20; // Maximum characters for student name and class
 
 const ActivityCard = ({ name, course, rank }) => {
   const navigation = useNavigation();
+
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -24,7 +25,7 @@ const ActivityCard = ({ name, course, rank }) => {
   };
 
   const handleCommentPress = () => {
-    // Handle Comment icon press
+    navigation.navigate("Comment Screen");
   };
 
   const handleBookmarkPress = () => {
@@ -57,23 +58,17 @@ const ActivityCard = ({ name, course, rank }) => {
       </View>
       <View style={styles.reactionsParent}>
         <View style={styles.reactions}>
-          <TouchableOpacity
-            onPress={handleHeartPress}
-          >
+          <TouchableOpacity onPress={handleHeartPress}>
             <Ionicons
               name={isLiked ? "heart" : "heart-outline"}
               size={27}
               color={isLiked ? "red" : "black"}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleCommentPress}
-          >
-<Ionicons name="chatbubble-outline" size={24} color="black" />
+          <TouchableOpacity onPress={handleCommentPress}>
+            <Ionicons name="chatbubble-outline" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleBookmarkPress}
-          >
+          <TouchableOpacity onPress={handleBookmarkPress}>
             <Ionicons
               name={isBookmarked ? "bookmark" : "bookmark-outline"}
               size={24}
@@ -96,7 +91,7 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 50,
-    marginLeft: 10,
+    // marginLeft: 5,
   },
   abc: {
     fontWeight: "600",
