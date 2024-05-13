@@ -7,6 +7,7 @@ import UserProfile from "./pages/user profile/profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CourseHomePage from "./pages/courseProfile/CourseProfile";
 import SearchStack from "./pages/search/SearchBarPage";
+import GenericHeader from "./pages/classyHeader/classyHeader"; // Import your Header component
 
 // Import icons from the appropriate libraries
 import { Ionicons } from "@expo/vector-icons";
@@ -22,6 +23,8 @@ export default function App() {
   return (
     <SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
       <NavigationContainer>
+      <GenericHeader />
+      <Text></Text>
         <Tab.Navigator
           screenOptions={({ route }) => ({
             headerShown: false,
