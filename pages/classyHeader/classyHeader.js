@@ -1,17 +1,23 @@
 import React from "react";
-import { Text, View, Image, SafeAreaView, StyleSheet } from "react-native";
-import { NotificationsIcon } from "../../assets/icons";
+import { Text, View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const GenericHeader = () => {
+  const navigation = useNavigation();
+
+  const handleNotificationsPress = () => {
+    navigation.navigate("Notifications"); // Navigate to the screen name
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.header}>
         <Text style={styles.logoText}>Classy</Text>
-        <View style={styles.iconContainer}>
-
-          <NotificationsIcon />
-          </View>
-        </View>
+        <TouchableOpacity style={styles.iconContainer} onPress={handleNotificationsPress}>
+        <Ionicons name="notifications-outline" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -19,7 +25,6 @@ const GenericHeader = () => {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: "#fff",
-    // borderBottomWidth: 0,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -33,14 +38,6 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Medium",
     color: "#3d47a6",
     width: "100%",
-  },
-  // ionnotificationsOutlineIcon: {
-  //   width: 31,
-  //   height: 31,
-  // },
-  logo: {
-    width: 40,
-    height: 40,
   },
   iconContainer: {
     marginLeft: "auto", // Pushes the icon to the right

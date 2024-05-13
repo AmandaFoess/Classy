@@ -1,18 +1,43 @@
-import * as React from "react";
-import { Image, StyleSheet, Text, View, Pressable } from "react-native";
-import { Bookmark, Heart, Comment } from "../../assets/icons";
+import React, { useState } from "react";
+import {
+  Text,
+  View,
+  Image,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { Bookmark, Comment } from "../../assets/icons";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const MAX_TEXT_LENGTH = 20; // Maximum characters for student name and class
 
-const ActivityCard = ({ name, course, rank }) => {  
+const ActivityCard = ({ name, course, rank }) => {
+  const navigation = useNavigation();
+  const [isLiked, setIsLiked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const handleHeartPress = () => {
+    setIsLiked(!isLiked); // Toggle the isLiked state
+  };
+
+  const handleCommentPress = () => {
+    // Handle Comment icon press
+  };
+
+  const handleBookmarkPress = () => {
+    setIsBookmarked(!isBookmarked); // Toggle the isLiked state
+  };
+
   const rankedTextComponent = (name, course) => (
-    <Text style={styles.abcRankedCsContainer} >
+    <Text style={styles.abcRankedCsContainer}>
       <Text style={styles.abc}>{name}</Text>
       <Text style={styles.ranked}>{` ranked `}</Text>
       <Text style={styles.abc}>{course}</Text>
     </Text>
   );
-
 
   return (
     <View style={styles.feedUpdateslikebookmarked}>
@@ -22,30 +47,42 @@ const ActivityCard = ({ name, course, rank }) => {
           resizeMode="cover"
           source={require("/Users/evyshen/Documents/GitHub/Classy/assets/RichardSallerPic.png")}
         />
-        <View style={styles.abcRankedCs103Parent} >
-        {rankedTextComponent(name, course)}
-          <Text style={[styles.spring2024] }>Spring 2024</Text>
+        <View style={styles.abcRankedCs103Parent}>
+          {rankedTextComponent(name, course)}
+          <Text style={[styles.spring2024]}>Spring 2024</Text>
         </View>
         <View style={styles.rankingWrapper}>
           <Text style={[styles.rank]}>{rank}</Text>
         </View>
       </View>
-      <View style={[styles.reactionsParent]}>
+      <View style={styles.reactionsParent}>
         <View style={styles.reactions}>
-        <Pressable style = {styles.iconWrapper}>
-            <Heart />
-            </Pressable>
-          <Pressable onPress={() => {}}>
-            <Comment />
-          </Pressable>
-          <Pressable  >
-          <Bookmark />
-          </Pressable>
+          <TouchableOpacity
+            onPress={handleHeartPress}
+          >
+            <Ionicons
+              name={isLiked ? "heart" : "heart-outline"}
+              size={27}
+              color={isLiked ? "red" : "black"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleCommentPress}
+          >
+<Ionicons name="chatbubble-outline" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleBookmarkPress}
+          >
+            <Ionicons
+              name={isBookmarked ? "bookmark" : "bookmark-outline"}
+              size={24}
+              color={isBookmarked ? "gray" : "black"}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-    <Text style = {styles.time}>
-      Yesterday
-    </Text>
+      <Text style={styles.time}>Yesterday</Text>
     </View>
   );
 };
@@ -67,22 +104,14 @@ const styles = StyleSheet.create({
   },
   ranked: {
     fontFamily: "Inter-Regular",
-    
   },
   abcRankedCsContainer: {
     textAlign: "left",
     fontSize: 20,
-    // color: "#0c0000",
-    // borderColor: "purple",
-    // borderWidth: 5,
-    // width: 50,
-    
   },
   spring2024: {
     marginTop: 10,
     color: "#0c0000",
-    // borderColor: "orange",
-    // borderWidth: 5,
     alignItems: "left",
     fontFamily: "Inter-ExtraLight",
     fontWeight: "200",
@@ -92,8 +121,6 @@ const styles = StyleSheet.create({
     width: 230,
     height: 100,
     padding: 10,
-    // borderColor: "green",
-    // borderWidth: 5,
     justifyContent: "center",
     marginLeft: 20,
     marginTop: 20,
@@ -105,51 +132,40 @@ const styles = StyleSheet.create({
     color: "#0b0b0b",
     fontSize: 20,
     fontFamily: "Inter-ExtraLight",
-   },
+  },
   rankingWrapper: {
     borderRadius: 50,
     borderColor: "#0f0e0e",
     width: 50,
     height: 50,
-    // paddingVertical: 11,
     marginLeft: 21,
     justifyContent: "center",
     paddingHorizontal: 9,
     borderStyle: "solid",
     alignItems: "center",
-    // borderColor: "blue",
     borderWidth: 1.6,
-    backgroundColor: "white",  
+    backgroundColor: "white",
   },
   profilePicSallerParent: {
-    // width: 387,
     height: 123,
     paddingHorizontal: 0,
     paddingVertical: 20,
     alignItems: "center",
     flexDirection: "row",
-    margineLeft: 20,
-    // borderColor: "red",
-    // borderWidth: 5,
+    marginLeft: 20,
     backgroundColor: "rgba(255, 255, 255, 0)",
-    // overflow: "hidden",
   },
-  
   reactions: {
     backgroundColor: "rgba(245, 245, 245, 0)",
     paddingHorizontal: 15,
     paddingVertical: 10,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    overflow: "hidden",
-    // borderColor: "red",
-    // borderWidth: 5,
     width: 120,
   },
   iconWrapper: {
     padding: 10,
-
   },
   reactionsParent: {
     height: 61,
@@ -157,9 +173,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: -20,
     paddingVertical: 0,
-    // borderColor: "pink",
-    // borderWidth: 5,
-    // width: 30,
   },
   feedUpdateslikebookmarked: {
     backgroundColor: "rgba(202, 209, 212, 0.09)",
@@ -172,8 +185,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: "100%",
     borderStyle: "solid",
-    // borderColor: "green",
-    // borderWidth: 5,
   },
 });
 
