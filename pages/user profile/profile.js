@@ -1,19 +1,18 @@
 import * as React from "react";
-import {Text, StyleSheet, View, Image} from "react-native";
+import { Text, StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import SingleClassRanking from "./singleClassRanking";
-import { FlatList } from "react-native";
 
 const fakeData = [
-	{ course: "Mathematics", professorName: "Dr. Smith", quarterYearOffered: "Fall 2023", rank: 8.5 },
-	{ course: "Biology", professorName: "Prof. Johnson", quarterYearOffered: "Spring 2024", rank: 9.2 },
-	{ course: "History", professorName: "Dr. Lee", quarterYearOffered: "Winter 2024", rank: 7.8 },
-	{ course: "Chemistry", professorName: "Prof. Garcia", quarterYearOffered: "Summer 2024", rank: 8.9 },
-	{ course: "Literature", professorName: "Dr. Patel", quarterYearOffered: "Fall 2024", rank: 9.6 },
-	{ course: "Physics", professorName: "Prof. Thompson", quarterYearOffered: "Spring 2023", rank: 8.0 },
-	{ course: "Economics", professorName: "Dr. Brown", quarterYearOffered: "Winter 2023", rank: 7.5 },
-	{ course: "Computer Sci.", professorName: "Prof. Kim", quarterYearOffered: "Summer 2023", rank: 8.7 },
-	{ course: "Psychology", professorName: "Dr. White", quarterYearOffered: "Fall 2022", rank: 9.1 },
-	{ course: "Sociology", professorName: "Prof. Davis", quarterYearOffered: "Spring 2022", rank: 7.2 }
+	{ course: "Mathematics", professorName: "Dr. Smith", quarterYearOffered: "Fall 2023", rank: 8.5, tag: "myClass" },
+	{ course: "Biology", professorName: "Prof. Johnson", quarterYearOffered: "Spring 2024", rank: 9.2, tag: "rec" },
+	{ course: "History", professorName: "Dr. Lee", quarterYearOffered: "Winter 2024", rank: 7.8, tag: "wantToTake" },
+	{ course: "Chemistry", professorName: "Prof. Garcia", quarterYearOffered: "Summer 2024", rank: 8.9, tag: "myClass" },
+	{ course: "Literature", professorName: "Dr. Patel", quarterYearOffered: "Fall 2024", rank: 9.6, tag: "myClass" },
+	{ course: "Physics", professorName: "Prof. Thompson", quarterYearOffered: "Spring 2023", rank: 8.0, tag: "rec" },
+	{ course: "Economics", professorName: "Dr. Brown", quarterYearOffered: "Winter 2023", rank: 7.5, tag: "wantToTake" },
+	{ course: "Computer Sci.", professorName: "Prof. Kim", quarterYearOffered: "Summer 2023", rank: 8.7, tag: "myClass" },
+	{ course: "Psychology", professorName: "Dr. White", quarterYearOffered: "Fall 2022", rank: 9.1, tag: "rec" },
+	{ course: "Sociology", professorName: "Prof. Davis", quarterYearOffered: "Spring 2022", rank: 7.2, tag: "myClass" }
   ];
   // Convert the dataSet object to an array
 const fakeDataArray = Object.values(fakeData);
@@ -22,7 +21,24 @@ const fakeDataArray = Object.values(fakeData);
 fakeDataArray.sort((a, b) => b.rank - a.rank);
 
 function UserProfile() {
-  	
+	const [activeTab, setActiveTab] = React.useState('myClasses'); // State to track active tab
+
+    // Filter data based on active tab
+    const filteredData = fakeDataArray.filter(item => {
+        switch (activeTab) {
+            case 'myClasses':
+                
+				return item.tag === 'myClass'
+            case 'wantToTake':
+                // Logic to filter "Want to Take"
+                return item.tag === 'wantToTake'
+            case 'recs':
+                // Logic to filter "Recs For You"
+                return item.tag == 'rec'
+            default:
+                return true;
+        }
+    });
   	return (
     		<View style={styles.completedOverallRankingPag}>
       			<View style={styles.profile}>
@@ -51,24 +67,20 @@ function UserProfile() {
             						</View>
           					</View>
         				</View>
-        				<View style={[styles.newListNavBar, styles.navSpaceBlock]}>
-          					<View style={[styles.myClassesSortMetricNavBa, styles.classesSpaceBlock]}>
-            						<View style={styles.classesLayout}>
-              							<Text style={[styles.myClasses1, styles.classesTypo]}>My Classes</Text>
-            						</View>
-            						<View style={[styles.myClasses2, styles.classesLayout]}>
-              							<Text style={[styles.myClasses3, styles.classesTypo]}>Want to Take</Text>
-            						</View>
-            						<View style={[styles.myClasses2, styles.classesLayout]}>
-              							<Text style={[styles.myClasses5, styles.classesTypo]}>Recs For You</Text>
-            						</View>
-          					</View>
-          					<View style={[styles.newListNavBarChild, styles.newChildPosition]} />
-          					<View style={[styles.newListNavBarItem, styles.newChildPosition]} />
-        				</View>
+						<View style={styles.newListNavBar}>
+							<TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('myClasses')}>
+								<Text style={[styles.tabText, activeTab === 'myClasses' && styles.activeTab]}>My Classes</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('wantToTake')}>
+								<Text style={[styles.tabText, activeTab === 'wantToTake' && styles.activeTab]}>Want to Take</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('recs')}>
+								<Text style={[styles.tabText, activeTab === 'recs' && styles.activeTab]}>Recs For You</Text>
+							</TouchableOpacity>
+						</View>
       			</View>
 				<FlatList
-        			data={fakeDataArray}
+        			data={filteredData}
         			keyExtractor={(item) => item.class}
         			renderItem={({ item }) => (
           				<SingleClassRanking course={item.course} quarterYearOffered={item.quarterYearOffered} rank={item.rank} professorName={item.professorName}/>
@@ -251,35 +263,6 @@ const styles = StyleSheet.create({
     		left: "17.43%",
     		color: "#aeb1ba"
   	},
-  	myClassesSortMetricNavBa: {
-    		height: "89.26%",
-    		bottom: "10.74%",
-    		left: "0%",
-    		right: "0%",
-    		top: "0%",
-    		paddingVertical: 5,
-    		position: "absolute",
-    		width: "100%"
-  	},
-  	newListNavBarChild: {
-    		top: "-1.85%",
-    		bottom: "98.15%",
-    		height: "3.7%",
-    		left: "-0.13%",
-    		right: "-0.13%",
-    		width: "100.26%"
-  	},
-  	newListNavBarItem: {
-    		top: "98.15%",
-    		bottom: "-1.85%",
-    		height: "3.7%",
-    		left: "-0.13%",
-    		right: "-0.13%",
-    		width: "100.26%"
-  	},
-  	newListNavBar: {
-    		height: 27
-  	},
   	myClasses7: {
     		left: "10.92%",
     		color: "#000"
@@ -388,7 +371,32 @@ const styles = StyleSheet.create({
     		width: "100%",
     		flex: 1,
     		backgroundColor: "#fff"
-  	}
+  	},
+	  topBar: {
+        height: 10, // Adjust height as needed
+        backgroundColor: '#ccc', // Color of the top bar
+    },
+    newListNavBar: {
+        flexDirection: 'row', // Align tabs horizontally
+        justifyContent: 'space-between', // Evenly space tabs
+        paddingHorizontal: 20, // Add padding to the sides
+        borderBottomWidth: 1, // Add a bottom border
+        borderBottomColor: '#ccc', // Border color
+    },
+    tabItem: {
+        flex: 1, // Each tab takes up equal space
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10, // Add padding top and bottom
+    },
+    tabText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'lightgrey',
+    },
+    activeTab: {
+        color: 'black', // Change color as per your requirement
+    },
 });
 
 export default UserProfile;
