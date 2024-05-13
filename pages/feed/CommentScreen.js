@@ -35,7 +35,6 @@ const CommentScreen = () => {
               							<Heart/>
             						</View>
                                         <Comment/>
-            						{/* <Image style={[styles.mdiLightcommentIcon, styles.iconLayout]} resizeMode="cover" source="mdi-light:comment.png" /> */}
           					</View>
           					<View style={styles.bookmarkedWrapper}>
             						<Image style={[styles.bookmarkedIcon, styles.iconLayout]} resizeMode="cover" source="Bookmarked.png" />
