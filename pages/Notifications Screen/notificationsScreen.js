@@ -146,7 +146,8 @@ const notificationsData = [
   ];
   
 
-const NotificationsScreen = () => {
+
+const NotificationsScreen = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <View style={styles.notificationItem}>
       <Image

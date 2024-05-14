@@ -4,6 +4,8 @@ import { FlatList } from "react-native";
 import { View } from "react-native";
 import CommentScreen from "./CommentScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import NotificationsScreen from "../Notifications Screen/notificationsScreen";
+import AddCourse from "../userProfile/addCourse";
 
 // Test data
 const students = [
@@ -51,6 +53,8 @@ function FeedStack({ navigation }) {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Feed" component={FeedScreen} />
       <Stack.Screen name="Comment" component={CommentScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
+      <Stack.Screen name="Add Class" component={AddCourse} />
     </Stack.Navigator>
   );
 }

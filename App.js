@@ -45,7 +45,7 @@ export default function App() {
               }
               return <Ionicons name={iconName} size={size} color={color} />;
             },
-            tabBarActiveTintColor: "blue",
+            tabBarActiveTintColor: "#3d47a6",
             tabBarInactiveTintColor: "gray",
           })}
         >
@@ -55,7 +55,7 @@ export default function App() {
           <Tab.Screen name="Search" component={SearchStack} />
           {/* <Tab.Screen name="Comment Screen" component={CommentScreen} /> */}
           <Tab.Screen name="Add Class" component={AddCourse} />
-          <Tab.Screen name="Notifications" component={NotificationsScreen} />
+          {/* <Tab.Screen name="Notifications" component={NotificationsScreen} /> */}
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
