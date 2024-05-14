@@ -46,72 +46,48 @@ const CommentScreen = () => {
             <View style={styles.profilePicWrapper}>
               <Text style={styles.profilePicText}>ES</Text>
             </View>
-            <View style={styles.activityInfo}>
-              <Text style={styles.activityText}>
-                <Text style={styles.boldText}>ABC</Text>
-                <Text> bookmarked </Text>
-                <Text style={styles.boldText}>CS 103</Text>
-              </Text>
-              <Text style={styles.semesterText}>Spring 2024</Text>
-            </View>
-          </View>
-          <View style={styles.reactionsWrapper}>
-            <View style={styles.reactions}>
-              <TouchableOpacity onPress={handleHeartPress}>
-                <Ionicons
-                  name={isLiked ? "heart" : "heart-outline"}
-                  size={27}
-                  color={isLiked ? "red" : "black"}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  /* Navigate to comment screen */
-                }}
-              >
-                <Ionicons name="chatbubble-outline" size={24} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleBookmarkPress}>
-                <Ionicons
-                  name={isBookmarked ? "bookmark" : "bookmark-outline"}
-                  size={24}
-                  color={isBookmarked ? "gray" : "black"}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Text style={styles.time}>3 hours ago</Text>
-        </View>
-      </View>
-
-      <View style={styles.commentFooterWrapper}>
-        <View style={styles.commentFooter}>
-          <Image
-            style={styles.profilePicSaller}
-            resizeMode="cover"
-            source={require("../../assets/RichardSallerPic.png")}
-          />
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.inputField}
-              placeholder="Comment"
-              value={comment}
-              onChangeText={setComment}
-              multiline
-            />
-            <TouchableOpacity
-              style={styles.postButton}
-              onPress={() => {
-                /* Handle post action */
-              }}
-            >
-              <Text style={styles.postButtonText}>Post</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </View>
-  );
+          					<View style={styles.abcBookmarkedCs103Parent}>
+            						<Text style={styles.spring2024Typo}>
+              							<Text style={styles.abc}>ABC</Text>
+              							<Text style={styles.bookmarked}>{` bookmarked `}</Text>
+              							<Text style={styles.abc}>CS 103</Text>
+              							<Text style={styles.bookmarked}>{` `}</Text>
+            						</Text>
+            						<Text style={[styles.spring2024, styles.spring2024Typo]}>Spring  2024</Text>
+          					</View>
+                            
+        				</View>
+        				<View style={[styles.likeCommentBookmarkBar, styles.unlikedParentSpaceBlock]}>
+          					<View style={[styles.unlikedParent, styles.unlikedParentSpaceBlock]}>
+            						<View style={styles.unliked}>
+              							<Heart/>
+            						</View>
+                                        <Comment/>
+            						{/* <Image style={[styles.mdiLightcommentIcon, styles.iconLayout]} resizeMode="cover" source="mdi-light:comment.png" /> */}
+          					</View>
+          					<View style={styles.bookmarkedWrapper}>
+            						<Image style={[styles.bookmarkedIcon, styles.iconLayout]} resizeMode="cover" source="Bookmarked.png" />
+          					</View>
+        				</View>
+      			</View>
+      			<View style={styles.commentFooterWrapper}>
+        				<View style={[styles.commentFooter, styles.parentFlexBox]}>
+          					<Image style={styles.profilePicSaller1} resizeMode="cover" source="Profile Pic- Saller.png" />
+          					<View>
+            						<View style={styles.inputwithButton}>
+              							<View style={styles.default}>
+                								<View style={[styles.field, styles.fieldFlexBox]}>
+                  									<Text style={[styles.email, styles.emailFlexBox]}>Comment, or tag a friend</Text>
+                								</View>
+              							</View>
+              							<View style={[styles.button, styles.fieldFlexBox]}>
+                								<Text style={[styles.subscribe, styles.emailFlexBox]}>Post</Text>
+              							</View>
+            						</View>
+          					</View>
+        				</View>
+      			</View>
+    		</View>);
 };
 
 const styles = StyleSheet.create({
