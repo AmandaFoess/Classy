@@ -15,7 +15,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import RecommendCourse from "./pages/courseProfile/recommendCourse";
 import SearchBarRecommend from "./pages/courseProfile/SearchBarRecommend";
 import CommentScreen from "./pages/feed/CommentScreen";
-import AddCourse from "./pages/user profile/addCourse";
+import AddCourse from "./pages/user profile/AddCourse";
 import NotificationsScreen from "./pages/Notifications Screen/notificationsScreen.js"
 
 const Tab = createBottomTabNavigator();
