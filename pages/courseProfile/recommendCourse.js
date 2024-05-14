@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Text, StyleSheet, Image, View, FlatList} from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SearchBar } from "react-native-elements";
 
 const RecommendCourse = () => {
