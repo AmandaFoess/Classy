@@ -219,9 +219,9 @@ const UserProfile = ({ navigation }) => {
   return (
     <View style={styles.completedOverallRankingPag}>
       <View style={styles.profile}>
-        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+        {/* <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
           <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View style={styles.frameParent}>
           <View style={styles.evyShenParent}>
             <Text style={[styles.evyShen, styles.textTypo1]}>Evy Shen</Text>

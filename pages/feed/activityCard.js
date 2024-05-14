@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   abcRankedCs103Parent: {
-    width: 230,
+    width: "55%",
     height: 100,
     padding: 10,
     justifyContent: "center",
