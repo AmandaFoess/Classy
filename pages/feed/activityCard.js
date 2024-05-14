@@ -46,7 +46,7 @@ const ActivityCard = ({ name, course, rank }) => {
         <Image
           style={styles.profilePicSaller}
           resizeMode="cover"
-          source={require("/Users/evyshen/Documents/GitHub/Classy/assets/RichardSallerPic.png")}
+          source={require("../../assets/RichardSallerPic.png")}
         />
         <View style={styles.abcRankedCs103Parent}>
           {rankedTextComponent(name, course)}
