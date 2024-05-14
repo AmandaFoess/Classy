@@ -1,39 +1,41 @@
 import Svg, { Path, G, Defs, Rect, ClipPath } from "react-native-svg";
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { TouchableOpacity } from "react-native";
 
 export function Bookmark() {
+  const [isBookmarked, setIsBookmarked] = useState(false); // State to manage the bookmark button
+
+  const handleBookmarkPress = () => {
+    setIsBookmarked(!isBookmarked);
+  };
+
   return (
-    <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="37"
-      height="37"
-      viewBox="0 0 37 37"
-      fill="none"
-    >
-      <Path
-        d="M9.25 29.75V8.9225C9.25 8.2325 9.48793 7.6565 9.96379 7.1945C10.4397 6.7325 11.0317 6.501 11.7398 6.5H25.2602C25.9694 6.5 26.5614 6.7315 27.0362 7.1945C27.511 7.6575 27.749 8.2335 27.75 8.9225V29.75L18.5 25.8845L9.25 29.75ZM10.7917 27.425L18.5 24.2L26.2083 27.425V8.9225C26.2083 8.6925 26.1097 8.481 25.9123 8.288C25.715 8.095 25.4976 7.999 25.2602 8H11.7398C11.5034 8 11.286 8.096 11.0877 8.288C10.8893 8.48 10.7906 8.6915 10.7917 8.9225V27.425Z"
-        fill="black"
+    <TouchableOpacity onPress={handleBookmarkPress}>
+      <Ionicons
+        name={isBookmarked ? "bookmark" : "bookmark-outline"}
+        size={24}
+        color={isBookmarked ? "gray" : "black"}
       />
-    </Svg>
+    </TouchableOpacity>
   );
 }
 
 export function Heart() {
+  const [isLiked, setIsLiked] = useState(false); // State to manage the like button
+
+  const handleHeartPress = () => {
+    setIsLiked(!isLiked);
+  };
+
   return (
-    <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="30"
-      height="26"
-      viewBox="0 0 30 26"
-      fill="none"
-    >
-      <Path
-        d="M17.7289 23.3807C17.3735 23.7352 16.9499 24.0167 16.4826 24.2089C16.0154 24.401 15.5139 24.5 15.0074 24.5C14.5008 24.5 13.9993 24.401 13.5321 24.2089C13.0649 24.0167 12.6413 23.7352 12.2859 23.3807L3.13388 14.4803C-2.98327 8.4692 5.00779 -4.80947 15.0041 5.00888C24.9854 -4.79043 32.9765 8.48612 26.8744 14.4803L17.7289 23.3807Z"
-        stroke="black"
-        stroke-width="1.2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+    <TouchableOpacity onPress={handleHeartPress}>
+      <Ionicons
+        name={isLiked ? "heart" : "heart-outline"}
+        size={27}
+        color={isLiked ? "red" : "black"}
       />
-    </Svg>
+    </TouchableOpacity>
   );
 }
 
@@ -59,33 +61,19 @@ export function Comment() {
 }
 
 export function Add() {
+  const [isAdded, setIsAdded] = useState(false); // State to manage the bookmark button
+
+  const handleAddPress = () => {
+    setIsAdded(!isAdded);
+  };
+
   return (
-    <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <G clip-path="url(#clip0_265_2763)">
-        <Path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M0 12C0 5.3724 5.3724 0 12 0C18.6276 0 24 5.3724 24 12C24 18.6276 18.6276 24 12 24C5.3724 24 0 18.6276 0 12ZM12 2.4C9.45392 2.4 7.01212 3.41143 5.21178 5.21178C3.41143 7.01212 2.4 9.45392 2.4 12C2.4 14.5461 3.41143 16.9879 5.21178 18.7882C7.01212 20.5886 9.45392 21.6 12 21.6C14.5461 21.6 16.9879 20.5886 18.7882 18.7882C20.5886 16.9879 21.6 14.5461 21.6 12C21.6 9.45392 20.5886 7.01212 18.7882 5.21178C16.9879 3.41143 14.5461 2.4 12 2.4Z"
-          fill="#9B2727"
-        />
-        <Path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M13.1998 6.00005C13.1998 5.68179 13.0734 5.37656 12.8483 5.15152C12.6233 4.92648 12.3181 4.80005 11.9998 4.80005C11.6815 4.80005 11.3763 4.92648 11.1513 5.15152C10.9262 5.37656 10.7998 5.68179 10.7998 6.00005V10.8H5.9998C5.68154 10.8 5.37632 10.9265 5.15128 11.1515C4.92623 11.3766 4.7998 11.6818 4.7998 12C4.7998 12.3183 4.92623 12.6235 5.15128 12.8486C5.37632 13.0736 5.68154 13.2 5.9998 13.2H10.7998V18C10.7998 18.3183 10.9262 18.6235 11.1513 18.8486C11.3763 19.0736 11.6815 19.2 11.9998 19.2C12.3181 19.2 12.6233 19.0736 12.8483 18.8486C13.0734 18.6235 13.1998 18.3183 13.1998 18V13.2H17.9998C18.3181 13.2 18.6233 13.0736 18.8483 12.8486C19.0734 12.6235 19.1998 12.3183 19.1998 12C19.1998 11.6818 19.0734 11.3766 18.8483 11.1515C18.6233 10.9265 18.3181 10.8 17.9998 10.8H13.1998V6.00005Z"
-          fill="#9B2727"
-        />
-      </G>
-      <Defs>
-        <ClipPath id="clip0_265_2763">
-          <Rect width="24" height="24" fill="white" />
-        </ClipPath>
-      </Defs>
-    </Svg>
+    <TouchableOpacity onPress={handleAddPress}>
+      <Ionicons
+        name={isAdded ? "checkmark-circle" : "checkmark-circle-outline"}
+        size={24}
+        color={isAdded ? "gray" : "black"}
+      />
+    </TouchableOpacity>
   );
 }

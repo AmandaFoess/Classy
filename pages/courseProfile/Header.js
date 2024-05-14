@@ -1,13 +1,31 @@
 import * as React from "react";
 import { Text, StyleSheet, View, Image } from "react-native";
 import { Add, Bookmark } from "../../assets/icons";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 
-const CourseHeader = () => {
+const CourseHeader = ({ navigation }) => {
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+  const handleRecommend = () => {
+    navigation.navigate("Recommend");
+  };
   return (
     <View style={styles.buttondefaultParent}>
-      <View style={[styles.buttondefault, styles.addAndSaveFlexBox]}>
+      <TouchableOpacity
+        style={styles.addAndSaveFlexBox}
+        onPress={handleBackPress}
+      >
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+      <Pressable
+        style={[styles.buttondefault, styles.addAndSaveFlexBox]}
+        onPress={handleRecommend}
+      >
         <Text style={styles.recommend}>RECOMMEND</Text>
-      </View>
+      </Pressable>
       <View style={[styles.addAndSave, styles.addAndSaveFlexBox]}>
         <Add />
         <Bookmark />
@@ -21,6 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    marginLeft: 20,
   },
   recommend: {
     fontSize: 14,

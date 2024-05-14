@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+//import { useNavigation } from "@react-navigation/native";
 
-const CommentScreen = () => {
-  const navigation = useNavigation();
+const CommentScreen = ({ navigation }) => {
+  //const navigation = useNavigation();
 
   const [comment, setComment] = useState(""); // State to manage the input text
   const [isLiked, setIsLiked] = useState(false); // State to manage the like button
@@ -27,7 +27,7 @@ const CommentScreen = () => {
   };
 
   const handleBackPress = () => {
-    navigation.navigate("Feed");
+    navigation.goBack();
   };
 
   return (

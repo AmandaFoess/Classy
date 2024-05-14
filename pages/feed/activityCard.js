@@ -9,13 +9,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Bookmark, Comment } from "../../assets/icons";
-import { useNavigation } from "@react-navigation/native";
+//import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
 const MAX_TEXT_LENGTH = 20; // Maximum characters for student name and class
 
-const ActivityCard = ({ name, course, rank }) => {
-  const navigation = useNavigation();
+const ActivityCard = ({ name, course, rank, navigation }) => {
+  //const navigation = useNavigation();
 
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -25,7 +25,7 @@ const ActivityCard = ({ name, course, rank }) => {
   };
 
   const handleCommentPress = () => {
-    navigation.navigate("Comment Screen");
+    navigation.navigate("Comment");
   };
 
   const handleBookmarkPress = () => {

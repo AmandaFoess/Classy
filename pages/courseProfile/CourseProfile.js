@@ -54,13 +54,13 @@ const DataSpaceBlock = () => (
   </View>
 );
 
-const CourseHomePage = () => {
+const CourseHomePage = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.iphone1415ProMax2}>
+      <View>
         <View style={styles.finalCourseHomepage}>
           {/* Header */}
-          <CourseHeader />
+          <CourseHeader navigation={navigation} />
 
           <DataSpaceBlock />
 
@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
   finalCourseHomepage: {
     width: "100%",
     paddingHorizontal: 25,
-    paddingTop: 27,
+    //paddingTop: 27,
     paddingBottom: 44,
     alignItems: "center",
     flex: 1,

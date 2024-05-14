@@ -2,6 +2,8 @@ import { Text } from "react-native";
 import ActivityCard from "./activityCard";
 import { FlatList } from "react-native";
 import { View } from "react-native";
+import CommentScreen from "./CommentScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Test data
 const students = [
@@ -16,7 +18,8 @@ const students = [
   { name: "Isabel Walker", course: "Economics", rank: 8 },
   { name: "Jack Hall", course: "Art", rank: 4 },
 ];
-function FeedScreen({ navigation }) {
+
+const FeedScreen = ({ navigation }) => {
   // Function to truncate text if it exceeds a certain length
   const truncateText = (text, maxLength) => {
     return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
@@ -32,11 +35,24 @@ function FeedScreen({ navigation }) {
             name={truncateText(item.name, 15)} // Truncate to 15 characters
             course={truncateText(item.course, 20)} // Truncate to 20 characters
             rank={item.rank}
+            navigation={navigation}
           />
         )}
         ListEmptyComponent={<Text>No students found</Text>}
       />
     </View>
   );
+};
+
+const Stack = createNativeStackNavigator();
+
+function FeedStack({ navigation }) {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Feed" component={FeedScreen} />
+      <Stack.Screen name="Comment" component={CommentScreen} />
+    </Stack.Navigator>
+  );
 }
-export default FeedScreen;
+
+export default FeedStack;

@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import FeedScreen from "./pages/feed/feedScreen";
-import UserProfile from "./pages/user profile/profile";
+import UserProfile from "./pages/userProfile/profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CourseHomePage from "./pages/courseProfile/CourseProfile";
 import SearchStack from "./pages/search/SearchBarPage";
@@ -15,8 +15,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import RecommendCourse from "./pages/courseProfile/recommendCourse";
 import SearchBarRecommend from "./pages/courseProfile/SearchBarRecommend";
 import CommentScreen from "./pages/feed/CommentScreen";
-import AddCourse from "./pages/user profile/AddCourse";
-import NotificationsScreen from "./pages/Notifications Screen/notificationsScreen.js"
+import AddCourse from "./pages/userProfile/addCourse";
+import NotificationsScreen from "./pages/Notifications Screen/notificationsScreen.js";
 
 const Tab = createBottomTabNavigator();
 
@@ -24,8 +24,8 @@ export default function App() {
   return (
     <SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
       <NavigationContainer>
-      <GenericHeader />
-      <Text></Text>
+        <GenericHeader />
+        <Text></Text>
         <Tab.Navigator
           screenOptions={({ route }) => ({
             headerShown: false,
@@ -51,9 +51,9 @@ export default function App() {
         >
           <Tab.Screen name="Feed" component={FeedScreen} />
           <Tab.Screen name="Profile" component={UserProfile} />
-          <Tab.Screen name="Course Profile" component={CourseHomePage} />
+          {/* <Tab.Screen name="Course Profile" component={CourseHomePage} /> */}
           <Tab.Screen name="Search" component={SearchStack} />
-          <Tab.Screen name="Comment Screen" component={CommentScreen} />
+          {/* <Tab.Screen name="Comment Screen" component={CommentScreen} /> */}
           <Tab.Screen name="Add Class" component={AddCourse} />
           <Tab.Screen name="Notifications" component={NotificationsScreen} />
         </Tab.Navigator>

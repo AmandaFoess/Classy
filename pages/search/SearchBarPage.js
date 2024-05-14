@@ -7,8 +7,9 @@ import Item from "./SearchItem";
 import { Usernames, Courses, MyCourses } from "../../assets/data";
 import { useEffect } from "react";
 import CourseHomePage from "../courseProfile/CourseProfile";
-import UserProfile from "../user profile/profile";
+import UserProfile from "../userProfile/profile";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import RecommendCourse from "../courseProfile/recommendCourse";
 
 function SearchBarPage({ navigation }) {
   const [search, setSearch] = useState("");
@@ -103,9 +104,10 @@ const Stack = createNativeStackNavigator();
 
 function SearchStack({ navigation }) {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Search Things" component={SearchBarPage} />
       <Stack.Screen name="Course Profile" component={CourseHomePage} />
+      <Stack.Screen name="Recommend" component={RecommendCourse} />
       <Stack.Screen name="User Profile" component={UserProfile} />
     </Stack.Navigator>
   );
