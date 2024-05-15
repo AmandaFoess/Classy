@@ -1,17 +1,21 @@
-import * as React from "react";
-import { Text, StyleSheet, View, Image } from "react-native";
-import { Add, Bookmark } from "../../assets/icons";
+import React from "react";
+import { Text, StyleSheet, View, Image, TouchableOpacity, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
-import { Pressable } from "react-native";
+import { Add, Bookmark } from "../../assets/icons"; // Assuming these are custom SVG components or similar
 
 const CourseHeader = ({ navigation }) => {
   const handleBackPress = () => {
     navigation.goBack();
   };
+
   const handleRecommend = () => {
     navigation.navigate("Recommend");
   };
+
+  const handleAdd = () => {
+    navigation.navigate("Add Class");
+  };
+
   return (
     <View style={styles.buttondefaultParent}>
       <TouchableOpacity
@@ -27,7 +31,9 @@ const CourseHeader = ({ navigation }) => {
         <Text style={styles.recommend}>RECOMMEND</Text>
       </Pressable>
       <View style={[styles.addAndSave, styles.addAndSaveFlexBox]}>
-        <Add />
+      <TouchableOpacity onPress={handleAdd}>
+          <Ionicons name="add" size={24} color="black" /> 
+        </TouchableOpacity>
         <Bookmark />
       </View>
     </View>
@@ -58,24 +64,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  ggaddIcon: {
-    width: 24,
-    height: 24,
-    overflow: "hidden",
-  },
-  saveIcon: {
-    width: 26,
-    height: 29,
-    marginLeft: 4,
-    overflow: "hidden",
-  },
   addAndSave: {
     marginLeft: 20,
   },
   buttondefaultParent: {
     backgroundColor: "#fff",
     width: "100%",
-    //padding: 20,
     alignItems: "center",
     flexDirection: "row",
     overflow: "hidden",

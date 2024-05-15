@@ -50,11 +50,11 @@ export default function App() {
           })}
         >
           <Tab.Screen name="Feed" component={FeedScreen} />
+          <Tab.Screen name="Search" component={SearchStack} />
           <Tab.Screen name="Profile" component={UserProfile} />
           {/* <Tab.Screen name="Course Profile" component={CourseHomePage} /> */}
-          <Tab.Screen name="Search" component={SearchStack} />
           {/* <Tab.Screen name="Comment Screen" component={CommentScreen} /> */}
-          <Tab.Screen name="Add Class" component={AddCourse} />
+          {/* <Tab.Screen name="Add Class" component={AddCourse} /> */}
           {/* <Tab.Screen name="Notifications" component={NotificationsScreen} /> */}
         </Tab.Navigator>
       </NavigationContainer>
