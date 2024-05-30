@@ -19,48 +19,52 @@ import AddCourse from "./pages/userProfile/addCourse";
 import NotificationsScreen from "./pages/Notifications Screen/notificationsScreen.js";
 import SignIn from "./pages/Authentication/signInPage";
 
+import { AuthProvider } from "./pages/Authentication/authContext";
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
-      <NavigationContainer>
-        <GenericHeader />
-        <Text></Text>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            headerShown: false,
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Feed") {
-                iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "Course Profile") {
-                iconName = focused ? "school" : "school-outline";
-              } else if (route.name === "Search") {
-                iconName = focused ? "search" : "search-outline";
-              } else if (route.name === "Profile") {
-                iconName = focused ? "person" : "person-outline";
-                return (
-                  <MaterialIcons name={iconName} size={size} color={color} />
-                );
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: "#3d47a6",
-            tabBarInactiveTintColor: "gray",
-          })}
-        >
-          <Tab.Screen name="Feed" component={FeedScreen} />
-          <Tab.Screen name="Search" component={SearchStack} />
-          <Tab.Screen name="Profile" component={UserProfile} />
-          <Tab.Screen name="SignIn" component={SignIn} />
-          {/* <Tab.Screen name="Course Profile" component={CourseHomePage} /> */}
-          {/* <Tab.Screen name="Comment Screen" component={CommentScreen} /> */}
-          {/* <Tab.Screen name="Add Class" component={AddCourse} /> */}
-          {/* <Tab.Screen name="Notifications" component={NotificationsScreen} /> */}
-        </Tab.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+    <AuthProvider>
+      <SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
+        <NavigationContainer>
+          <GenericHeader />
+          <Text></Text>
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              headerShown: false,
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+                if (route.name === "Feed") {
+                  iconName = focused ? "home" : "home-outline";
+                } else if (route.name === "Course Profile") {
+                  iconName = focused ? "school" : "school-outline";
+                } else if (route.name === "Search") {
+                  iconName = focused ? "search" : "search-outline";
+                } else if (route.name === "Profile") {
+                  iconName = focused ? "person" : "person-outline";
+                  return (
+                    <MaterialIcons name={iconName} size={size} color={color} />
+                  );
+                }
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+              tabBarActiveTintColor: "#3d47a6",
+              tabBarInactiveTintColor: "gray",
+            })}
+          >
+            <Tab.Screen name="Feed" component={FeedScreen} />
+            <Tab.Screen name="Search" component={SearchStack} />
+            <Tab.Screen name="Profile" component={UserProfile} />
+            <Tab.Screen name="SignIn" component={SignIn} />
+            {/* <Tab.Screen name="Course Profile" component={CourseHomePage} /> */}
+            {/* <Tab.Screen name="Comment Screen" component={CommentScreen} /> */}
+            {/* <Tab.Screen name="Add Class" component={AddCourse} /> */}
+            {/* <Tab.Screen name="Notifications" component={NotificationsScreen} /> */}
+          </Tab.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </AuthProvider>
   );
 }
 
