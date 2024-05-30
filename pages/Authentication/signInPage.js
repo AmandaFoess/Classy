@@ -11,11 +11,11 @@ const SignIn = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    const allowedDomain = "alloweddomain.com";
+    const allowedDomain = "stanford.edu";
     const emailDomain = email.split("@")[1];
 
     if (emailDomain !== allowedDomain) {
-      setError("Email domain is not allowed.");
+      setError("Only @stanford.edu email addresses are allowed.");
       return;
     }
 
