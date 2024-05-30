@@ -10,12 +10,58 @@ import {
 
 const RankingClasses = () => {
   const [note, setNote] = useState(""); // State to manage the input text
+  const [hardScale, setHardScale] = useState(0); // State for hard scale
+  const [funScale, setFunScale] = useState(0); // State for fun scale
+
+  const handleScalePress = (type, value) => {
+    if (type === "hard") {
+      setHardScale(value);
+    } else if (type === "fun") {
+      setFunScale(value);
+    }
+    console.log(`${type} rating selected:`, value);
+  };
+
+  const renderScale = (type) => {
+    const colors = [
+      "#dc9e9e",
+      "#dcaa9e",
+      "#dcb89e",
+      "#dcc39e",
+      "#dcd29e",
+      "#dbdc9e",
+      "#ccdc9e",
+      "#b6dc9e",
+      "#9edcb3",
+      "#9edcda",
+    ];
+
+    const selectedScale = type === "hard" ? hardScale : funScale;
+
+    return colors.map((color, index) => (
+      <TouchableOpacity
+        key={index}
+        style={[
+          styles.scaleItem,
+          {
+            backgroundColor: color,
+            borderWidth: selectedScale === index + 1 ? 2 : 0.3,
+          },
+        ]}
+        onPress={() => handleScalePress(type, index + 1)}
+      >
+        <Text style={styles.scaleText}>{index + 1}</Text>
+      </TouchableOpacity>
+    ));
+  };
 
   return (
     <View style={styles.wholeScreen}>
       <View style={styles.classBeingRanked}>
         <Text style={styles.courseCode}>CS 103</Text>
-        <Text style={styles.className}>Mathematical Foundations of Computing</Text>
+        <Text style={styles.className}>
+          Mathematical Foundations of Computing
+        </Text>
       </View>
 
       <View style={styles.rankingWrapper}>
@@ -45,7 +91,10 @@ const RankingClasses = () => {
           <TouchableOpacity
             style={styles.postButton}
             onPress={() => {
-              /* Handle post action */
+              // Handle post action
+              console.log("Note:", note);
+              console.log("Hard Scale Rating:", hardScale);
+              console.log("Fun Scale Rating:", funScale);
             }}
           >
             <Text style={styles.postButtonText}>Post</Text>
@@ -54,28 +103,6 @@ const RankingClasses = () => {
       </View>
     </View>
   );
-};
-
-const renderScale = (type) => {
-  const colors = [
-    "#dc9e9e", "#dcaa9e", "#dcb89e", "#dcc39e", "#dcd29e",
-    "#dbdc9e", "#ccdc9e", "#b6dc9e", "#9edcb3", "#9edcda"
-  ];
-
-  return colors.map((color, index) => (
-    <TouchableOpacity
-      key={index}
-      style={[styles.scaleItem, { backgroundColor: color }]}
-      onPress={() => handleScalePress(type, index + 1)}
-    >
-      <Text style={styles.scaleText}>{index + 1}</Text>
-    </TouchableOpacity>
-  ));
-};
-
-const handleScalePress = (type, value) => {
-  // Handle the scale button press
-  console.log(`${type} rating selected:`, value);
 };
 
 const styles = StyleSheet.create({
