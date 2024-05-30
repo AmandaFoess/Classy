@@ -17,6 +17,7 @@ import SearchBarRecommend from "./pages/courseProfile/SearchBarRecommend";
 import CommentScreen from "./pages/feed/CommentScreen";
 import AddCourse from "./pages/userProfile/addCourse";
 import NotificationsScreen from "./pages/Notifications Screen/notificationsScreen.js";
+import SignIn from "./pages/Authentication/signInPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -52,6 +53,7 @@ export default function App() {
           <Tab.Screen name="Feed" component={FeedScreen} />
           <Tab.Screen name="Search" component={SearchStack} />
           <Tab.Screen name="Profile" component={UserProfile} />
+          <Tab.Screen name="SignIn" component={SignIn} />
           {/* <Tab.Screen name="Course Profile" component={CourseHomePage} /> */}
           {/* <Tab.Screen name="Comment Screen" component={CommentScreen} /> */}
           {/* <Tab.Screen name="Add Class" component={AddCourse} /> */}

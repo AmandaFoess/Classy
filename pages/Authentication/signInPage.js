@@ -1,7 +1,8 @@
 // src/SignIn.js
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
+import { Pressable, TextInput, Text, View } from "react-native";
+//import { signInWithEmailAndPassword } from "firebase/auth";
+//import { auth } from "./firebase";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -27,28 +28,30 @@ const SignIn = () => {
   };
 
   return (
-    <form onSubmit={handleSignIn}>
-      <div>
-        <label>Email:</label>
-        <input
+    <View onSubmit={handleSignIn}>
+      <View>
+        <Text>Email:</Text>
+        <TextInput
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input
+      </View>
+      <View>
+        <Text>Password:</Text>
+        <TextInput
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-      </div>
+      </View>
       {error && <p>{error}</p>}
-      <button type="submit">Sign In</button>
-    </form>
+      <Pressable type="submit">
+        <Text>Sign In</Text>
+      </Pressable>
+    </View>
   );
 };
 
