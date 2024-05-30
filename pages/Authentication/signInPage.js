@@ -1,8 +1,8 @@
 // src/SignIn.js
 import { useState } from "react";
 import { Pressable, TextInput, Text, View } from "react-native";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+//import { signInWithEmailAndPassword } from "firebase/auth";
+//import { auth } from "../firebase";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
