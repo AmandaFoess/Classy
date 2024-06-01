@@ -4,13 +4,13 @@ import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+  apiKey: "AIzaSyDRqQMkg_6R_PUKYRGqkD4TxN_svAyl57M",
+  authDomain: "classy-433d8.firebaseapp.com",
+  databaseURL: "https://classy-433d8.firebaseio.com",
   projectId: "classy-433d8",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  storageBucket: "classy-433d8.appspot.com",
   messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  appId: "1:294539769520:ios:f91dcb8f1e07663565ed75",
 };
 
 if (!firebase.apps.length) {

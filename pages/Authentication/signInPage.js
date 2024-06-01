@@ -1,8 +1,11 @@
 // src/SignIn.js
 import { useState } from "react";
 import { Pressable, TextInput, Text, View, StyleSheet } from "react-native";
-//import { signInWithEmailAndPassword } from "firebase/auth";
-//import { auth } from "./firebase";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/9.9.4/firebase-auth.js";
+import { auth } from "./firebase";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -78,11 +81,11 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   inputContainer: {
-    width: '100%',
+    width: "100%",
     alignItems: "center",
   },
   inputWrapper: {
-    width: '80%',
+    width: "80%",
     marginBottom: 20,
     alignItems: "center",
   },
@@ -92,14 +95,14 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: '100%',
+    width: "100%",
     backgroundColor: "#d9d9d9",
     borderRadius: 30,
     paddingHorizontal: 10,
     textAlign: "center",
   },
   errorText: {
-    color: 'red',
+    color: "red",
     marginBottom: 20,
     textAlign: "center",
   },
@@ -107,8 +110,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#007AFF",
     borderRadius: 30,
     padding: 10,
-    width: '80%',
-    alignItems: 'center',
+    width: "80%",
+    alignItems: "center",
   },
   buttonText: {
     color: "#fff",
