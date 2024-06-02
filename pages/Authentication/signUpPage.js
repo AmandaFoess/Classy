@@ -1,29 +1,36 @@
 // src/SignIn.js
 import { useState } from "react";
 import { Pressable, TextInput, Text, View, StyleSheet } from "react-native";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
+import { AuthErrorCodes, createUserWithEmailAndPassword } from "firebase/auth";
 
-const SignIn = () => {
+const SignUp = (e) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
-  const handleSignIn = async () => {
-    const allowedDomain = "stanford.edu";
-    const emailDomain = email.split("@")[1];
+  // handle form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-    if (emailDomain !== allowedDomain) {
-      setError("Only @stanford.edu email addresses are allowed.");
-      return;
-    }
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      setError("");
-    } catch (error) {
-      setError(error.message);
-    }
+    // creating a new user
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        console.log(userCredential.user);
+        // ...
+      })
+      .catch((err) => {
+        if (err.code === AuthErrorCodes.WEAK_PASSWORD) {
+          setError("The password is too weak.");
+        } else if (err.code === AuthErrorCodes.EMAIL_EXISTS) {
+          setError("The email address is already in use.");
+        } else {
+          console.log(err.code);
+          alert(err.code);
+        }
+      });
   };
 
   return (
@@ -44,16 +51,16 @@ const SignIn = () => {
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>Password:</Text>
           <TextInput
+            onChange={setPassword}
             value={password}
-            onChangeText={setPassword}
             secureTextEntry
             required
             style={styles.input}
           />
         </View>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
-        <Pressable onPress={handleSignIn} style={styles.button}>
-          <Text style={styles.buttonText}>Sign In</Text>
+        <Pressable onPress={handleSubmit} style={styles.button}>
+          <Text style={styles.buttonText}>Create Account</Text>
         </Pressable>
       </View>
     </View>
@@ -116,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default SignUp;

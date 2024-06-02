@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CourseHomePage from "./pages/courseProfile/CourseProfile";
 import SearchStack from "./pages/search/SearchBarPage";
 import GenericHeader from "./pages/classyHeader/classyHeader"; // Import your Header component
+import SignUp from "./pages/Authentication/signUpPage";
 
 // Import icons from the appropriate libraries
 import { Ionicons } from "@expo/vector-icons";
@@ -54,6 +55,7 @@ export default function App() {
           <Tab.Screen name="Search" component={SearchStack} />
           <Tab.Screen name="Profile" component={UserProfile} />
           <Tab.Screen name="SignIn" component={SignIn} />
+          <Tab.Screen name="SignUp" component={SignUp} />
           {/* <Tab.Screen name="Course Profile" component={CourseHomePage} /> */}
           {/* <Tab.Screen name="Comment Screen" component={CommentScreen} /> */}
           {/* <Tab.Screen name="Add Class" component={AddCourse} /> */}
