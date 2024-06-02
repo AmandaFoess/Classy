@@ -5,11 +5,13 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import SingleClassRanking from "./singleMyClassRanking";
 import SingleUnsavedClass from "./singleRecsForYouClass";
 import SingleSavedClass from "./singleWantToTakeClass";
 import { Ionicons } from "@expo/vector-icons";
+import { auth } from "../../firebase";
 
 const fakeDataMyClasses = [
   {
@@ -219,9 +221,6 @@ const UserProfile = ({ navigation }) => {
   return (
     <View style={styles.completedOverallRankingPag}>
       <View style={styles.profile}>
-        {/* <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity> */}
         <View style={styles.frameParent}>
           <View style={styles.evyShenParent}>
             <Text style={[styles.evyShen, styles.textTypo1]}>Evy Shen</Text>
@@ -237,6 +236,14 @@ const UserProfile = ({ navigation }) => {
                 <Text style={[styles.button1, styles.button1Typo]}>
                   Edit profile
                 </Text>
+                <Pressable
+                  style={[styles.button1, styles.button1Typo]}
+                  onPress={() => {
+                    auth.signOut().then(() => console.log("User signed out!"));
+                  }}
+                >
+                  <Text>Sign Out</Text>
+                </Pressable>
               </View>
             </View>
           </View>

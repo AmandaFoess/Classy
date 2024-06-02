@@ -9,20 +9,37 @@ import CourseHomePage from "./pages/courseProfile/CourseProfile";
 import SearchStack from "./pages/search/SearchBarPage";
 import GenericHeader from "./pages/classyHeader/classyHeader"; // Import your Header component
 import SignUp from "./pages/Authentication/signUpPage";
+import { useState, useEffect } from "react";
 
 // Import icons from the appropriate libraries
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import RecommendCourse from "./pages/courseProfile/recommendCourse";
-import SearchBarRecommend from "./pages/courseProfile/SearchBarRecommend";
-import CommentScreen from "./pages/feed/CommentScreen";
-import AddCourse from "./pages/userProfile/addCourse";
-import NotificationsScreen from "./pages/Notifications Screen/notificationsScreen.js";
 import SignIn from "./pages/Authentication/signInPage";
+import { auth } from "./firebase";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return null;
+
+  if (!user) {
+    return <SignIn />;
+  }
   return (
     <SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
       <NavigationContainer>
