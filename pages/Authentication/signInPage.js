@@ -1,7 +1,7 @@
 // src/SignIn.js
 import { useState } from "react";
 import { Pressable, TextInput, Text, View, StyleSheet } from "react-native";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 
 const SignIn = () => {
@@ -54,6 +54,9 @@ const SignIn = () => {
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <Pressable onPress={handleSignIn} style={styles.button}>
           <Text style={styles.buttonText}>Sign In</Text>
+        </Pressable>
+        <Pressable onPress={auth.signOut} style={styles.button}>
+          <Text style={styles.buttonText}>Sign Out</Text>
         </Pressable>
       </View>
     </View>
