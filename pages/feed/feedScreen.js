@@ -93,6 +93,7 @@ const FeedScreen = ({ navigation }) => {
 
     fetchFeedData();
   }, []);
+  console.log(feedData);
 
   const truncateText = (text, maxLength) => {
     return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;

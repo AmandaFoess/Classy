@@ -13,191 +13,53 @@ import SingleSavedClass from "./singleWantToTakeClass";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../firebase";
 
-const fakeDataMyClasses = [
-  {
-    course: "Mathematics",
-    professorName: "Dr. Smith",
-    quarterYearOffered: "Fall 2023",
-    rank: 8.5,
-  },
-  {
-    course: "Biology",
-    professorName: "Prof. Johnson",
-    quarterYearOffered: "Spring 2024",
-    rank: 9.2,
-  },
-  {
-    course: "History",
-    professorName: "Dr. Lee",
-    quarterYearOffered: "Winter 2024",
-    rank: 7.8,
-  },
-  {
-    course: "Chemistry",
-    professorName: "Prof. Garcia",
-    quarterYearOffered: "Summer 2024",
-    rank: 8.9,
-  },
-  {
-    course: "Literature",
-    professorName: "Dr. Patel",
-    quarterYearOffered: "Fall 2024",
-    rank: 9.6,
-  },
-  {
-    course: "Physics",
-    professorName: "Prof. Thompson",
-    quarterYearOffered: "Spring 2023",
-    rank: 8.0,
-  },
-  {
-    course: "Economics",
-    professorName: "Dr. Brown",
-    quarterYearOffered: "Winter 2023",
-    rank: 7.5,
-  },
-  {
-    course: "Computer Sci.",
-    professorName: "Prof. Kim",
-    quarterYearOffered: "Summer 2023",
-    rank: 8.7,
-  },
-  {
-    course: "Psychology",
-    professorName: "Dr. White",
-    quarterYearOffered: "Fall 2022",
-    rank: 9.1,
-  },
-  {
-    course: "Sociology",
-    professorName: "Prof. Davis",
-    quarterYearOffered: "Spring 2022",
-    rank: 7.2,
-  },
-];
-
-const fakeDataWantToTake = [
-  {
-    course: "Algebra",
-    professorName: "Dr. Johnson",
-    quarterYearOffered: "Fall 2023",
-  },
-  {
-    course: "Ecology",
-    professorName: "Prof. Garcia",
-    quarterYearOffered: "Spring 2024",
-  },
-  {
-    course: "World History",
-    professorName: "Dr. Lee",
-    quarterYearOffered: "Winter 2024",
-  },
-  {
-    course: "Organic Chemistry",
-    professorName: "Prof. Patel",
-    quarterYearOffered: "Summer 2024",
-  },
-  {
-    course: "Literary Analysis",
-    professorName: "Dr. Thompson",
-    quarterYearOffered: "Fall 2024",
-  },
-  {
-    course: "Astrophysics",
-    professorName: "Prof. Brown",
-    quarterYearOffered: "Spring 2023",
-  },
-  {
-    course: "Macroeconomics",
-    professorName: "Dr. Kim",
-    quarterYearOffered: "Winter 2023",
-  },
-  {
-    course: "Computer Graphics",
-    professorName: "Prof. White",
-    quarterYearOffered: "Summer 2023",
-  },
-  {
-    course: "Cognitive Psychology",
-    professorName: "Dr. White",
-    quarterYearOffered: "Fall 2022",
-  },
-  {
-    course: "Cultural Studies",
-    professorName: "Prof. Davis",
-    quarterYearOffered: "Spring 2022",
-  },
-];
-
-const fakeDataRecs = [
-  {
-    course: "Artificial Intelligence",
-    professorName: "Dr. Johnson",
-    recommender: "@emilyjane",
-  },
-  {
-    course: "Genetics",
-    professorName: "Prof. Garcia",
-    recommender: "@davidsmith",
-  },
-  {
-    course: "Political Science",
-    professorName: "Dr. Lee",
-    recommender: "@peterparker",
-  },
-  {
-    course: "Organic Chemistry",
-    professorName: "Prof. Patel",
-    recommender: "@janesmith",
-  },
-  {
-    course: "Literary Theory",
-    professorName: "Dr. Thompson",
-    recommender: "@caeleywoo",
-  },
-  {
-    course: "Quantum Mechanics",
-    professorName: "Prof. Brown",
-    recommender: "@emilyjane",
-  },
-  {
-    course: "Microeconomics",
-    professorName: "Dr. Kim",
-    recommender: "@johndoe",
-  },
-  {
-    course: "Database Systems",
-    professorName: "Prof. White",
-    recommender: "@peterparker",
-  },
-  {
-    course: "Abnormal Psychology",
-    professorName: "Dr. Davis",
-    recommender: "@janesmith",
-  },
-  {
-    course: "Cultural Anthropology",
-    professorName: "Prof. Smith",
-    recommender: "@davidsmith",
-  },
-];
-
-// Convert the dataSet objects to an array
-const fakeDataMyClassesArray = Object.values(fakeDataMyClasses);
-
-// Sort the fakeDataArray by rank in descending order
-fakeDataMyClassesArray.sort((a, b) => b.rank - a.rank);
-
-// Convert the dataSet objects to an array
-const fakeDataWantToTakeArray = Object.values(fakeDataWantToTake);
-
-// Convert the dataSet objects to an array
-const fakeDataRecsArray = Object.values(fakeDataRecs);
+import { useEffect, useState } from "react";
+import { db } from "../../firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 const UserProfile = ({ navigation }) => {
   const [activeTab, setActiveTab] = React.useState("myClasses"); // State to track active tab
+  const [userData, setUserData] = useState(null); // Initialize with null since it's a single user object
+  const [loading, setLoading] = useState(true);
+  const [userMap, setUserMap] = useState(new Map());
 
-  // Filter data based on active tab
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "Users"));
+        const userMap = new Map();
+        
+        querySnapshot.forEach((doc) => {
+          userMap.set(doc.id, doc.data());
+        });
+        
+        setUserMap(userMap);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user data: ', error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+  
+  userID = 'UserID1'; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
+
+  useEffect(() => {
+    if (userMap.has(userID)) {
+      setUserData(userMap.get(userID));
+    }
+  }, [userMap, userID]);
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (!userData) {
+    return <Text>No user data found</Text>;
+  }
+  
   let filteredData;
 
   const handleBackPress = () => {
@@ -206,13 +68,13 @@ const UserProfile = ({ navigation }) => {
 
   switch (activeTab) {
     case "myClasses":
-      filteredData = fakeDataMyClassesArray;
+      filteredData = userData.myClasses || [];
       break;
     case "wantToTake":
-      filteredData = fakeDataWantToTakeArray;
+      filteredData = userData.classesToTake || [];
       break;
     case "recs":
-      filteredData = fakeDataRecsArray;
+      filteredData = userData.recsForYou || [];
       break;
     default:
       filteredData = [];
