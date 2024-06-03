@@ -1,173 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View, FlatList } from "react-native";
-
-//fake data
-const notificationsData = [
-    {
-      id: 1,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Richard Saller",
-      action: "wants to be friends!",
-      timeAgo: "1d",
-    },
-    {
-      id: 2,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "John Doe",
-      action: "liked your ranking",
-      timeAgo: "2d",
-    },
-    {
-      id: 3,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Jane Smith",
-      action: "commented on your ranking",
-      timeAgo: "3d",
-    },
-    {
-      id: 4,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Alex Johnson",
-      action: "bookmarked your class",
-      timeAgo: "4d",
-    },
-    {
-      id: 5,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Emma Watson",
-      action: "recommended you a class",
-      timeAgo: "5d",
-    },
-    {
-      id: 6,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Michael Jordan",
-      action: "recommended you a class",
-      timeAgo: "6d",
-    },
-    {
-      id: 7,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Mary Johnson",
-      action: "liked your ranking",
-      timeAgo: "7d",
-    },
-    {
-      id: 8,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Peter Parker",
-      action: "commented on your ranking",
-      timeAgo: "8d",
-    },
-    {
-      id: 9,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Elizabeth Taylor",
-      action: "bookmarked your class",
-      timeAgo: "9d",
-    },
-    {
-      id: 10,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "William Wallace",
-      action: "wants to be friends!",
-      timeAgo: "10d",
-    },
-    {
-      id: 11,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Isabella Johnson",
-      action: "liked your ranking",
-      timeAgo: "11d",
-    },
-    {
-      id: 12,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Alexander Hamilton",
-      action: "recommended you a class",
-      timeAgo: "12d",
-    },
-    {
-      id: 13,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Olivia Smith",
-      action: "recommended you a class",
-      timeAgo: "13d",
-    },
-    {
-      id: 14,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Christopher Columbus",
-      action: "bookmarked your class",
-      timeAgo: "14d",
-    },
-    {
-      id: 15,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Eleanor Roosevelt",
-      action: "liked your ranking",
-      timeAgo: "15d",
-    },
-    {
-      id: 16,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Thomas Edison",
-      action: "commented on your ranking",
-      timeAgo: "16d",
-    },
-    {
-      id: 17,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Margaret Thatcher",
-      action: "wants to be friends!",
-      timeAgo: "17d",
-    },
-    {
-      id: 18,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Leonardo da Vinci",
-      action: "wants to be friends!",
-      timeAgo: "18d",
-    },
-    {
-      id: 19,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Albert Einstein",
-      action: "commented on your ranking",
-      timeAgo: "19d",
-    },
-    {
-      id: 20,
-      profilePic: require("../../assets/RichardSallerPic.png"),
-      name: "Galileo Galilei",
-      action: "liked your ranking",
-      timeAgo: "20d",
-    },
-  ];
-  
-
+import { db } from "../../firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 const NotificationsScreen = ({ navigation }) => {
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "Notification"));
+        const notificationsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setNotifications(notificationsData);
+      } catch (error) {
+        console.error("Error fetching notifications: ", error);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
   const renderItem = ({ item }) => (
     <View style={styles.notificationItem}>
       <Image
         style={styles.profilePic}
         resizeMode="cover"
-        source={item.profilePic}
+        source={require("../../assets/RichardSallerPic.png")}
       />
       <View style={styles.notificationText}>
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.name}>{item.userID}</Text>
         <Text style={styles.action}>{item.action}</Text>
-        <Text style={styles.timeAgo}>{item.timeAgo}</Text>
+        <Text style={styles.timeAgo}>{new Date(item.timestamp.seconds * 1000).toLocaleDateString()}</Text>
       </View>
     </View>
   );
 
   return (
-    
     <View style={styles.container}>
       <FlatList
-        data={notificationsData}
+        data={notifications}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
