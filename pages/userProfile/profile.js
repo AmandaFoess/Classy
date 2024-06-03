@@ -80,18 +80,23 @@ const UserProfile = ({ navigation }) => {
       filteredData = [];
       break;
   }
+  const numFriends = userData.numFriends;
+  const classesRanked = userData.numClassesRanked;
+  const bio = userData.bio;
+  const name = userData.name;
+  const username = userData.username;
   return (
     <View style={styles.completedOverallRankingPag}>
       <View style={styles.profile}>
         <View style={styles.frameParent}>
           <View style={styles.evyShenParent}>
-            <Text style={[styles.evyShen, styles.textTypo1]}>Evy Shen</Text>
+            <Text style={[styles.evyShen, styles.textTypo1]}>{name}</Text>
             <View style={[styles.esWrapper, styles.wrapperBorder]}>
               <Text style={styles.es}>ES</Text>
             </View>
-            <Text style={[styles.evyshen, styles.textTypo1]}>@evyshen</Text>
+            <Text style={[styles.evyshen, styles.textTypo1]}>{username}</Text>
             <Text style={[styles.sophomoreSymbolicSystems, styles.button1Typo]}>
-              Sophomore, Symbolic Systems
+              {bio}
             </Text>
             <View style={styles.buttonWrapper}>
               <View style={[styles.button, styles.buttonFlexBox]}>
@@ -108,11 +113,11 @@ const UserProfile = ({ navigation }) => {
           </View>
           <View style={styles.frameGroup}>
             <View style={styles.parent}>
-              <Text style={[styles.text, styles.textTypo1]}>5</Text>
+              <Text style={[styles.text, styles.textTypo1]}>{numFriends}</Text>
               <Text style={[styles.friends, styles.button1Typo]}>Friends</Text>
             </View>
             <View style={styles.group}>
-              <Text style={[styles.text, styles.textTypo1]}>32</Text>
+              <Text style={[styles.text, styles.textTypo1]}>{classesRanked}</Text>
               <Text style={[styles.friends, styles.button1Typo]}>
                 Classes Ranked
               </Text>
