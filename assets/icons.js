@@ -5,10 +5,11 @@ import { TouchableOpacity } from "react-native";
 import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
 import { db } from "../firebase";
 
+
 // Function to handle bookmarking a class
 const handleBookmarkClass = async (userID, course, professorName, isBookmarked, setIsBookmarked) => {
   try {
-    const userDocRef = doc(db, "Users", 'UserID1');
+    const userDocRef = doc(db, "Users", 'UserID1'); // MUST UPDATE WITH ACTUAL USER ID ONCE SET UP
     const userDocSnap = await getDoc(userDocRef);
 
     if (userDocSnap.exists()) {
