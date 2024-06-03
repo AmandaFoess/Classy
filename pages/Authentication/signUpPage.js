@@ -15,22 +15,20 @@ const SignUp = (e) => {
     setError("");
 
     // creating a new user
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        console.log(userCredential.user);
-        // ...
-      })
-      .catch((err) => {
-        if (err.code === AuthErrorCodes.WEAK_PASSWORD) {
-          setError("The password is too weak.");
-        } else if (err.code === AuthErrorCodes.EMAIL_EXISTS) {
-          setError("The email address is already in use.");
-        } else {
-          console.log(err.code);
-          alert(err.code);
-        }
-      });
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      setError("");
+    } catch (error) {
+      if (error.code === AuthErrorCodes.WEAK_PASSWORD) {
+        setError("The password is too weak.");
+      } else if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
+        setError("The email address is already in use.");
+      } else {
+        console.log(error.code);
+        alert(error.code);
+      }
+      setError(error.message);
+    }
   };
 
   return (
@@ -51,7 +49,7 @@ const SignUp = (e) => {
         <View style={styles.inputWrapper}>
           <Text style={styles.label}>Password:</Text>
           <TextInput
-            onChange={setPassword}
+            onChangeText={setPassword}
             value={password}
             secureTextEntry
             required
