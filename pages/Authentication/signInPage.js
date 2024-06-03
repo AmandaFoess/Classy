@@ -1,13 +1,15 @@
 // src/SignIn.js
 import { useState } from "react";
 import { Pressable, TextInput, Text, View, StyleSheet } from "react-native";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
+import SignUp from "./signUpPage";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [signUp, setSignUp] = useState(false);
 
   const handleSignIn = async () => {
     const allowedDomain = "stanford.edu";
@@ -25,6 +27,10 @@ const SignIn = () => {
       setError(error.message);
     }
   };
+
+  if (signUp) {
+    return <SignUp />;
+  }
 
   return (
     <View style={styles.container}>
@@ -55,8 +61,8 @@ const SignIn = () => {
         <Pressable onPress={handleSignIn} style={styles.button}>
           <Text style={styles.buttonText}>Sign In</Text>
         </Pressable>
-        <Pressable onPress={auth.signOut} style={styles.button}>
-          <Text style={styles.buttonText}>Sign Out</Text>
+        <Pressable onPress={setSignUp} style={styles.button}>
+          <Text style={styles.buttonText}>Create Account</Text>
         </Pressable>
       </View>
     </View>
@@ -112,6 +118,8 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "80%",
     alignItems: "center",
+    marginTop: 10,
+    marginBottom: 10,
   },
   buttonText: {
     color: "#fff",

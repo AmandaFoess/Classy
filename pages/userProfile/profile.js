@@ -233,9 +233,6 @@ const UserProfile = ({ navigation }) => {
             </Text>
             <View style={styles.buttonWrapper}>
               <View style={[styles.button, styles.buttonFlexBox]}>
-                <Text style={[styles.button1, styles.button1Typo]}>
-                  Edit profile
-                </Text>
                 <Pressable
                   style={[styles.button1, styles.button1Typo]}
                   onPress={() => {

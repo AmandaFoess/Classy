@@ -1,14 +1,11 @@
 import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import FeedScreen from "./pages/feed/feedScreen";
 import UserProfile from "./pages/userProfile/profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CourseHomePage from "./pages/courseProfile/CourseProfile";
 import SearchStack from "./pages/search/SearchBarPage";
 import GenericHeader from "./pages/classyHeader/classyHeader"; // Import your Header component
-import SignUp from "./pages/Authentication/signUpPage";
 import { useState, useEffect } from "react";
 
 // Import icons from the appropriate libraries
@@ -71,12 +68,6 @@ export default function App() {
           <Tab.Screen name="Feed" component={FeedScreen} />
           <Tab.Screen name="Search" component={SearchStack} />
           <Tab.Screen name="Profile" component={UserProfile} />
-          <Tab.Screen name="SignIn" component={SignIn} />
-          <Tab.Screen name="SignUp" component={SignUp} />
-          {/* <Tab.Screen name="Course Profile" component={CourseHomePage} /> */}
-          {/* <Tab.Screen name="Comment Screen" component={CommentScreen} /> */}
-          {/* <Tab.Screen name="Add Class" component={AddCourse} /> */}
-          {/* <Tab.Screen name="Notifications" component={NotificationsScreen} /> */}
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
