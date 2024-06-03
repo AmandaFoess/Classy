@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text, StyleSheet, View, Image } from "react-native";
 import { Add, Bookmark } from "../../assets/icons";
 
-function SingleSavedClass({ course, professorName, quarterYearOffered }) {
+function SingleSavedClass({ course, professorName}) {
     return (
         <View style={[styles.singleUnsavedClass, styles.singleFlexBox, { borderBottomWidth: 1, borderBottomColor: '#D3D3D3', paddingRight: 5, paddingLeft: 10 }]}>
             <View style={styles.singleFlexBox}>
@@ -13,7 +13,6 @@ function SingleSavedClass({ course, professorName, quarterYearOffered }) {
                                 <Text style={[styles.cs103, styles.cs103FlexBox]}>{course}</Text>
                             </View>
                             <Text style={[styles.keithWinstein, styles.professorName]}>{professorName}</Text>
-                            <Text style={[styles.keithWinstein, styles.quarterYearOffered]}>{quarterYearOffered}</Text>
                         </View>
                     </View>
                 </View>
@@ -48,11 +47,6 @@ const styles = StyleSheet.create({
         fontFamily: "Inter-Regular",
     },
     professorName: {
-        textAlign: "left",
-        alignSelf: "flex-start",
-        marginRight: "auto"
-    },
-    quarterYearOffered: {
         textAlign: "left",
         alignSelf: "flex-start",
         marginRight: "auto"

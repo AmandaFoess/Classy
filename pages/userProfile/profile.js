@@ -68,7 +68,7 @@ const UserProfile = ({ navigation }) => {
 
   switch (activeTab) {
     case "myClasses":
-      filteredData = userData.myClasses || [];
+      filteredData = (userData.myClasses).sort((a, b) => b.rank - a.rank) || [];
       break;
     case "wantToTake":
       filteredData = userData.classesToTake || [];
