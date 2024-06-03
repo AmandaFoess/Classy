@@ -10,7 +10,6 @@ import {
 import SingleClassRanking from "./singleMyClassRanking";
 import SingleUnsavedClass from "./singleRecsForYouClass";
 import SingleSavedClass from "./singleWantToTakeClass";
-
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../firebase";
 

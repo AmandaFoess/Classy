@@ -6,6 +6,7 @@ import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firest
 import { db } from "../firebase";
 
 
+
 // Function to handle bookmarking a class
 const handleBookmarkClass = async (userID, course, professorName, isBookmarked, setIsBookmarked) => {
   try {
