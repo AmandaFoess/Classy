@@ -2,12 +2,63 @@ import Svg, { Path, G, Defs, Rect, ClipPath } from "react-native-svg";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
+import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
+import { db } from "../firebase";
 
-export function Bookmark() {
+// Function to handle bookmarking a class
+const handleBookmarkClass = async (userID, course, professorName, isBookmarked, setIsBookmarked) => {
+  try {
+    const userDocRef = doc(db, "Users", 'UserID1');
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      const userData = userDocSnap.data();
+      console.log(userData);
+      const { myClasses, classesToTake, recsForYou } = userData;
+
+      // Check if the class is already in "myClasses"
+      if (myClasses.some((myClass) => myClass.course === course)) {
+        // Class is already in "myClasses", do nothing
+        return;
+      }
+
+      // Toggle bookmark state and update Firestore accordingly
+      if (isBookmarked) {
+        console.log()
+        // Remove the class from "classesToTake" or "recsForYou" if already bookmarked
+        if (classesToTake.some((classToTake) => classToTake.course === course)) {
+          await updateDoc(userDocRef, {
+            classesToTake: arrayRemove({ course, professorName })
+          });
+        } 
+        setIsBookmarked(false);
+      } else {
+        // Add the class to "classesToTake" if not already bookmarked
+        if (recsForYou.some((recForYou) => recForYou.course === course)) {
+          const updatedRecsForYou = recsForYou.filter(rec => rec.course !== course);
+          console.log("inRecsForYou");
+          await updateDoc(userDocRef, {
+            recsForYou: updatedRecsForYou,
+          });
+        } 
+        await updateDoc(userDocRef, {
+          classesToTake: arrayUnion({ course, professorName })
+        });
+        setIsBookmarked(true);
+      }
+    } else {
+      console.error("User document not found");
+    }
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+};
+
+export function Bookmark({ userID, course, professorName }) {
   const [isBookmarked, setIsBookmarked] = useState(false); // State to manage the bookmark button
 
   const handleBookmarkPress = () => {
-    setIsBookmarked(!isBookmarked);
+    handleBookmarkClass(userID, course, professorName, isBookmarked, setIsBookmarked);
   };
 
   return (
@@ -20,6 +71,24 @@ export function Bookmark() {
     </TouchableOpacity>
   );
 }
+
+// export function Bookmark() {
+//   const [isBookmarked, setIsBookmarked] = useState(false); // State to manage the bookmark button
+
+//   const handleBookmarkPress = () => {
+//     setIsBookmarked(!isBookmarked);
+//   };
+
+//   return (
+//     <TouchableOpacity onPress={handleBookmarkPress}>
+//       <Ionicons
+//         name={isBookmarked ? "bookmark" : "bookmark-outline"}
+//         size={24}
+//         color={isBookmarked ? "gray" : "black"}
+//       />
+//     </TouchableOpacity>
+//   );
+// }
 
 export function Heart() {
   const [isLiked, setIsLiked] = useState(false); // State to manage the like button
