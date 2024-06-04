@@ -63,7 +63,7 @@ function SearchBarPage({ navigation }) {
           style={[styles.classesWrapper, styles.wrapperFlexBox]}
           onPress={() => setActiveSection(MyCourses)}
         >
-          <Text
+          {/* <Text
             style={[
               styles.classes,
               styles.classesTypo,
@@ -76,7 +76,7 @@ function SearchBarPage({ navigation }) {
         <Pressable
           style={[styles.me3mbersWrapper, styles.wrapperFlexBox]}
           onPress={() => setActiveSection(Usernames)}
-        >
+        > */}
           <Text
             style={[
               styles.classes,

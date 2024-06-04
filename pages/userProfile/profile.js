@@ -24,6 +24,7 @@ const UserProfile = ({ navigation }) => {
   const [userMap, setUserMap] = useState(new Map());
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
+  const [numMyClasses, setNumMyClasses] = useState(0);
 
   // Handle User State Changes
   useEffect(() => {
