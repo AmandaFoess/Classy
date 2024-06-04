@@ -1,53 +1,32 @@
-import * as React from "react";
-import { ScrollView, StyleSheet, View, Pressable, Text } from "react-native";
-import { Add, Bookmark } from "../../assets/icons";
-import CourseHeader from "./Header";
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { db } from "../../firebase";
+import CourseHeader from './Header';
+import { collection, getDocs } from "firebase/firestore";
 
-const Profile = {
-  courseCode: "CS106A",
-  courseName: "Introduction to Programming",
-  courseUnits: "5",
-  courseRequirements: "AQR",
-  autumn: {
-    offered: "Yes",
-    professorName: "Parlante, N",
-  },
-  winter: {
-    offered: "Yes",
-    professorName: "Parlante, N",
-  },
-  spring: {
-    offered: "Yes",
-    professorName: "Sahami, M",
-  },
-  courseDescription: `Introduction to the engineering of computer applications emphasizing modern software engineering principles: object-oriented design, decomposition, encapsulation, abstraction, and testing. Emphasis is on good programming style and the built-in facilities of respective languages. No prior programming experience required. Alternative versions of CS106A may be available which cover most of the same material but in different programming languages.`,
-  reviewScore: "9.8",
-  reviewText: `I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.`,
-};
-
-const DataSpaceBlock = () => (
+const DataSpaceBlock = ({ course }) => (
   <View style={[styles.data, styles.dataSpaceBlock]}>
     <View style={[styles.twoColumnResize, styles.twoSpaceBlock1]}>
       <View style={styles.ugReqs}>
-        <Text style={[styles.reqs, styles.reqsTypo]}>{Profile.courseCode}</Text>
+        <Text style={[styles.reqs, styles.reqsTypo]}>{course.classCode}</Text>
       </View>
     </View>
     <View style={[styles.twoColumnResize1, styles.twoSpaceBlock]}>
       <View style={styles.ugReqs1}>
         <Text style={[styles.reqs1, styles.reqs1Typo]}>
-          {Profile.courseName}
+          {course.className}
         </Text>
       </View>
     </View>
     <View style={[styles.twoColumnResize2, styles.twoSpaceBlock]}>
       <View style={styles.ugReqs}>
         <Text style={[styles.reqs1, styles.reqs1Typo]}>
-          Units: {Profile.courseUnits}
+          Units: {course.classUnits}
         </Text>
       </View>
       <View style={styles.ugReqs}>
         <Text style={[styles.reqs1, styles.reqs1Typo]}>
-          UG Reqs: {Profile.courseRequirements}
+          UG Reqs: {course.classReqs}
         </Text>
       </View>
     </View>
@@ -55,16 +34,52 @@ const DataSpaceBlock = () => (
 );
 
 const CourseHomePage = ({ navigation }) => {
+  const [course, setCourse] = useState(null);
+  const [courseMap, setClassMap] = useState(new Map());
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'Classes'));
+        const courseMap = new Map();
+        querySnapshot.forEach((doc) => {
+          courseMap.set(doc.id, doc.data());
+        });
+        setClassMap(courseMap);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching class data: ', error);
+        setLoading(false);
+      }
+    };
+
+    fetchCourse();
+  }, []);
+
+  classID = 'ClassID1'; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
+
+  useEffect(() => {
+    if (courseMap.has(classID)) {
+      setCourse(courseMap.get(classID));
+    }
+  }, [courseMap, classID]);
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (!course) {
+    return <Text>Loading...</Text>;
+  }
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View>
         <View style={styles.finalCourseHomepage}>
-          {/* Header */}
           <CourseHeader navigation={navigation} />
 
-          <DataSpaceBlock />
+          <DataSpaceBlock course={course} />
 
-          {/* Table */}
           <View style={[styles.timeOfferedTableWrapper, styles.dataSpaceBlock]}>
             <View style={styles.ugReqs1}>
               <View style={styles.table}>
@@ -76,83 +91,61 @@ const CourseHomePage = ({ navigation }) => {
                   </View>
                   <View style={[styles.cell1, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text, styles.textFlexBox]}>
-                        Autumn
-                      </Text>
+                      <Text style={[styles.text, styles.textFlexBox]}>Autumn</Text>
                     </View>
                   </View>
                   <View style={[styles.cell1, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text, styles.textFlexBox]}>
-                        Winter
-                      </Text>
+                      <Text style={[styles.text, styles.textFlexBox]}>Winter</Text>
                     </View>
                   </View>
                   <View style={[styles.cell1, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text, styles.textFlexBox]}>
-                        Spring
-                      </Text>
+                      <Text style={[styles.text, styles.textFlexBox]}>Spring</Text>
                     </View>
                   </View>
                 </View>
                 <View style={styles.row}>
                   <View style={[styles.cell4, styles.cellBorder]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
-                        Offered?
-                      </Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>Offered?</Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
-                        {Profile.autumn.offered}
-                      </Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[0].offeredFall}</Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
-                        {Profile.winter.offered}
-                      </Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[1].offeredWinter}</Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
-                        {Profile.spring.offered}
-                      </Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[2].offeredSpring}</Text>
                     </View>
                   </View>
                 </View>
                 <View style={styles.row}>
                   <View style={[styles.cell4, styles.cellBorder]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
-                        Teacher
-                      </Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>Teacher</Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
-                        {Profile.autumn.professorName}
-                      </Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[0].teacher}</Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
-                        {Profile.winter.professorName}
-                      </Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[1].teacher}</Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
-                        {Profile.spring.professorName}
-                      </Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[2].teacher}</Text>
                     </View>
                   </View>
                 </View>
@@ -160,12 +153,9 @@ const CourseHomePage = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.dataSpaceBlock}>
-            <Text
-              style={[styles.description, styles.nameFlexBox]}
-            >{`Introduction to the engineering of computer applications emphasizing modern software engineering principles: object-oriented design, decomposition, encapsulation, abstraction, and testing. Emphasis is on good programming style and the built-in facilities of respective languages. No prior programming experience required. Alternative versions of CS106A may be available which cover most of the same material but in different programming languages.
-
-
-`}</Text>
+            <Text style={[styles.description, styles.nameFlexBox]}>
+              {course.classDescription}
+            </Text>
           </View>
           <View style={[styles.classDetails, styles.dataSpaceBlock]}>
             <Text style={[styles.name, styles.nameFlexBox]}>Reviews</Text>
@@ -173,10 +163,7 @@ const CourseHomePage = ({ navigation }) => {
           <View style={[styles.instanceParent, styles.dataSpaceBlock]}>
             <View style={styles.instanceGroup}>
               <View
-                style={[
-                  styles.piperflemingWrapper,
-                  styles.piperflemingSpaceBlock,
-                ]}
+                style={[styles.piperflemingWrapper, styles.piperflemingSpaceBlock]}
               >
                 <View style={styles.piperfleming}>
                   <Text style={[styles.piperfleming1, styles.piperflemingTypo]}>
@@ -189,12 +176,11 @@ const CourseHomePage = ({ navigation }) => {
                   styles.piperflemingContainer,
                   styles.piperflemingSpaceBlock,
                 ]}
-              >
+                >
                 <View style={styles.piperfleming2}>
                   <Text
                     style={[styles.piperfleming3, styles.piperflemingTypo]}
-                  >{`Parlante, N
-                      											Fall 2022`}</Text>
+                  >{`Parlante, N, Fall 2022`}</Text>
                 </View>
               </View>
               <View style={[styles.frameWrapper, styles.wrapperFlexBox]}>
@@ -206,52 +192,7 @@ const CourseHomePage = ({ navigation }) => {
             <View style={[styles.courseDescription1, styles.twoSpaceBlock]}>
               <Text
                 style={[styles.reqs1, styles.reqs1Typo]}
-              >{`I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.
-                        												
-                        												
-                        												`}</Text>
-            </View>
-          </View>
-          <View style={[styles.instanceParent, styles.dataSpaceBlock]}>
-            <View style={styles.instanceGroup}>
-              <View
-                style={[
-                  styles.piperflemingWrapper,
-                  styles.piperflemingSpaceBlock,
-                ]}
-              >
-                <View style={styles.piperfleming}>
-                  <Text style={[styles.piperfleming1, styles.piperflemingTypo]}>
-                    @piperfleming
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.piperflemingContainer,
-                  styles.piperflemingSpaceBlock,
-                ]}
-              >
-                <View style={styles.piperfleming2}>
-                  <Text
-                    style={[styles.piperfleming3, styles.piperflemingTypo]}
-                  >{`Parlante, N
-                      											Fall 2022`}</Text>
-                </View>
-              </View>
-              <View style={[styles.frameWrapper, styles.wrapperFlexBox]}>
-                <View style={[styles.wrapper, styles.wrapperFlexBox]}>
-                  <Text style={[styles.text12, styles.reqsTypo]}>9.8</Text>
-                </View>
-              </View>
-            </View>
-            <View style={[styles.courseDescription1, styles.twoSpaceBlock]}>
-              <Text
-                style={[styles.reqs1, styles.reqs1Typo]}
-              >{`I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.
-                        												
-                        												
-                        												`}</Text>
+              >{`I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.`}</Text>
             </View>
           </View>
         </View>
@@ -259,6 +200,8 @@ const CourseHomePage = ({ navigation }) => {
     </ScrollView>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   backButtonSpaceBlock: {
