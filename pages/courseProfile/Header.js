@@ -1,9 +1,16 @@
 import React from "react";
-import { Text, StyleSheet, View, Image, TouchableOpacity, Pressable } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Add, Bookmark } from "../../assets/icons"; // Assuming these are custom SVG components or similar
 
-const CourseHeader = ({ navigation }) => {
+const CourseHeader = ({ navigation, course }) => {
   const handleBackPress = () => {
     navigation.goBack();
   };
@@ -31,8 +38,8 @@ const CourseHeader = ({ navigation }) => {
         <Text style={styles.recommend}>RECOMMEND</Text>
       </Pressable>
       <View style={[styles.addAndSave, styles.addAndSaveFlexBox]}>
-      <TouchableOpacity onPress={handleAdd}>
-          <Ionicons name="add" size={24} color="black" /> 
+        <TouchableOpacity onPress={handleAdd}>
+          <Ionicons name="add" size={24} color="black" />
         </TouchableOpacity>
         <Bookmark />
       </View>

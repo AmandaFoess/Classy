@@ -17,39 +17,29 @@ const SignUp = (e) => {
 
     // creating a new user
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       setError("");
       try {
         const data = {
           uid: user.uid,
           email: user.email,
-          myClasses: [
-            {
-              course: "Example Course",
-              quarterYearOffered: "Fall 2023",
-              rank: 5.0,
-              professorName: "John Doe",
-            },
-          ],
-          classesToTake: [
-            {
-              course: "Example Course",
-              rank: 5.0,
-              professorName: "John Doe",
-            },
-          ],
-          recsForYou: [
-            {
-              course: "Example Course",
-              rank: 5.0,
-              professorName: "John Doe",
-            },
-          ],
+          myClasses: [{
+            course: "Example Course",
+            quarterYearOffered: "Fall 2023",
+            rank: 5.0,
+            professorName: "John Doe",
+          }],
+          classesToTake: [{
+            course: "Example Course",
+            rank: 5.0,
+            professorName: "John Doe",
+          }],
+          recsForYou: [{
+            course: "Example Course",
+            rank: 5.0,
+            professorName: "John Doe",
+          }],
         };
         await setDoc(doc(db, "Users", user.email.split("@")[0]), data);
       } catch (err) {
@@ -67,6 +57,7 @@ const SignUp = (e) => {
       setError(error.message);
     }
   };
+
 
   return (
     <View style={styles.container}>

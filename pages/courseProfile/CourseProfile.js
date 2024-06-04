@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { db } from "../../firebase";
-import CourseHeader from './Header';
+import CourseHeader from "./Header";
 import { collection, getDocs } from "firebase/firestore";
 
 const DataSpaceBlock = ({ course }) => (
@@ -13,9 +13,7 @@ const DataSpaceBlock = ({ course }) => (
     </View>
     <View style={[styles.twoColumnResize1, styles.twoSpaceBlock]}>
       <View style={styles.ugReqs1}>
-        <Text style={[styles.reqs1, styles.reqs1Typo]}>
-          {course.className}
-        </Text>
+        <Text style={[styles.reqs1, styles.reqs1Typo]}>{course.className}</Text>
       </View>
     </View>
     <View style={[styles.twoColumnResize2, styles.twoSpaceBlock]}>
@@ -33,7 +31,7 @@ const DataSpaceBlock = ({ course }) => (
   </View>
 );
 
-const CourseHomePage = ({ navigation }) => {
+const CourseHomePage = ({ navigation, classID }) => {
   const [course, setCourse] = useState(null);
   const [courseMap, setClassMap] = useState(new Map());
   const [loading, setLoading] = useState(true);
@@ -41,7 +39,7 @@ const CourseHomePage = ({ navigation }) => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'Classes'));
+        const querySnapshot = await getDocs(collection(db, "Classes", classID));
         const courseMap = new Map();
         querySnapshot.forEach((doc) => {
           courseMap.set(doc.id, doc.data());
@@ -49,7 +47,7 @@ const CourseHomePage = ({ navigation }) => {
         setClassMap(courseMap);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching class data: ', error);
+        console.error("Error fetching class data: ", error);
         setLoading(false);
       }
     };
@@ -57,7 +55,7 @@ const CourseHomePage = ({ navigation }) => {
     fetchCourse();
   }, []);
 
-  classID = 'ClassID1'; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
+  //classID = "ClassID1"; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
 
   useEffect(() => {
     if (courseMap.has(classID)) {
@@ -76,7 +74,7 @@ const CourseHomePage = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View>
         <View style={styles.finalCourseHomepage}>
-          <CourseHeader navigation={navigation} />
+          <CourseHeader navigation={navigation} course={classID} />
 
           <DataSpaceBlock course={course} />
 
@@ -91,61 +89,83 @@ const CourseHomePage = ({ navigation }) => {
                   </View>
                   <View style={[styles.cell1, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text, styles.textFlexBox]}>Autumn</Text>
+                      <Text style={[styles.text, styles.textFlexBox]}>
+                        Autumn
+                      </Text>
                     </View>
                   </View>
                   <View style={[styles.cell1, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text, styles.textFlexBox]}>Winter</Text>
+                      <Text style={[styles.text, styles.textFlexBox]}>
+                        Winter
+                      </Text>
                     </View>
                   </View>
                   <View style={[styles.cell1, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text, styles.textFlexBox]}>Spring</Text>
+                      <Text style={[styles.text, styles.textFlexBox]}>
+                        Spring
+                      </Text>
                     </View>
                   </View>
                 </View>
                 <View style={styles.row}>
                   <View style={[styles.cell4, styles.cellBorder]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>Offered?</Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        Offered?
+                      </Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[0].offeredFall}</Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {course.offeredArray[0].offeredFall}
+                      </Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[1].offeredWinter}</Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {course.offeredArray[1].offeredWinter}
+                      </Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[2].offeredSpring}</Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {course.offeredArray[2].offeredSpring}
+                      </Text>
                     </View>
                   </View>
                 </View>
                 <View style={styles.row}>
                   <View style={[styles.cell4, styles.cellBorder]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>Teacher</Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        Teacher
+                      </Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[0].teacher}</Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {course.offeredArray[0].teacher}
+                      </Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[1].teacher}</Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {course.offeredArray[1].teacher}
+                      </Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>{course.offeredArray[2].teacher}</Text>
+                      <Text style={[styles.text4, styles.textFlexBox]}>
+                        {course.offeredArray[2].teacher}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -163,7 +183,10 @@ const CourseHomePage = ({ navigation }) => {
           <View style={[styles.instanceParent, styles.dataSpaceBlock]}>
             <View style={styles.instanceGroup}>
               <View
-                style={[styles.piperflemingWrapper, styles.piperflemingSpaceBlock]}
+                style={[
+                  styles.piperflemingWrapper,
+                  styles.piperflemingSpaceBlock,
+                ]}
               >
                 <View style={styles.piperfleming}>
                   <Text style={[styles.piperfleming1, styles.piperflemingTypo]}>
@@ -176,7 +199,7 @@ const CourseHomePage = ({ navigation }) => {
                   styles.piperflemingContainer,
                   styles.piperflemingSpaceBlock,
                 ]}
-                >
+              >
                 <View style={styles.piperfleming2}>
                   <Text
                     style={[styles.piperfleming3, styles.piperflemingTypo]}
@@ -200,8 +223,6 @@ const CourseHomePage = ({ navigation }) => {
     </ScrollView>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   backButtonSpaceBlock: {

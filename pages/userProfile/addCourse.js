@@ -1,14 +1,24 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Keyboard, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 // import { useRoute } from "@react-navigation/native";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db, auth } from "../../firebase";
+import { NewRanking } from "../feed/newActivity";
 
 const RankingClasses = () => {
-  const course = 'Cs' // Get course from navigation params
+  const course = "Cs"; // Get course from navigation params
 
-  const [note, setNote] = useState(""); 
-  const [hardScale, setHardScale] = useState(0); 
+  const [note, setNote] = useState("");
+  const [hardScale, setHardScale] = useState(0);
   const [funScale, setFunScale] = useState(0);
   const [quarterYearOffered, setQuarterYearOffered] = useState("");
   const [professorName, setProfessorName] = useState("");
@@ -57,33 +67,42 @@ const RankingClasses = () => {
   };
 
   const handlePost = async () => {
-    // const userID = auth.currentUser.uid; //UPDATE LATER
-    const userID = 'UserID1';
+    const userID = auth.currentUser.email.split("@")[0];
     const userDocRef = doc(db, "Users", userID);
     console.log(userDocRef);
+    rank = handleRanking();
 
     try {
-      await updateDoc(userDocRef, {
+      await updateDoc(doc(db, "Users", userID), {
         myClasses: arrayUnion({
-          course,
-          quarterYearOffered,
-          professorName,
-          rank: (hardScale + funScale) / 2,
-          notes,
+          coure: course,
+          quarterYearOffered: quarterYearOffered,
+          professorName: professorName,
+          rank: rank,
+          notes: notes,
         }),
       });
       console.log("Class ranked successfully");
+      NewRanking(course, quarterYearOffered, rank);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
   };
+
+  function handleRanking() {
+    hard = ((hardScale - 1) / 9) * 0.4;
+    fun = ((funScale - 1) / 9) * 0.6;
+    return (fun - hard) * 9 + 1;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wholeScreen}>
         <View style={styles.classBeingRanked}>
           <Text style={styles.courseCode}>{course}</Text>
-          <Text style={styles.className}>Mathematical Foundations of Computing</Text>
+          <Text style={styles.className}>
+            Mathematical Foundations of Computing
+          </Text>
         </View>
 
         <View style={styles.rankingWrapper}>
