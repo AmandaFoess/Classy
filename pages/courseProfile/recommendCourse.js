@@ -1,46 +1,41 @@
 import * as React from "react";
-import {
-  Text,
-  StyleSheet,
-  Image,
-  View,
-  FlatList,
-  Modal,
-  TouchableOpacity,
-} from "react-native";
+import { Text, StyleSheet, View, FlatList, Modal, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import { SearchBar } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 import { db, auth } from "../../firebase";
-import { collection, doc, updateDoc, arrayUnion } from "firebase/firestore";
-
-const fakeUsers = [
-  { id: "P5hicocaGYXl4pTVQbU3jISLsfI2", username: "@piperfleming" },
-  { id: "2", username: "@johnsmith" },
-  { id: "3", username: "@janedoe" },
-  { id: "4", username: "@alicejones" },
-  // Add more fake users as needed
-];
+import { collection, getDocs, updateDoc, arrayUnion, doc } from "firebase/firestore";
 
 const RecommendCourse = ({ navigation }) => {
   const [search, setSearch] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState(fakeUsers);
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentUserID, setCurrentUserID] = useState(null);
 
   useEffect(() => {
-    const getCurrentUser = async () => {
+    const fetchUsers = async () => {
+      const querySnapshot = await getDocs(collection(db, "Users"));
+      const usersList = [];
+      querySnapshot.forEach((doc) => {
+        usersList.push({ id: doc.id, ...doc.data() });
+      });
+      setUsers(usersList);
+      setFilteredUsers(usersList);
+    };
+
+    const getCurrentUser = () => {
       const user = auth.currentUser;
       if (user) {
         setCurrentUserID(user.uid);
-        console.log(user.uid)
       } else {
         // Handle user not signed in
         // For example, redirect to login page
       }
     };
 
+    fetchUsers();
     getCurrentUser();
   }, []);
 
@@ -51,12 +46,12 @@ const RecommendCourse = ({ navigation }) => {
   const updateSearch = (search) => {
     setSearch(search);
     if (search) {
-      const filtered = fakeUsers.filter((user) =>
-        user.username.toLowerCase().includes(search.toLowerCase())
+      const filtered = users.filter((user) =>
+        user.id.toLowerCase().includes(search.toLowerCase())
       );
       setFilteredUsers(filtered);
     } else {
-      setFilteredUsers(fakeUsers);
+      setFilteredUsers(users);
     }
   };
 
@@ -65,10 +60,14 @@ const RecommendCourse = ({ navigation }) => {
     setModalVisible(true);
 
     try {
-      const userRef = db.collection("Users").doc(user.id);
-      await userRef.update({
-        recsForYou: firebase.firestore.FieldValue.arrayUnion("CS106A"),
-        recommenders: firebase.firestore.FieldValue.arrayUnion(currentUserID),
+      const userRef = doc(db, "Users", user.id);
+      await updateDoc(userRef, {
+        recsForYou: arrayUnion({
+          course: "CS106A",
+          professorName: "John Doe",
+          rank: 5,
+          uid: currentUserID
+        })
       });
     } catch (error) {
       console.error("Error updating document: ", error);
@@ -108,7 +107,7 @@ const RecommendCourse = ({ navigation }) => {
             style={styles.userItem}
             onPress={() => handleUserPress(item)}
           >
-            <Text style={styles.username}>{item.username}</Text>
+            <Text style={styles.username}>{item.id}</Text>
           </TouchableOpacity>
         )}
       />
