@@ -22,6 +22,7 @@ const UserProfile = ({ navigation }) => {
   const [userData, setUserData] = useState(null); // Initialize with null since it's a single user object
   const [loading, setLoading] = useState(true);
   const [userMap, setUserMap] = useState(new Map());
+  const [numMyClasses, setNumMyClasses] = useState(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -42,7 +43,11 @@ const UserProfile = ({ navigation }) => {
     };
 
     fetchUserData();
-  }, []);
+
+    const countMyClasses = userData && userData.myClasses ? userData.myClasses.length : 0;
+  setNumMyClasses(countMyClasses);
+}, [userData, userMap]);
+
   
   userID = 'UserID1'; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
 
@@ -81,7 +86,7 @@ const UserProfile = ({ navigation }) => {
       break;
   }
   const numFriends = userData.numFriends;
-  const classesRanked = userData.numClassesRanked;
+  const classesRanked = numMyClasses;
   const bio = userData.bio;
   const name = userData.name;
   const username = userData.username;
@@ -129,14 +134,9 @@ const UserProfile = ({ navigation }) => {
             style={styles.tabItem}
             onPress={() => setActiveTab("myClasses")}
           >
-            <Text
-              style={[
-                styles.tabText,
-                activeTab === "myClasses" && styles.activeTab,
-              ]}
-            >
-              My Classes
-            </Text>
+            <Text style={[styles.tabText, activeTab === "myClasses" && styles.activeTab]}>
+  My Classes
+</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.tabItem}
