@@ -33,7 +33,9 @@ const NotificationsScreen = ({ navigation }) => {
       <View style={styles.notificationText}>
         <Text style={styles.name}>{item.userID}</Text>
         <Text style={styles.action}>{item.action}</Text>
-        <Text style={styles.timeAgo}>{new Date(item.timestamp.seconds * 1000).toLocaleDateString()}</Text>
+        <Text style={styles.timeAgo}>
+          {new Date(item.timestamp.seconds * 1000).toLocaleDateString()}
+        </Text>
       </View>
     </View>
   );

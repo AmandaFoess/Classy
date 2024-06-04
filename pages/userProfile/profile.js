@@ -10,81 +10,98 @@ import {
 import SingleClassRanking from "./singleMyClassRanking";
 import SingleUnsavedClass from "./singleRecsForYouClass";
 import SingleSavedClass from "./singleWantToTakeClass";
-import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../firebase";
 
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { BrokenPage } from "../Authentication/brokenPage";
 
 const UserProfile = ({ navigation }) => {
   const [activeTab, setActiveTab] = React.useState("myClasses"); // State to track active tab
   const [userData, setUserData] = useState(null); // Initialize with null since it's a single user object
   const [loading, setLoading] = useState(true);
   const [userMap, setUserMap] = useState(new Map());
+  const [user, setUser] = useState(null);
+  const [initializing, setInitializing] = useState(true);
 
+  // Handle User State Changes
+  useEffect(() => {
+    const subscriber = auth.onAuthStateChanged((user) => {
+      setUser(user);
+      if (initializing) setInitializing(false);
+    });
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  // first time page renders
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "Users"));
         const userMap = new Map();
-        
+
         querySnapshot.forEach((doc) => {
           userMap.set(doc.id, doc.data());
         });
-        
+
         setUserMap(userMap);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching user data: ', error);
+        console.error("Error fetching user data: ", error);
         setLoading(false);
       }
     };
 
     fetchUserData();
   }, []);
-  
-  userID = 'UserID1'; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
 
+  // check for new user or userData information on trigger dependencies
   useEffect(() => {
-    if (userMap.has(userID)) {
-      setUserData(userMap.get(userID));
+    if (user && userMap.size > 0) {
+      const userID = user.email.split("@")[0]; // Extract userID dynamically
+      if (userMap.has(userID)) {
+        setUserData(userMap.get(userID));
+      } else {
+        setUserData(null);
+      }
     }
-  }, [userMap, userID]);
+  }, [user, userMap]);
+
+  if (initializing) return null;
 
   if (loading) {
     return <Text>Loading...</Text>;
   }
 
+  // if user is signed in, but data is not structured properly, only show them the sign out buttom
   if (!userData) {
-    return <Text>No user data found</Text>;
+    return <BrokenPage />;
   }
-  
+  const username = userData.email;
+  const name = username.split("@")[0];
+  const initial = name[0].toUpperCase();
+  const numFriends = userData.numFriends;
+  const classesRanked = userData.classesRanked;
+  const bio = "";
+
   let filteredData;
-
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
-
   switch (activeTab) {
     case "myClasses":
-      filteredData = (userData.myClasses).sort((a, b) => b.rank - a.rank) || [];
+      if (userData.myClasses)
+        filteredData = userData.myClasses.sort((a, b) => b.rank - a.rank);
       break;
     case "wantToTake":
-      filteredData = userData.classesToTake || [];
+      if (userData.classesToTake) filteredData = userData.classesToTake;
       break;
     case "recs":
-      filteredData = userData.recsForYou || [];
+      if (userData.recsForYou) filteredData = userData.recsForYou;
       break;
     default:
       filteredData = [];
       break;
   }
-  const numFriends = userData.numFriends;
-  const classesRanked = userData.numClassesRanked;
-  const bio = userData.bio;
-  const name = userData.name;
-  const username = userData.username;
+
   return (
     <View style={styles.completedOverallRankingPag}>
       <View style={styles.profile}>
@@ -92,7 +109,7 @@ const UserProfile = ({ navigation }) => {
           <View style={styles.evyShenParent}>
             <Text style={[styles.evyShen, styles.textTypo1]}>{name}</Text>
             <View style={[styles.esWrapper, styles.wrapperBorder]}>
-              <Text style={styles.es}>ES</Text>
+              <Text style={styles.es}>{initial}</Text>
             </View>
             <Text style={[styles.evyshen, styles.textTypo1]}>{username}</Text>
             <Text style={[styles.sophomoreSymbolicSystems, styles.button1Typo]}>
@@ -117,7 +134,9 @@ const UserProfile = ({ navigation }) => {
               <Text style={[styles.friends, styles.button1Typo]}>Friends</Text>
             </View>
             <View style={styles.group}>
-              <Text style={[styles.text, styles.textTypo1]}>{classesRanked}</Text>
+              <Text style={[styles.text, styles.textTypo1]}>
+                {classesRanked}
+              </Text>
               <Text style={[styles.friends, styles.button1Typo]}>
                 Classes Ranked
               </Text>
