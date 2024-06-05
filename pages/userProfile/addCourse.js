@@ -15,9 +15,13 @@ import { db, auth } from "../../firebase";
 import { NewRanking } from "../feed/newActivity";
 
 const RankingClasses = () => {
+<<<<<<< HEAD
   const route = useRoute();  // Use useRoute hook to get the route
   const { classID } = route.params;  // Extract classID from route params
   const course = classID; // Get course from navigation params
+=======
+  const course = "Cs"; // Get course from navigation params
+>>>>>>> 08ba9337a16c505cbcbb98f8c1bd82b02ab1b937
   const [note, setNote] = useState("");
   const [hardScale, setHardScale] = useState(0);
   const [funScale, setFunScale] = useState(0);
@@ -76,7 +80,7 @@ const RankingClasses = () => {
     try {
       await updateDoc(doc(db, "Users", userID), {
         myClasses: arrayUnion({
-          coure: course,
+          course: course,
           quarterYearOffered: quarterYearOffered,
           professorName: professorName,
           rank: rank,
