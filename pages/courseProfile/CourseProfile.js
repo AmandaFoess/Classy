@@ -39,7 +39,7 @@ const CourseHomePage = ({ navigation, classID }) => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "Classes", classID));
+        const querySnapshot = await getDocs(collection(db, "Classes"));
         const courseMap = new Map();
         querySnapshot.forEach((doc) => {
           courseMap.set(doc.id, doc.data());
@@ -55,7 +55,8 @@ const CourseHomePage = ({ navigation, classID }) => {
     fetchCourse();
   }, []);
 
-  //classID = "ClassID1"; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
+  classID = "ClassID1"; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
+  
 
   useEffect(() => {
     if (courseMap.has(classID)) {
