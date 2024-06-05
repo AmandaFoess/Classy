@@ -10,24 +10,62 @@ import CourseHomePage from "../courseProfile/CourseProfile";
 import UserProfile from "../userProfile/profile";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import RecommendCourse from "../courseProfile/recommendCourse";
+import { act } from "react";
+import { collection } from "firebase/firestore";
+import { getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 
 function SearchBarPage({ navigation }) {
   const [search, setSearch] = useState("");
-  const [filteredList, setFilteredList] = useState(Usernames);
-  const [activeSection, setActiveSection] = React.useState(Usernames);
+  //const [filteredList, setFilteredList] = useState(Usernames);
+  //const [activeSection, setActiveSection] = React.useState(Usernames);
+  const [completeList, setCompleteList] = useState(null);
+  const [filteredList, setFilteredList] = useState(null);
+  const [activeSection, setActiveSection] = useState("Users");
   const [activePage, setActivePage] = useState("Profile");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const filteredData = activeSection.filter((item) =>
-      item.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilteredList(filteredData);
-    if (activeSection == Usernames) {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, activeSection));
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCompleteList(data);
+        setLoading(false);
+        console.log(filteredList);
+      } catch (error) {
+        console.error("Error fetching feed data: ", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [activeSection]); // Dependency array includes both search and activeSection
+
+  useEffect(() => {
+    if (completeList) {
+      const filteredData = completeList.filter((item) =>
+        item.id.toLowerCase().includes(search.toLowerCase())
+      );
+      setFilteredList(filteredData);
+    }
+    if (activeSection == "Users") {
       setActivePage("User Profile");
     } else {
       setActivePage("Course Profile");
     }
-  }, [search, activeSection]); // Dependency array includes both search and activeSection
+  }, [search, activeSection, completeList]); // Dependency array includes both search and activeSection
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   const updateSearch = (search) => {
     setSearch(search);
@@ -47,7 +85,7 @@ function SearchBarPage({ navigation }) {
       <View style={styles.searchNavBar}>
         <Pressable
           style={[styles.classesWrapper, styles.wrapperFlexBox]}
-          onPress={() => setActiveSection(Courses)}
+          onPress={() => setActiveSection("Classes")}
         >
           <Text
             style={[
@@ -61,27 +99,13 @@ function SearchBarPage({ navigation }) {
         </Pressable>
         <Pressable
           style={[styles.classesWrapper, styles.wrapperFlexBox]}
-          onPress={() => setActiveSection(MyCourses)}
+          onPress={() => setActiveSection("Users")}
         >
-          {/* <Text
-            style={[
-              styles.classes,
-              styles.classesTypo,
-              activeSection === MyCourses && styles.bold, // Conditionally apply the bold style
-            ]}
-          >
-            My Classes
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[styles.me3mbersWrapper, styles.wrapperFlexBox]}
-          onPress={() => setActiveSection(Usernames)}
-        > */}
           <Text
             style={[
               styles.classes,
               styles.classesTypo,
-              activeSection === Usernames && styles.bold, // Conditionally apply the bold style
+              activeSection === Usernames && styles.bold,
             ]}
           >
             Users
@@ -90,9 +114,9 @@ function SearchBarPage({ navigation }) {
       </View>
       <FlatList
         data={filteredList}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Item value={item} navigation={navigation} page={activePage} />
+          <Item value={item.id} navigation={navigation} page={activePage} />
         )}
         ListEmptyComponent={<Text>"{search}" not found.</Text>}
       />

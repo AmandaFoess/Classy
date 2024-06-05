@@ -3,7 +3,10 @@ import { Text, StyleSheet, Pressable } from "react-native";
 
 function Item({ value, navigation, page }) {
   return (
-    <Pressable style={styles.item} onPress={() => navigation.navigate(page)}>
+    <Pressable
+      style={styles.item}
+      onPress={() => navigation.navigate(page, { classID: value })}
+    >
       <Text style={styles.title}>{value}</Text>
     </Pressable>
   );

@@ -16,7 +16,6 @@ import { NewRanking } from "../feed/newActivity";
 
 const RankingClasses = () => {
   const course = "Cs"; // Get course from navigation params
-
   const [note, setNote] = useState("");
   const [hardScale, setHardScale] = useState(0);
   const [funScale, setFunScale] = useState(0);
@@ -75,7 +74,7 @@ const RankingClasses = () => {
     try {
       await updateDoc(doc(db, "Users", userID), {
         myClasses: arrayUnion({
-          coure: course,
+          course: course,
           quarterYearOffered: quarterYearOffered,
           professorName: professorName,
           rank: rank,
