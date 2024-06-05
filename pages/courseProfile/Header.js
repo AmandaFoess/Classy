@@ -10,7 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Add, Bookmark } from "../../assets/icons"; // Assuming these are custom SVG components or similar
 
-const CourseHeader = ({ navigation, course }) => {
+const CourseHeader = ({ navigation, classID }) => {
   const handleBackPress = () => {
     navigation.goBack();
   };
@@ -20,7 +20,7 @@ const CourseHeader = ({ navigation, course }) => {
   };
 
   const handleAdd = () => {
-    navigation.navigate("Add Class");
+    navigation.navigate("Add Class", { classID: classID });
   };
 
   return (
