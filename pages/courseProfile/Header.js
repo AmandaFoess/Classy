@@ -22,7 +22,6 @@ const CourseHeader = ({ navigation, classID }) => {
   const handleAdd = () => {
     navigation.navigate("Add Class", {
       classID: classID,
-      navigation: navigation,
     });
   };
 
