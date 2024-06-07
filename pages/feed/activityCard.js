@@ -65,9 +65,9 @@ const ActivityCard = ({ item, navigation }) => {
               color={isLiked ? "red" : "black"}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleCommentPress}>
+          {/* <TouchableOpacity onPress={handleCommentPress}>
             <Ionicons name="chatbubble-outline" size={24} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity onPress={handleBookmarkPress}>
             <Ionicons
               name={isBookmarked ? "bookmark" : "bookmark-outline"}
@@ -84,14 +84,14 @@ const ActivityCard = ({ item, navigation }) => {
 
 const styles = StyleSheet.create({
   time: {
-    marginTop: -20,
+    marginTop: -40,
     paddingLeft: 10,
+    paddingBottom: 20,
   },
   profilePicSaller: {
     width: 65,
     height: 65,
     borderRadius: 50,
-    // marginLeft: 5,
   },
   abc: {
     fontWeight: "600",
@@ -153,28 +153,24 @@ const styles = StyleSheet.create({
   reactions: {
     backgroundColor: "rgba(245, 245, 245, 0)",
     paddingHorizontal: 15,
-    paddingVertical: 10,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    width: 120,
-  },
-  iconWrapper: {
-    padding: 10,
+    width: 90,
   },
   reactionsParent: {
-    height: 61,
+    height: "auto",
     alignItems: "flex-end",
     justifyContent: "center",
-    marginTop: -20,
     paddingVertical: 0,
+    paddingBottom: 20,
   },
   feedUpdateslikebookmarked: {
     backgroundColor: "rgba(202, 209, 212, 0.09)",
     borderColor: "#000",
     borderWidth: 0.3,
     flex: 1,
-    height: 175,
+    height: "auto",
     paddingHorizontal: 6,
     paddingVertical: 0,
     overflow: "hidden",
