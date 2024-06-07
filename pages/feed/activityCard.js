@@ -73,7 +73,7 @@ const ActivityCard = ({ item, navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.time}>Yesterday</Text>
+      <Text style={styles.time}>{item.timestamp}</Text>
     </View>
   );
 };

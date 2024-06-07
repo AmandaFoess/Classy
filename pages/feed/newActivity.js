@@ -8,13 +8,15 @@ export async function NewRanking(className, quarter, ranking) {
       quarter: quarter,
       ranking: ranking,
       action: " ranked ",
+      postTime: Timestamp.now().toString(),
       user: auth.currentUser.email.split("@")[0],
       comments: {
         user: "Test User",
         comment: "Text Comment",
       },
     };
-    await addDoc(collection(db, "Feed"), data);
+    //await addDoc(collection(db, "Feed"), data);
+    await setDoc(doc(db, "Feed", "test", data));
   } catch (error) {
     console.error("Error fetching feed data: ", error);
   }
@@ -27,6 +29,7 @@ export async function NewClassAdded(className) {
       quarter: "",
       ranking: "?",
       action: " added ",
+      timestamp: Timestamp,
       user: auth.currentUser.email.split("@")[0],
       comments: {
         user: "Test User",
