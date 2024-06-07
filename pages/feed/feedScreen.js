@@ -116,12 +116,7 @@ const FeedScreen = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <ActivityCard
-      name={truncateText(item.user, 15)} // Truncate to 15 characters
-      course={truncateText(item.classRanked, 20)} // Truncate to 20 characters
-      rank={item.ranking}
-      navigation={navigation}
-    />
+    <ActivityCard item={item} navigation={navigation} />
   );
 
   if (loading) {

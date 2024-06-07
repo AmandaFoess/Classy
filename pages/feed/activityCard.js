@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const MAX_TEXT_LENGTH = 20; // Maximum characters for student name and class
 
-const ActivityCard = ({ name, course, rank, navigation }) => {
+const ActivityCard = ({ item, navigation }) => {
   //const navigation = useNavigation();
 
   const [isLiked, setIsLiked] = useState(false);
@@ -32,14 +32,6 @@ const ActivityCard = ({ name, course, rank, navigation }) => {
     setIsBookmarked(!isBookmarked); // Toggle the isLiked state
   };
 
-  const rankedTextComponent = (name, course) => (
-    <Text style={styles.abcRankedCsContainer}>
-      <Text style={styles.abc}>{name}</Text>
-      <Text style={styles.ranked}>{` ranked `}</Text>
-      <Text style={styles.abc}>{course}</Text>
-    </Text>
-  );
-
   return (
     <View style={styles.feedUpdateslikebookmarked}>
       <View style={styles.profilePicSallerParent}>
@@ -49,11 +41,15 @@ const ActivityCard = ({ name, course, rank, navigation }) => {
           source={require("../../assets/RichardSallerPic.png")}
         />
         <View style={styles.abcRankedCs103Parent}>
-          {rankedTextComponent(name, course)}
-          <Text style={[styles.spring2024]}>Spring 2024</Text>
+          <Text style={styles.abcRankedCsContainer}>
+            <Text style={styles.abc}>{item.user}</Text>
+            <Text style={styles.ranked}>{item.action}</Text>
+            <Text style={styles.abc}>{item.class}</Text>
+          </Text>
+          <Text style={[styles.spring2024]}>{item.quarter}</Text>
         </View>
         <View style={styles.rankingWrapper}>
-          <Text style={[styles.rank]}>{rank}</Text>
+          <Text style={[styles.rank]}>{item.ranking}</Text>
         </View>
       </View>
       <View style={styles.reactionsParent}>
