@@ -69,7 +69,13 @@ export default function App() {
           >
             <Tab.Screen name="FeedPage" component={FeedScreen} />
             <Tab.Screen name="Search" component={SearchStack} />
-            <Tab.Screen name="Profile" component={UserProfile} />
+            <Tab.Screen
+              name="Profile"
+              component={UserProfile}
+              initialParams={{
+                objectID: user.email.split("@")[0],
+              }}
+            />
           </Tab.Navigator>
         </NavigationContainer>
       </TouchableWithoutFeedback>

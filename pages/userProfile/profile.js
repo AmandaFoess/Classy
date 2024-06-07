@@ -14,10 +14,11 @@ import { auth } from "../../firebase";
 
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDoc, doc } from "firebase/firestore";
 import { BrokenPage } from "../Authentication/brokenPage";
+import Spinner from "react-native-loading-spinner-overlay";
 
-const UserProfile = ({ navigation }) => {
+const UserProfile = ({ navigation, route }) => {
   const [activeTab, setActiveTab] = useState("myClasses");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,17 +28,21 @@ const UserProfile = ({ navigation }) => {
   const [numClasses, setNumClasses] = useState(0);
   const [numFriends, setNumFriends] = useState(0);
 
-  // Handle User State Changes
+  const { objectID } = route.params;
+  console.log(objectID);
+
+  /* // Handle User State Changes
   useEffect(() => {
     const subscriber = auth.onAuthStateChanged((user) => {
       setUser(user);
       if (initializing) setInitializing(false);
     });
     return subscriber; // unsubscribe on unmount
-  }, []);
+  }, []); */
 
   // Fetch user data
-  useEffect(() => {
+  /* useEffect(() => {
+    setLoading(true);
     const fetchUserData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "Users"));
@@ -56,12 +61,36 @@ const UserProfile = ({ navigation }) => {
     };
 
     fetchUserData();
-  }, []);
+  }, []); */
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const docRef = doc(db, "Users", objectID); // Reference to the document
+        const docSnap = await getDoc(docRef); // Fetch the document
+        if (docSnap.exists()) {
+          setUserData(docSnap.data());
+          setNumFriends(userData.friends ? userData.friends.length : 0);
+          setNumClasses(userData.myClasses ? userData.myClasses.length : 0);
+        } else {
+          console.log(`No course found with ID: ${objectID}`);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [objectID]);
 
   // Fetch specific user data
-  useEffect(() => {
-    if (user && userMap.size > 0) {
-      const userID = user.email.split("@")[0]; // Extract userID dynamically
+  /* useEffect(() => {
+    //console.log(objectID);
+    if (objectID && userMap.size > 0) {
+      const userID = objectID;
+      //const userID = user.email.split("@")[0]; // Extract userID dynamically
       if (userMap.has(userID)) {
         const userData = userMap.get(userID);
         setUserData(userData);
@@ -71,12 +100,18 @@ const UserProfile = ({ navigation }) => {
         setUserData(null);
       }
     }
-  }, [user, userMap]);
-
-  if (initializing) return null;
+  }, [userMap]); */
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={styles.container}>
+        <Spinner
+          visible={loading}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+    );
   }
 
   if (!userData) {
@@ -107,7 +142,7 @@ const UserProfile = ({ navigation }) => {
   }
 
   const handleFriendsPress = () => {
-    navigation.navigate("Friends List", { userId: user.email.split("@")[0] });
+    navigation.navigate("Friends List", { userId: objectID });
   };
 
   return (
@@ -452,6 +487,9 @@ const styles = StyleSheet.create({
     height: 56,
     justifyContent: "center",
     alignItems: "center",
+  },
+  spinnerTextStyle: {
+    color: "#FFF",
   },
 });
 
