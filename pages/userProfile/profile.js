@@ -196,7 +196,7 @@ const UserProfile = ({ navigation }) => {
       </View>
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item.course}
+        keyExtractor={(item, index) => item.course + index}
         renderItem={({ item }) => {
           if (activeTab === "myClasses") {
             return (

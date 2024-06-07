@@ -80,7 +80,6 @@ import AddCourse from "../userProfile/addCourse";
 import FriendsList from "../userProfile/friendsList";
 import UserProfile from "../userProfile/userProfile";
 
-
 const FeedScreen = ({ navigation }) => {
   const [feedData, setFeedData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -104,7 +103,7 @@ const FeedScreen = ({ navigation }) => {
 
     fetchFeedData();
   }, [refreshing]);
-  console.log(feedData);
+  //console.log(feedData);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -130,19 +129,15 @@ const FeedScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollView}
+    <FlatList
+      data={feedData}
+      keyExtractor={(item) => item.id}
+      renderItem={renderItem}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-    >
-      <FlatList
-        data={feedData}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        ListEmptyComponent={<Text>No data found</Text>}
-      />
-     </ScrollView>
+      ListEmptyComponent={<Text>No data found</Text>}
+    />
   );
 };
 
@@ -157,7 +152,6 @@ function FeedStack({ navigation }) {
       <Stack.Screen name="Add Class" component={AddCourse} />
       <Stack.Screen name="Friends List" component={FriendsList} />
       <Stack.Screen name="User Profile" component={UserProfile} />
-
     </Stack.Navigator>
   );
 }

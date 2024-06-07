@@ -47,7 +47,7 @@ export default function App() {
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
-              if (route.name === "Feed") {
+              if (route.name === "FeedPage") {
                 iconName = focused ? "home" : "home-outline";
               } else if (route.name === "Course Profile") {
                 iconName = focused ? "school" : "school-outline";
@@ -65,7 +65,7 @@ export default function App() {
             tabBarInactiveTintColor: "gray",
           })}
         >
-          <Tab.Screen name="Feed" component={FeedScreen} />
+          <Tab.Screen name="FeedPage" component={FeedScreen} />
           <Tab.Screen name="Search" component={SearchStack} />
           <Tab.Screen name="Profile" component={UserProfile} />
         </Tab.Navigator>

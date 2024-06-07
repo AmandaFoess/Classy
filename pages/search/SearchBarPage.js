@@ -35,7 +35,6 @@ function SearchBarPage({ navigation }) {
         }));
         setCompleteList(data);
         setLoading(false);
-        console.log(filteredList);
       } catch (error) {
         console.error("Error fetching feed data: ", error);
         setLoading(false);
