@@ -657,16 +657,7 @@ const UserProfile = () => {
                   )}
                 </View>
               )}
-              <View style={[styles.button, styles.buttonFlexBox]}>
-                <Pressable
-                  style={[styles.button1, styles.button1Typo]}
-                  onPress={() => {
-                    auth.signOut().then(() => console.log("User signed out!"));
-                  }}
-                >
-                  <Text>Sign Out</Text>
-                </Pressable>
-              </View>
+            
             </View>
           </View>
           <View style={styles.frameGroup}>
