@@ -203,7 +203,7 @@ const UserProfile = ({ navigation }) => {
               <SingleClassRanking
                 course={item.course}
                 quarterYearOffered={item.quarterYearOffered}
-                rank={item.rank}
+                rank={item.rank.toFixed(1)}
                 professorName={item.professorName}
               />
             );

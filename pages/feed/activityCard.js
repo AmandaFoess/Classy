@@ -49,7 +49,7 @@ const ActivityCard = ({ item, navigation }) => {
           <Text style={[styles.spring2024]}>{item.quarter}</Text>
         </View>
         <View style={styles.rankingWrapper}>
-          <Text style={[styles.rank]}>{item.ranking}</Text>
+          <Text style={[styles.rank]}>{item.ranking.toFixed(1)}</Text>
         </View>
       </View>
       <View style={styles.reactionsParent}>
