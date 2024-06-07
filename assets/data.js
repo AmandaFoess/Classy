@@ -12,16 +12,16 @@ export const Usernames = [
 ];
 
 export const Courses = [
-  "Introduction to Programming",
-  "Advanced Calculus",
-  "World History",
-  "Environmental Science",
-  "Digital Marketing",
-  "Machine Learning",
-  "Business Analytics",
-  "Creative Writing",
-  "Data Structures",
-  "Web Development",
+  "CS106A",
+  "CS103",
+  "CS106B",
+  "CS109",
+  "CS107",
+  "PSYCH1",
+  "PWR2",
+  "EARTHSYS112",
+  "ECON50",
+  "ECON102B",
 ];
 
 export const MyCourses = [];
