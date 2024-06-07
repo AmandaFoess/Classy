@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View, FlatList } from "react-native";
 import { db } from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const NotificationsScreen = ({ navigation }) => {
   const [notifications, setNotifications] = useState([]);
@@ -9,12 +10,22 @@ const NotificationsScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "Notification"));
-        const notificationsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setNotifications(notificationsData);
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+          const userRef = doc(db, "Users", user.uid);
+          const userDoc = await getDoc(userRef);
+
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setNotifications(userData.notifications || []);
+          } else {
+            console.log("No such document!");
+          }
+        } else {
+          console.log("User is not logged in");
+        }
       } catch (error) {
         console.error("Error fetching notifications: ", error);
       }
@@ -45,7 +56,7 @@ const NotificationsScreen = ({ navigation }) => {
       <FlatList
         data={notifications}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => index.toString()}
       />
     </View>
   );
