@@ -116,7 +116,7 @@ function SearchBarPage({ navigation }) {
         data={filteredList}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Item value={item.id} navigation={navigation} page={activePage} />
+          <Item value={item} navigation={navigation} page={activePage} />
         )}
         ListEmptyComponent={<Text>"{search}" not found.</Text>}
       />

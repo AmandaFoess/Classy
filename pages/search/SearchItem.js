@@ -2,12 +2,17 @@ import React from "react";
 import { Text, StyleSheet, Pressable } from "react-native";
 
 function Item({ value, navigation, page }) {
+  console.log("Value: " + value.id);
   return (
     <Pressable
       style={styles.item}
-      onPress={() => navigation.navigate(page, { classID: value })}
+      onPress={() =>
+        navigation.navigate(page, {
+          objectID: value.id,
+        })
+      }
     >
-      <Text style={styles.title}>{value}</Text>
+      <Text style={styles.title}>{value.id}</Text>
     </Pressable>
   );
 }
