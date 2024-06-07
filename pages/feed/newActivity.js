@@ -1,6 +1,5 @@
-import { Timestamp, addDoc } from "firebase/firestore";
-import { auth } from "../../firebase";
-import { setDoc } from "firebase/firestore";
+import { Timestamp, addDoc, setDoc, collection, doc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
 
 export async function NewRanking(className, quarter, ranking) {
   try {
@@ -16,12 +15,12 @@ export async function NewRanking(className, quarter, ranking) {
       },
     };
     await addDoc(collection(db, "Feed"), data);
-  } catch (err) {
-    setError(err.message);
+  } catch (error) {
+    console.error("Error fetching feed data: ", error);
   }
 }
 
-export async function NewClassAdded(className, professorName) {
+export async function NewClassAdded(className) {
   try {
     const data = {
       class: className,
