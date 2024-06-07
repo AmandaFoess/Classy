@@ -9,13 +9,15 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-// import { useRoute } from "@react-navigation/native";
+ import { useRoute } from "@react-navigation/native";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import { NewRanking } from "../feed/newActivity";
 
 const RankingClasses = () => {
-  const course = "Cs"; // Get course from navigation params
+  const route = useRoute();  // Use useRoute hook to get the route
+  const { classID } = route.params;  // Extract classID from route params
+  const course = classID; // Get course from navigation params
   const [note, setNote] = useState("");
   const [hardScale, setHardScale] = useState(0);
   const [funScale, setFunScale] = useState(0);
@@ -98,10 +100,10 @@ const RankingClasses = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wholeScreen}>
         <View style={styles.classBeingRanked}>
-          <Text style={styles.courseCode}>{course}</Text>
-          <Text style={styles.className}>
-            Mathematical Foundations of Computing
-          </Text>
+          <Text style={styles.courseCode}>{classID}</Text>
+          
+          <View>
+    </View>
         </View>
 
         <View style={styles.rankingWrapper}>

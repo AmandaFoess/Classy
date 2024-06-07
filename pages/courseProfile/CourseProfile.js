@@ -75,7 +75,7 @@ const CourseHomePage = ({ navigation, classID }) => {
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View>
         <View style={styles.finalCourseHomepage}>
-          <CourseHeader navigation={navigation} course={classID} />
+          <CourseHeader navigation={navigation} classID={course.classCode} />
 
           <DataSpaceBlock course={course} />
 
