@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 //import { useNavigation } from "@react-navigation/native";
@@ -31,7 +33,7 @@ const CommentScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onPress={Keyboard.dismiss}>
       <View style>
         <View style={styles.backButtonWrapper}>
           <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
@@ -60,13 +62,6 @@ const CommentScreen = ({ navigation }) => {
                   size={27}
                   color={isLiked ? "red" : "black"}
                 />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  /* Navigate to comment screen */
-                }}
-              >
-                <Ionicons name="chatbubble-outline" size={24} color="black" />
               </TouchableOpacity>
               <TouchableOpacity onPress={handleBookmarkPress}>
                 <Ionicons
@@ -172,14 +167,9 @@ const styles = StyleSheet.create({
     fontWeight: "200",
   },
   reactions: {
-    // height: 61,
-    // alignItems: "flex-end",
     justifyContent: "space-evenly",
-    // marginTop: 10,
-    width: 120,
+    width: 80,
     flexDirection: "row",
-    // borderColor: "blue",
-    // borderWidth: 2,
   },
   reactionsWrapper: {
     alignItems: "flex-end",

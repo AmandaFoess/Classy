@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, FlatList, Text } from "react-native";
+import { View, FlatList, Text, TouchableHighlight } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { StyleSheet } from "react-native";
 import { Pressable } from "react-native";
@@ -15,11 +15,10 @@ import { collection } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import RankingClasses from "../userProfile/addCourse";
+import Spinner from "react-native-loading-spinner-overlay";
 
 function SearchBarPage({ navigation }) {
   const [search, setSearch] = useState("");
-  //const [filteredList, setFilteredList] = useState(Usernames);
-  //const [activeSection, setActiveSection] = React.useState(Usernames);
   const [completeList, setCompleteList] = useState(null);
   const [filteredList, setFilteredList] = useState(null);
   const [activeSection, setActiveSection] = useState("Users");
@@ -27,6 +26,7 @@ function SearchBarPage({ navigation }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, activeSection));
@@ -61,8 +61,47 @@ function SearchBarPage({ navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
+      <View style={{ flex: 1, flexDirection: "column" }}>
+        <SearchBar
+          placeholder="Type here..."
+          onChangeText={updateSearch}
+          value={search}
+          searchIcon={{ size: 24 }}
+          containerStyle={styles.searchIconParent}
+          inputContainerStyle={{ backgroundColor: "transparent" }} // To ensure the input field aligns with your styling
+          inputStyle={{ backgroundColor: "transparent" }} // Additional styling can be added if needed
+        />
+        <View style={styles.searchNavBar}>
+          <Pressable
+            style={styles.wrapperFlexBox}
+            onPress={() => setActiveSection("Classes")}
+          >
+            <Text
+              style={[
+                styles.classes,
+                activeSection === "Classes" && styles.bold, // Conditionally apply the bold style
+              ]}
+            >
+              All Classes
+            </Text>
+          </Pressable>
+          <Pressable
+            style={styles.wrapperFlexBox}
+            onPress={() => setActiveSection("Users")}
+          >
+            <Text
+              style={[styles.classes, activeSection === "Users" && styles.bold]}
+            >
+              Users
+            </Text>
+          </Pressable>
+        </View>
+
+        <Spinner
+          visible={loading}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
       </View>
     );
   }
@@ -84,41 +123,39 @@ function SearchBarPage({ navigation }) {
       />
       <View style={styles.searchNavBar}>
         <Pressable
-          style={[styles.classesWrapper, styles.wrapperFlexBox]}
+          style={styles.wrapperFlexBox}
           onPress={() => setActiveSection("Classes")}
         >
           <Text
             style={[
               styles.classes,
-              styles.classesTypo,
-              activeSection === Courses && styles.bold, // Conditionally apply the bold style
+              activeSection === "Classes" && styles.bold, // Conditionally apply the bold style
             ]}
           >
             All Classes
           </Text>
         </Pressable>
         <Pressable
-          style={[styles.classesWrapper, styles.wrapperFlexBox]}
+          style={styles.wrapperFlexBox}
           onPress={() => setActiveSection("Users")}
         >
           <Text
-            style={[
-              styles.classes,
-              styles.classesTypo,
-              activeSection === Usernames && styles.bold,
-            ]}
+            style={[styles.classes, activeSection === "Users" && styles.bold]}
           >
             Users
           </Text>
         </Pressable>
       </View>
+
       <FlatList
         data={filteredList}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <Item value={item} navigation={navigation} page={activePage} />
         )}
-        ListEmptyComponent={<Text>"{search}" not found.</Text>}
+        ListEmptyComponent={
+          <Text style={styles.fail}>"{search}" not found.</Text>
+        }
       />
     </View>
   );
@@ -160,6 +197,22 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: "bold",
+  },
+  wrapperFlexBox: {
+    height: 20,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  classes: {
+    fontSize: 17,
+  },
+  spinnerTextStyle: {
+    color: "#FFF",
+  },
+  fail: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 10,
   },
 });
 

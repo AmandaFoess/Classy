@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import { StyleSheet, Text, SafeAreaView, Keyboard } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import FeedScreen from "./pages/feed/feedScreen";
 import UserProfile from "./pages/userProfile/profile";
@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SearchStack from "./pages/search/SearchBarPage";
 import GenericHeader from "./pages/classyHeader/classyHeader"; // Import your Header component
 import { useState, useEffect } from "react";
+import { TouchableWithoutFeedback } from "react-native";
 
 // Import icons from the appropriate libraries
 import { Ionicons } from "@expo/vector-icons";
@@ -40,36 +41,38 @@ export default function App() {
 
   return (
     <SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
-      <NavigationContainer>
-        <GenericHeader />
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            headerShown: false,
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "FeedPage") {
-                iconName = focused ? "home" : "home-outline";
-              } else if (route.name === "Course Profile") {
-                iconName = focused ? "school" : "school-outline";
-              } else if (route.name === "Search") {
-                iconName = focused ? "search" : "search-outline";
-              } else if (route.name === "Profile") {
-                iconName = focused ? "person" : "person-outline";
-                return (
-                  <MaterialIcons name={iconName} size={size} color={color} />
-                );
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: "#3d47a6",
-            tabBarInactiveTintColor: "gray",
-          })}
-        >
-          <Tab.Screen name="FeedPage" component={FeedScreen} />
-          <Tab.Screen name="Search" component={SearchStack} />
-          <Tab.Screen name="Profile" component={UserProfile} />
-        </Tab.Navigator>
-      </NavigationContainer>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <NavigationContainer>
+          <GenericHeader />
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              headerShown: false,
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+                if (route.name === "FeedPage") {
+                  iconName = focused ? "home" : "home-outline";
+                } else if (route.name === "Course Profile") {
+                  iconName = focused ? "school" : "school-outline";
+                } else if (route.name === "Search") {
+                  iconName = focused ? "search" : "search-outline";
+                } else if (route.name === "Profile") {
+                  iconName = focused ? "person" : "person-outline";
+                  return (
+                    <MaterialIcons name={iconName} size={size} color={color} />
+                  );
+                }
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+              tabBarActiveTintColor: "#3d47a6",
+              tabBarInactiveTintColor: "gray",
+            })}
+          >
+            <Tab.Screen name="FeedPage" component={FeedScreen} />
+            <Tab.Screen name="Search" component={SearchStack} />
+            <Tab.Screen name="Profile" component={UserProfile} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
