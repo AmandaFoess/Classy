@@ -81,12 +81,13 @@ import AddCourse from "../userProfile/addCourse";
 const FeedScreen = ({ navigation }) => {
   const [feedData, setFeedData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
     const fetchFeedData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "Feed"));
-        const data = querySnapshot.docs.map((doc) => ({
+        const data = querySnapshot.docs.reverse().map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
@@ -99,17 +100,15 @@ const FeedScreen = ({ navigation }) => {
     };
 
     fetchFeedData();
-  }, []);
+  }, [refreshing]);
   console.log(feedData);
 
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
-  }, [refreshing]);
+  };
 
   const truncateText = (text, maxLength) => {
     return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
