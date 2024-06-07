@@ -14,17 +14,19 @@ import { auth } from "../../firebase";
 
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { BrokenPage } from "../Authentication/brokenPage";
 
 const UserProfile = ({ navigation }) => {
-  const [activeTab, setActiveTab] = React.useState("myClasses"); // State to track active tab
-  const [userData, setUserData] = useState(null); // Initialize with null since it's a single user object
+  const [activeTab, setActiveTab] = useState("myClasses");
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userMap, setUserMap] = useState(new Map());
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
-  const [numMyClasses, setNumMyClasses] = useState(0);
+  const [numClasses, setNumClasses] = useState(0);
+  const [numFriends, setNumFriends] = useState(0);
+  // const { userId } = route.params;
 
   // Handle User State Changes
   useEffect(() => {
@@ -35,7 +37,7 @@ const UserProfile = ({ navigation }) => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  // first time page renders
+  // Fetch user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -57,12 +59,15 @@ const UserProfile = ({ navigation }) => {
     fetchUserData();
   }, []);
 
-  // check for new user or userData information on trigger dependencies
+  // Fetch specific user data
   useEffect(() => {
     if (user && userMap.size > 0) {
       const userID = user.email.split("@")[0]; // Extract userID dynamically
       if (userMap.has(userID)) {
-        setUserData(userMap.get(userID));
+        const userData = userMap.get(userID);
+        setUserData(userData);
+        setNumFriends(userData.friends ? userData.friends.length : 0);
+        setNumClasses(userData.myClasses ? userData.myClasses.length : 0);
       } else {
         setUserData(null);
       }
@@ -75,14 +80,13 @@ const UserProfile = ({ navigation }) => {
     return <Text>Loading...</Text>;
   }
 
-  // if user is signed in, but data is not structured properly, only show them the sign out buttom
   if (!userData) {
     return <BrokenPage />;
   }
+
   const username = userData.email;
   const name = username.split("@")[0];
   const initial = name[0].toUpperCase();
-  const numFriends = userData.numFriends;
   const classesRanked = userData.classesRanked;
   const bio = "";
 
@@ -102,6 +106,10 @@ const UserProfile = ({ navigation }) => {
       filteredData = [];
       break;
   }
+
+  const handleFriendsPress = () => {
+    navigation.navigate("Friends List", { userId: user.email.split("@")[0] });
+  };
 
   return (
     <View style={styles.completedOverallRankingPag}>
@@ -130,14 +138,17 @@ const UserProfile = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.frameGroup}>
-            <View style={styles.parent}>
+            <TouchableOpacity
+              style={styles.parent}
+              onPress={handleFriendsPress}
+            >
               <Text style={[styles.text, styles.textTypo1]}>{numFriends}</Text>
               <Text style={[styles.friends, styles.button1Typo]}>Friends</Text>
-            </View>
+            </TouchableOpacity>
+
             <View style={styles.group}>
-              <Text style={[styles.text, styles.textTypo1]}>
-                {classesRanked}
-              </Text>
+              <Text style={[styles.text, styles.textTypo1]}>{numClasses}</Text>
+
               <Text style={[styles.friends, styles.button1Typo]}>
                 Classes Ranked
               </Text>
@@ -185,9 +196,8 @@ const UserProfile = ({ navigation }) => {
       </View>
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item.class}
+        keyExtractor={(item) => item.course}
         renderItem={({ item }) => {
-          // Determine which component to render based on active tab
           if (activeTab === "myClasses") {
             return (
               <SingleClassRanking
