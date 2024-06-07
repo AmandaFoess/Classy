@@ -1,8 +1,8 @@
 import React from "react";
-import { Text, StyleSheet, Pressable } from "react-native";
+import { Pressable, Text, StyleSheet } from "react-native";
 
 function Item({ value, navigation, page }) {
-  console.log("Value: " + value.id);
+  console.log("Navigating to page with value ID: " + value.id); // Debug log
   return (
     <Pressable
       style={styles.item}

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { db } from "../../firebase";
 import CourseHeader from "./Header";
-import { collection, getDocs } from "firebase/firestore";
+//import { collection, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
-const DataSpaceBlock = ({ course }) => (
+const DataSpaceBlock = ({ course, navigation }) => (
   <View style={[styles.data, styles.dataSpaceBlock]}>
     <View style={[styles.twoColumnResize, styles.twoSpaceBlock1]}>
       <View style={styles.ugReqs}>
@@ -13,7 +14,9 @@ const DataSpaceBlock = ({ course }) => (
     </View>
     <View style={[styles.twoColumnResize1, styles.twoSpaceBlock]}>
       <View style={styles.ugReqs1}>
-        <Text style={[styles.reqs1, styles.reqs1Typo]}>{course.className}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('CourseDetail', { objectID: course.classCode })}>
+          <Text style={[styles.reqs1, styles.reqs1Typo]}>{course.className}</Text>
+        </TouchableOpacity>
       </View>
     </View>
     <View style={[styles.twoColumnResize2, styles.twoSpaceBlock]}>
@@ -31,20 +34,21 @@ const DataSpaceBlock = ({ course }) => (
   </View>
 );
 
-const CourseHomePage = ({ navigation, classID }) => {
+const CourseHomePage = ({ route, navigation }) => {
+  const { objectID } = route.params;
   const [course, setCourse] = useState(null);
-  const [courseMap, setClassMap] = useState(new Map());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "Classes"));
-        const courseMap = new Map();
-        querySnapshot.forEach((doc) => {
-          courseMap.set(doc.id, doc.data());
-        });
-        setClassMap(courseMap);
+        const docRef = doc(db, "Classes", objectID); // Reference to the document
+        const docSnap = await getDoc(docRef); // Fetch the document
+        if (docSnap.exists()) {
+          setCourse(docSnap.data());
+        } else {
+          console.log(`No course found with ID: ${objectID}`);
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching class data: ", error);
@@ -53,24 +57,16 @@ const CourseHomePage = ({ navigation, classID }) => {
     };
 
     fetchCourse();
-  }, []);
-
-  classID = "ClassID1"; // CHANGE TO BE DYNAMIC ONCE USERS IS PROPERLY SET UP
-  
-
-  useEffect(() => {
-    if (courseMap.has(classID)) {
-      setCourse(courseMap.get(classID));
-    }
-  }, [courseMap, classID]);
+  }, [objectID]);
 
   if (loading) {
     return <Text>Loading...</Text>;
   }
 
   if (!course) {
-    return <Text>Loading...</Text>;
+    return <Text>No course found with ID: {objectID}</Text>;
   }
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View>
