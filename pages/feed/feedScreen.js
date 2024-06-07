@@ -62,7 +62,14 @@
 // export default FeedStack;
 
 import React, { useEffect, useState } from "react";
-import { Text, View, FlatList, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  FlatList,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import { db } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import ActivityCard from "./activityCard";
@@ -72,7 +79,7 @@ import NotificationsScreen from "../Notifications Screen/notificationsScreen";
 import AddCourse from "../userProfile/addCourse";
 
 const FeedScreen = ({ navigation }) => {
-  const [feedData, setFeedData] = useState([]);
+  const [feedData, setFeedData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -94,6 +101,15 @@ const FeedScreen = ({ navigation }) => {
     fetchFeedData();
   }, []);
   console.log(feedData);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [refreshing]);
 
   const truncateText = (text, maxLength) => {
     return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
@@ -117,14 +133,19 @@ const FeedScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.scrollView}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <FlatList
         data={feedData}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         ListEmptyComponent={<Text>No data found</Text>}
       />
-    </View>
+    </ScrollView>
   );
 };
 
