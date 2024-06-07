@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { db } from "../../firebase";
 import CourseHeader from "./Header";
-//import { collection, getDocs } from "firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
 
 const DataSpaceBlock = ({ course, navigation }) => (
@@ -187,7 +186,7 @@ const CourseHomePage = ({ route, navigation }) => {
               >
                 <View style={styles.piperfleming}>
                   <Text style={[styles.piperfleming1, styles.piperflemingTypo]}>
-                    @piperfleming
+                    {course.recommendations[0].userID}
                   </Text>
                 </View>
               </View>
@@ -200,26 +199,28 @@ const CourseHomePage = ({ route, navigation }) => {
                 <View style={styles.piperfleming2}>
                   <Text
                     style={[styles.piperfleming3, styles.piperflemingTypo]}
-                  >{`Parlante, N, Fall 2022`}</Text>
+                  >{course.offeredArray[0].teacher}</Text>
                 </View>
               </View>
               <View style={[styles.frameWrapper, styles.wrapperFlexBox]}>
                 <View style={[styles.wrapper, styles.wrapperFlexBox]}>
-                  <Text style={[styles.text12, styles.reqsTypo]}>9.8</Text>
+                  <Text style={[styles.text12, styles.reqsTypo]}>
+                    {course.recommendations[0].rating}
+                  </Text>
                 </View>
               </View>
             </View>
             <View style={[styles.courseDescription1, styles.twoSpaceBlock]}>
               <Text
                 style={[styles.reqs1, styles.reqs1Typo]}
-              >{`I loved this class! It was a great intro to both the CS department at Stanford and to CS in general.`}</Text>
+              >{course.recommendations[0].review}</Text>
             </View>
           </View>
         </View>
       </View>
     </ScrollView>
   );
-};
+}; //{`Parlante, N, Fall 2022`}
 
 const styles = StyleSheet.create({
   backButtonSpaceBlock: {

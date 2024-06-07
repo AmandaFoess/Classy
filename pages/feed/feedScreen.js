@@ -77,6 +77,9 @@ import CommentScreen from "./CommentScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NotificationsScreen from "../Notifications Screen/notificationsScreen";
 import AddCourse from "../userProfile/addCourse";
+import FriendsList from "../userProfile/friendsList";
+import UserProfile from "../userProfile/userProfile";
+
 
 const FeedScreen = ({ navigation }) => {
   const [feedData, setFeedData] = useState(null);
@@ -139,7 +142,7 @@ const FeedScreen = ({ navigation }) => {
         renderItem={renderItem}
         ListEmptyComponent={<Text>No data found</Text>}
       />
-    </ScrollView>
+     </ScrollView>
   );
 };
 
@@ -152,6 +155,9 @@ function FeedStack({ navigation }) {
       <Stack.Screen name="Comment" component={CommentScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="Add Class" component={AddCourse} />
+      <Stack.Screen name="Friends List" component={FriendsList} />
+      <Stack.Screen name="User Profile" component={UserProfile} />
+
     </Stack.Navigator>
   );
 }
