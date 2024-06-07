@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Add, Bookmark } from "../../assets/icons"; // Assuming these are custom SVG components or similar
+import { Bookmark } from "../../assets/icons"; // Assuming these are custom SVG components or similar
 
 const CourseHeader = ({ navigation, classID }) => {
   const handleBackPress = () => {
@@ -20,7 +20,10 @@ const CourseHeader = ({ navigation, classID }) => {
   };
 
   const handleAdd = () => {
-    navigation.navigate("Add Class", { classID: classID });
+    navigation.navigate("Add Class", {
+      classID: classID,
+      navigation: navigation,
+    });
   };
 
   return (

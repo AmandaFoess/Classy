@@ -14,7 +14,7 @@ import { auth } from "../../firebase";
 
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { BrokenPage } from "../Authentication/brokenPage";
 
 const UserProfile = ({ navigation }) => {
@@ -26,7 +26,6 @@ const UserProfile = ({ navigation }) => {
   const [initializing, setInitializing] = useState(true);
   const [numClasses, setNumClasses] = useState(0);
   const [numFriends, setNumFriends] = useState(0);
-  // const { userId } = route.params;
 
   // Handle User State Changes
   useEffect(() => {

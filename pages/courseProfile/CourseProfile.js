@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { db } from "../../firebase";
 import CourseHeader from "./Header";
 import { doc, getDoc } from "firebase/firestore";
@@ -13,8 +19,14 @@ const DataSpaceBlock = ({ course, navigation }) => (
     </View>
     <View style={[styles.twoColumnResize1, styles.twoSpaceBlock]}>
       <View style={styles.ugReqs1}>
-        <TouchableOpacity onPress={() => navigation.navigate('CourseDetail', { objectID: course.classCode })}>
-          <Text style={[styles.reqs1, styles.reqs1Typo]}>{course.className}</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("CourseDetail", { objectID: course.classCode })
+          }
+        >
+          <Text style={[styles.reqs1, styles.reqs1Typo]}>
+            {course.className}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -197,9 +209,9 @@ const CourseHomePage = ({ route, navigation }) => {
                 ]}
               >
                 <View style={styles.piperfleming2}>
-                  <Text
-                    style={[styles.piperfleming3, styles.piperflemingTypo]}
-                  >{course.offeredArray[0].teacher}</Text>
+                  <Text style={[styles.piperfleming3, styles.piperflemingTypo]}>
+                    {course.offeredArray[0].teacher}
+                  </Text>
                 </View>
               </View>
               <View style={[styles.frameWrapper, styles.wrapperFlexBox]}>
@@ -211,9 +223,9 @@ const CourseHomePage = ({ route, navigation }) => {
               </View>
             </View>
             <View style={[styles.courseDescription1, styles.twoSpaceBlock]}>
-              <Text
-                style={[styles.reqs1, styles.reqs1Typo]}
-              >{course.recommendations[0].review}</Text>
+              <Text style={[styles.reqs1, styles.reqs1Typo]}>
+                {course.recommendations[0].review}
+              </Text>
             </View>
           </View>
         </View>

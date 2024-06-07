@@ -32,6 +32,9 @@ const ActivityCard = ({ item, navigation }) => {
     setIsBookmarked(!isBookmarked); // Toggle the isLiked state
   };
 
+  const regex = /:(\d{2}):(\d{2}) (AM|PM)/;
+  let newDateTime = item.timePosted.replace(regex, ":$1 $3");
+
   return (
     <View style={styles.feedUpdateslikebookmarked}>
       <View style={styles.profilePicSallerParent}>
@@ -52,6 +55,7 @@ const ActivityCard = ({ item, navigation }) => {
           <Text style={[styles.rank]}>{item.ranking.toFixed(1)}</Text>
         </View>
       </View>
+
       <View style={styles.reactionsParent}>
         <View style={styles.reactions}>
           <TouchableOpacity onPress={handleHeartPress}>
@@ -73,7 +77,7 @@ const ActivityCard = ({ item, navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.time}>{item.timestamp}</Text>
+      <Text style={styles.time}>{newDateTime}</Text>
     </View>
   );
 };

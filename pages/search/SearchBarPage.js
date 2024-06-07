@@ -4,7 +4,7 @@ import { SearchBar } from "react-native-elements";
 import { StyleSheet } from "react-native";
 import { Pressable } from "react-native";
 import Item from "./SearchItem";
-import { Usernames, Courses, MyCourses } from "../../assets/data";
+import { Usernames, Courses } from "../../assets/data";
 import { useEffect } from "react";
 import CourseHomePage from "../courseProfile/CourseProfile";
 import UserProfile from "../userProfile/profile";
@@ -14,6 +14,7 @@ import { act } from "react";
 import { collection } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
+import RankingClasses from "../userProfile/addCourse";
 
 function SearchBarPage({ navigation }) {
   const [search, setSearch] = useState("");
@@ -132,6 +133,7 @@ function SearchStack({ navigation }) {
       <Stack.Screen name="Course Profile" component={CourseHomePage} />
       <Stack.Screen name="Recommend" component={RecommendCourse} />
       <Stack.Screen name="User Profile" component={UserProfile} />
+      <Stack.Screen name="Add Class" component={RankingClasses} />
     </Stack.Navigator>
   );
 }

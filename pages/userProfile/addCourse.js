@@ -9,14 +9,14 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
- import { useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import { NewRanking } from "../feed/newActivity";
 
-const RankingClasses = () => {
-  const route = useRoute();  // Use useRoute hook to get the route
-  const { classID } = route.params;  // Extract classID from route params
+function RankingClasses({ navigation }) {
+  const route = useRoute(); // Use useRoute hook to get the route
+  const { classID } = route.params; // Extract classID from route params
   const course = classID; // Get course from navigation params
   const [note, setNote] = useState("");
   const [hardScale, setHardScale] = useState(0);
@@ -67,11 +67,16 @@ const RankingClasses = () => {
     ));
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   const handlePost = async () => {
     const userID = auth.currentUser.email.split("@")[0];
     const userDocRef = doc(db, "Users", userID);
     console.log(userDocRef);
-    rank = handleRanking();
+    let rank = handleRanking();
+    console.log(rank);
 
     try {
       await updateDoc(doc(db, "Users", userID), {
@@ -83,17 +88,18 @@ const RankingClasses = () => {
           notes: notes,
         }),
       });
-      console.log("Class ranked successfully");
       NewRanking(course, quarterYearOffered, rank);
+      console.log("Class ranked successfully");
+      handleBack();
     } catch (error) {
       console.error("Error updating document: ", error);
     }
   };
 
   function handleRanking() {
-    hard = ((hardScale - 1) / 9) * 0.4;
-    fun = ((funScale - 1) / 9) * 0.6;
-    return (fun - hard) * 9 + 1;
+    let hard = (11 - hardScale) * 0.4;
+    let fun = funScale * 0.6;
+    return fun + hard;
   }
 
   return (
@@ -101,9 +107,6 @@ const RankingClasses = () => {
       <View style={styles.wholeScreen}>
         <View style={styles.classBeingRanked}>
           <Text style={styles.courseCode}>{classID}</Text>
-          
-          <View>
-    </View>
         </View>
 
         <View style={styles.rankingWrapper}>
@@ -154,7 +157,7 @@ const RankingClasses = () => {
       </View>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   wholeScreen: {

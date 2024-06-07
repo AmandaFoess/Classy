@@ -25,7 +25,6 @@ const handleBookmarkClass = async (
 
     if (userDocSnap.exists()) {
       const userData = userDocSnap.data();
-      //console.log(userData);
       const { myClasses, classesToTake, recsForYou } = userData;
 
       // Check if the class is already in "myClasses"
@@ -93,24 +92,6 @@ export function Bookmark({ userID, course, professorName }) {
     </TouchableOpacity>
   );
 }
-
-// export function Bookmark() {
-//   const [isBookmarked, setIsBookmarked] = useState(false); // State to manage the bookmark button
-
-//   const handleBookmarkPress = () => {
-//     setIsBookmarked(!isBookmarked);
-//   };
-
-//   return (
-//     <TouchableOpacity onPress={handleBookmarkPress}>
-//       <Ionicons
-//         name={isBookmarked ? "bookmark" : "bookmark-outline"}
-//         size={24}
-//         color={isBookmarked ? "gray" : "black"}
-//       />
-//     </TouchableOpacity>
-//   );
-// }
 
 export function Heart() {
   const [isLiked, setIsLiked] = useState(false); // State to manage the like button
