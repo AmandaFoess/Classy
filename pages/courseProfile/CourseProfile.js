@@ -83,9 +83,7 @@ const CourseHomePage = ({ route, navigation }) => {
       <View>
         <View style={styles.finalCourseHomepage}>
           <CourseHeader navigation={navigation} classID={course.classCode} />
-
           <DataSpaceBlock course={course} />
-
           <View style={[styles.timeOfferedTableWrapper, styles.dataSpaceBlock]}>
             <View style={styles.ugReqs1}>
               <View style={styles.table}>
@@ -157,21 +155,33 @@ const CourseHomePage = ({ route, navigation }) => {
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
+                      <Text
+                        style={[styles.text4, styles.textFlexBox]}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                      >
                         {course.offeredArray[0].teacher}
                       </Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
+                      <Text
+                        style={[styles.text4, styles.textFlexBox]}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                      >
                         {course.offeredArray[1].teacher}
                       </Text>
                     </View>
                   </View>
                   <View style={[styles.cell5, styles.cellBorder1]}>
                     <View style={styles.content}>
-                      <Text style={[styles.text4, styles.textFlexBox]}>
+                      <Text
+                        style={[styles.text4, styles.textFlexBox]}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                      >
                         {course.offeredArray[2].teacher}
                       </Text>
                     </View>
@@ -282,6 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#000",
     flex: 1,
+    flexShrink: 1,
   },
   cellBorder1: {
     borderLeftWidth: 1,
@@ -437,7 +448,7 @@ const styles = StyleSheet.create({
   text4: {
     fontFamily: "Inter-Regular",
     textAlign: "left",
-    lineHeight: 16,
+    //lineHeight: 16,
     fontSize: 12,
   },
   cell4: {
@@ -445,7 +456,14 @@ const styles = StyleSheet.create({
   },
   cell5: {
     backgroundColor: "rgba(255, 255, 255, 0)",
-    minWidth: 80,
+    borderLeftWidth: 1,
+    borderTopWidth: 1,
+    borderColor: "#b9b9b9",
+    borderStyle: "solid",
+    alignSelf: "stretch",
+    flex: 1,
+    minWidth: 80, // Ensure at least 80px of width, adjust based on your design
+    overflow: "hidden", // Hide any overflow
   },
   table: {
     borderRadius: 4,
@@ -458,7 +476,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   timeOfferedTableWrapper: {
-    height: 151,
     paddingHorizontal: 6,
     paddingVertical: 14,
     alignItems: "center",
@@ -551,7 +568,6 @@ const styles = StyleSheet.create({
   finalCourseHomepage: {
     width: "100%",
     paddingHorizontal: 25,
-    //paddingTop: 27,
     paddingBottom: 44,
     alignItems: "center",
     flex: 1,

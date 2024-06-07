@@ -2,7 +2,7 @@ import React from "react";
 import { Pressable, Text, StyleSheet } from "react-native";
 
 function Item({ value, navigation, page }) {
-  console.log("Navigating to page with value ID: " + value.id); // Debug log
+  //console.log("Navigating to page with value ID: " + value.id); // Debug log
   return (
     <Pressable
       style={styles.item}
