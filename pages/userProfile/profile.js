@@ -27,80 +27,61 @@ const UserProfile = ({ navigation, route }) => {
   const [initializing, setInitializing] = useState(true);
   const [numClasses, setNumClasses] = useState(0);
   const [numFriends, setNumFriends] = useState(0);
+  const [filteredData, setFilteredData] = useState([]);
 
   const { objectID } = route.params;
   console.log(objectID);
 
-  /* // Handle User State Changes
-  useEffect(() => {
-    const subscriber = auth.onAuthStateChanged((user) => {
-      setUser(user);
-      if (initializing) setInitializing(false);
-    });
-    return subscriber; // unsubscribe on unmount
-  }, []); */
-
   // Fetch user data
-  /* useEffect(() => {
-    setLoading(true);
-    const fetchUserData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "Users"));
-        const userMap = new Map();
-
-        querySnapshot.forEach((doc) => {
-          userMap.set(doc.id, doc.data());
-        });
-
-        setUserMap(userMap);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user data: ", error);
-        setLoading(false);
+  const fetchProfile = async () => {
+    try {
+      const docRef = doc(db, "Users", objectID); // Reference to the document
+      const docSnap = await getDoc(docRef); // Fetch the document
+      if (docSnap.exists()) {
+        setUserData(docSnap.data());
+        setNumFriends(docSnap.data().friends ? docSnap.data().friends.length : 0);
+        setNumClasses(docSnap.data().myClasses ? docSnap.data().myClasses.length : 0);
+        updateFilteredData(docSnap.data(), activeTab);
+      } else {
+        console.log(`No course found with ID: ${objectID}`);
       }
-    };
-
-    fetchUserData();
-  }, []); */
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching user data: ", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const docRef = doc(db, "Users", objectID); // Reference to the document
-        const docSnap = await getDoc(docRef); // Fetch the document
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
-          setNumFriends(userData.friends ? userData.friends.length : 0);
-          setNumClasses(userData.myClasses ? userData.myClasses.length : 0);
-        } else {
-          console.log(`No course found with ID: ${objectID}`);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user data: ", error);
-        setLoading(false);
-      }
-    };
-
     fetchProfile();
-  }, [objectID]);
+  }, [activeTab]);
 
-  // Fetch specific user data
-  /* useEffect(() => {
-    //console.log(objectID);
-    if (objectID && userMap.size > 0) {
-      const userID = objectID;
-      //const userID = user.email.split("@")[0]; // Extract userID dynamically
-      if (userMap.has(userID)) {
-        const userData = userMap.get(userID);
-        setUserData(userData);
-        setNumFriends(userData.friends ? userData.friends.length : 0);
-        setNumClasses(userData.myClasses ? userData.myClasses.length : 0);
-      } else {
-        setUserData(null);
-      }
+  // Update filtered data based on active tab
+  const updateFilteredData = (data, tab) => {
+    let updatedData;
+    switch (tab) {
+      case 'myClasses':
+        updatedData = data.myClasses ? data.myClasses.sort((a, b) => b.rank - a.rank) : [];
+        break;
+      case 'wantToTake':
+        updatedData = data.classesToTake || [];
+        break;
+      case 'recs':
+        updatedData = data.recsForYou || [];
+        break;
+      default:
+        updatedData = [];
+        break;
     }
-  }, [userMap]); */
+    setFilteredData(updatedData);
+  };
+
+  // Handle tab change
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    // fetchProfile();
+    updateFilteredData(userData, tab);
+  };
 
   if (loading) {
     return (
@@ -123,23 +104,6 @@ const UserProfile = ({ navigation, route }) => {
   const initial = name[0].toUpperCase();
   const classesRanked = userData.classesRanked;
   const bio = "";
-
-  let filteredData;
-  switch (activeTab) {
-    case "myClasses":
-      if (userData.myClasses)
-        filteredData = userData.myClasses.sort((a, b) => b.rank - a.rank);
-      break;
-    case "wantToTake":
-      if (userData.classesToTake) filteredData = userData.classesToTake;
-      break;
-    case "recs":
-      if (userData.recsForYou) filteredData = userData.recsForYou;
-      break;
-    default:
-      filteredData = [];
-      break;
-  }
 
   const handleFriendsPress = () => {
     navigation.navigate("Friends List", { userId: objectID });
@@ -192,7 +156,7 @@ const UserProfile = ({ navigation, route }) => {
         <View style={styles.newListNavBar}>
           <TouchableOpacity
             style={styles.tabItem}
-            onPress={() => setActiveTab("myClasses")}
+            onPress={() => handleTabChange("myClasses")}
           >
             <Text
               style={[
@@ -205,7 +169,7 @@ const UserProfile = ({ navigation, route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.tabItem}
-            onPress={() => setActiveTab("wantToTake")}
+            onPress={() => handleTabChange("wantToTake")}
           >
             <Text
               style={[
@@ -218,7 +182,7 @@ const UserProfile = ({ navigation, route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.tabItem}
-            onPress={() => setActiveTab("recs")}
+            onPress={() => handleTabChange("recs")}
           >
             <Text
               style={[styles.tabText, activeTab === "recs" && styles.activeTab]}
@@ -494,3 +458,4 @@ const styles = StyleSheet.create({
 });
 
 export default UserProfile;
+
