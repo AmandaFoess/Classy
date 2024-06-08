@@ -85,12 +85,12 @@ const UserProfile = ({ navigation, route }) => {
     fetchProfile();
   }, [objectID]);
 
-  // Fetch specific user data
+  //Fetch specific user data
   /* useEffect(() => {
     //console.log(objectID);
     if (objectID && userMap.size > 0) {
       const userID = objectID;
-      //const userID = user.email.split("@")[0]; // Extract userID dynamically
+      const userID = user.email.split("@")[0]; // Extract userID dynamically
       if (userMap.has(userID)) {
         const userData = userMap.get(userID);
         setUserData(userData);

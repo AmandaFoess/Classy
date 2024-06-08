@@ -150,6 +150,7 @@ function FeedStack({ navigation }) {
       <Stack.Screen name="Comment" component={CommentScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="Friends List" component={FriendsList} />
+      <Stack.Screen name="User Profile" component={UserProfile} />
     </Stack.Navigator>
   );
 }
