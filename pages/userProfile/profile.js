@@ -10,11 +10,9 @@ import {
 import SingleClassRanking from "./singleMyClassRanking";
 import SingleUnsavedClass from "./singleRecsForYouClass";
 import SingleSavedClass from "./singleWantToTakeClass";
-import { auth } from "../../firebase";
-
+import { auth, db } from "../../firebase";
 import { useEffect, useState } from "react";
-import { db } from "../../firebase";
-import { collection, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { BrokenPage } from "../Authentication/brokenPage";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -22,9 +20,6 @@ const UserProfile = ({ navigation, route }) => {
   const [activeTab, setActiveTab] = useState("myClasses");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [userMap, setUserMap] = useState(new Map());
-  const [user, setUser] = useState(null);
-  const [initializing, setInitializing] = useState(true);
   const [numClasses, setNumClasses] = useState(0);
   const [numFriends, setNumFriends] = useState(0);
   const [filteredData, setFilteredData] = useState([]);
@@ -102,7 +97,6 @@ const UserProfile = ({ navigation, route }) => {
   const username = userData.email;
   const name = username.split("@")[0];
   const initial = name[0].toUpperCase();
-  const classesRanked = userData.classesRanked;
   const bio = "";
 
   const handleFriendsPress = () => {

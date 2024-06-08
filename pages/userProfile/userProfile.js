@@ -1,19 +1,10 @@
-import * as React from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, StyleSheet, View, FlatList, TouchableOpacity, Pressable } from "react-native";
 import SingleClassRanking from "./singleMyClassRanking";
 import SingleUnsavedClass from "./singleRecsForYouClass";
 import SingleSavedClass from "./singleWantToTakeClass";
-import { auth } from "../../firebase";
-import { useEffect, useState } from "react";
-import { db } from "../../firebase";
-import { collection, getDoc, doc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
+import { getDoc, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { BrokenPage } from "../Authentication/brokenPage";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -21,25 +12,28 @@ const UserProfile = ({ navigation, route }) => {
   const [activeTab, setActiveTab] = useState("myClasses");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [userMap, setUserMap] = useState(new Map());
-  const [user, setUser] = useState(null);
-  const [initializing, setInitializing] = useState(true);
   const [numClasses, setNumClasses] = useState(0);
   const [numFriends, setNumFriends] = useState(0);
+  const [friendStatus, setFriendStatus] = useState("Request Friend");
 
   const { objectID } = route.params;
-  console.log(objectID);
+  const currentUserID = auth.currentUser.uid;
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const docRef = doc(db, "Users", objectID); // Reference to the document
-        const docSnap = await getDoc(docRef); // Fetch the document
+        const docRef = doc(db, "Users", objectID);
+        const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
           setUserData(data);
           setNumFriends(data.friends ? data.friends.length : 0);
           setNumClasses(data.myClasses ? data.myClasses.length : 0);
+          if (data.friends && data.friends.includes(currentUserID)) {
+            setFriendStatus("Friends");
+          } else if (data.friendRequests && data.friendRequests.includes(currentUserID)) {
+            setFriendStatus("Request Sent");
+          }
         } else {
           console.log(`No course found with ID: ${objectID}`);
         }
@@ -51,7 +45,21 @@ const UserProfile = ({ navigation, route }) => {
     };
 
     fetchProfile();
-  }, [objectID]);
+  }, [objectID, currentUserID]);
+
+  const handleFriendRequest = async () => {
+    if (friendStatus === "Request Friend") {
+      try {
+        const docRef = doc(db, "Users", objectID);
+        await updateDoc(docRef, {
+          friendRequests: arrayUnion(currentUserID),
+        });
+        setFriendStatus("Request Sent");
+      } catch (error) {
+        console.error("Error sending friend request: ", error);
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -72,7 +80,6 @@ const UserProfile = ({ navigation, route }) => {
   const username = userData.email;
   const name = username.split("@")[0];
   const initial = name[0].toUpperCase();
-  const classesRanked = userData.classesRanked;
   const bio = "";
 
   let filteredData;
@@ -92,8 +99,8 @@ const UserProfile = ({ navigation, route }) => {
       break;
   }
 
-  const handleFriendsPress = () => {
-    navigation.navigate("Friends List", { userId: objectID });
+  const handleFriendsPress = (friendId) => {
+    navigation.navigate("Friends List", { userId: friendId });
   };
 
   return (
@@ -113,11 +120,9 @@ const UserProfile = ({ navigation, route }) => {
               <View style={[styles.button, styles.buttonFlexBox]}>
                 <Pressable
                   style={[styles.button1, styles.button1Typo]}
-                  onPress={() => {
-                    auth.signOut().then(() => console.log("User signed out!"));
-                  }}
+                  onPress={handleFriendRequest}
                 >
-                  <Text>Sign Out</Text>
+                  <Text>{friendStatus}</Text>
                 </Pressable>
               </View>
             </View>
@@ -133,7 +138,6 @@ const UserProfile = ({ navigation, route }) => {
 
             <View style={styles.group}>
               <Text style={[styles.text, styles.textTypo1]}>{numClasses}</Text>
-
               <Text style={[styles.friends, styles.button1Typo]}>
                 Classes Ranked
               </Text>
