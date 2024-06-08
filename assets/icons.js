@@ -10,8 +10,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db, auth } from "../firebase";
-
-// Function to handle bookmarking a class
+import { useEffect } from "react";
 const handleBookmarkClass = async (course, professorName, isBookmarked, setIsBookmarked) => {
   try {
     const userID = auth.currentUser.email.split("@")[0];
@@ -20,7 +19,6 @@ const handleBookmarkClass = async (course, professorName, isBookmarked, setIsBoo
 
     if (userDocSnap.exists()) {
       const userData = userDocSnap.data();
-      console.log(userData);
       const { myClasses, classesToTake, recsForYou } = userData;
 
       // Check if the class is already in "myClasses"
@@ -29,26 +27,19 @@ const handleBookmarkClass = async (course, professorName, isBookmarked, setIsBoo
         return;
       }
 
-      // Toggle bookmark state and update Firestore accordingly
       if (isBookmarked) {
-        // Remove the class from "classesToTake" or "recsForYou" if already bookmarked
-        if (classesToTake.some((classToTake) => classToTake.course === course)) {
-          await updateDoc(userDocRef, {
-            classesToTake: arrayRemove({ course, professorName })
-          });
-        } 
+        // Remove the class from "classesToTake"
+        const updatedClassesToTake = classesToTake.filter((classToTake) => classToTake.course !== course);
+        await updateDoc(userDocRef, {
+          classesToTake: updatedClassesToTake
+        });
         setIsBookmarked(false);
       } else {
-        // Add the class to "classesToTake" if not already bookmarked
-        if (recsForYou.some((recForYou) => recForYou.course === course)) {
-          const updatedRecsForYou = recsForYou.filter(rec => rec.course !== course);
-          console.log("inRecsForYou");
-          await updateDoc(userDocRef, {
-            recsForYou: updatedRecsForYou,
-          });
-        } 
+        // Add the class to "classesToTake" and remove from "recsForYou" if present
+        const updatedRecsForYou = recsForYou.filter((recForYou) => recForYou.course !== course);
         await updateDoc(userDocRef, {
-          classesToTake: arrayUnion({ course, professorName })
+          classesToTake: [...classesToTake, { course, professorName }],
+          recsForYou: updatedRecsForYou
         });
         setIsBookmarked(true);
       }
@@ -59,9 +50,29 @@ const handleBookmarkClass = async (course, professorName, isBookmarked, setIsBoo
     console.error("Error updating document: ", error);
   }
 };
-
 export function Bookmark({ course, professorName }) {
   const [isBookmarked, setIsBookmarked] = useState(false); // State to manage the bookmark button
+
+  useEffect(() => {
+    const checkIfBookmarked = async () => {
+      const userID = auth.currentUser.email.split("@")[0];
+      const userDocRef = doc(db, "Users", userID);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const { classesToTake } = userData;
+        // Check if the class is in "classesToTake"
+        if (classesToTake.some((classToTake) => classToTake.course === course)) {
+          setIsBookmarked(true);
+        } else {
+          setIsBookmarked(false);
+        }
+      }
+    };
+
+    checkIfBookmarked();
+  }, [course]);
 
   const handleBookmarkPress = () => {
     handleBookmarkClass(course, professorName, isBookmarked, setIsBookmarked);
@@ -77,6 +88,146 @@ export function Bookmark({ course, professorName }) {
     </TouchableOpacity>
   );
 }
+// const handleBookmarkClass = async (course, professorName, isBookmarked, setIsBookmarked) => {
+//   try {
+//     const userID = auth.currentUser.email.split("@")[0];
+//     const userDocRef = doc(db, "Users", userID);
+//     const userDocSnap = await getDoc(userDocRef);
+
+//     if (userDocSnap.exists()) {
+//       const userData = userDocSnap.data();
+//       const { myClasses, classesToTake, recsForYou } = userData;
+
+//       // Check if the class is already in "myClasses"
+//       if (myClasses.some((myClass) => myClass.course === course)) {
+//         // Class is already in "myClasses", do nothing
+//         return;
+//       }
+
+//       if (isBookmarked) {
+//         // Remove the class from "classesToTake"
+//         const updatedClassesToTake = classesToTake.filter((classToTake) => classToTake.course !== course);
+//         await updateDoc(userDocRef, {
+//           classesToTake: updatedClassesToTake
+//         });
+//         setIsBookmarked(false);
+//       } else {
+//         // Add the class to "classesToTake" and remove from "recsForYou" if present
+//         const updatedRecsForYou = recsForYou.filter((recForYou) => recForYou.course !== course);
+//         await updateDoc(userDocRef, {
+//           classesToTake: [...classesToTake, { course, professorName }],
+//           recsForYou: updatedRecsForYou
+//         });
+//         setIsBookmarked(true);
+//       }
+//     } else {
+//       console.error("User document not found");
+//     }
+//   } catch (error) {
+//     console.error("Error updating document: ", error);
+//   }
+// };
+// export function Bookmark({ course, professorName }) {
+//   const [isBookmarked, setIsBookmarked] = useState(false); // State to manage the bookmark button
+
+//   useEffect(() => {
+//     const checkIfBookmarked = async () => {
+//       const userID = auth.currentUser.email.split("@")[0];
+//       const userDocRef = doc(db, "Users", userID);
+//       const userDocSnap = await getDoc(userDocRef);
+
+//       if (userDocSnap.exists()) {
+//         const userData = userDocSnap.data();
+//         const { classesToTake } = userData;
+//         // Check if the class is in "classesToTake"
+//         if (classesToTake.some((classToTake) => classToTake.course === course)) {
+//           setIsBookmarked(true);
+//         }
+//       }
+//     };
+
+//     checkIfBookmarked();
+//   }, [course]);
+
+//   const handleBookmarkPress = () => {
+//     handleBookmarkClass(course, professorName, isBookmarked, setIsBookmarked);
+//   };
+
+//   return (
+//     <TouchableOpacity onPress={handleBookmarkPress}>
+//       <Ionicons
+//         name={isBookmarked ? "bookmark" : "bookmark-outline"}
+//         size={24}
+//         color={isBookmarked ? "gray" : "black"}
+//       />
+//     </TouchableOpacity>
+//   );
+// }
+// const handleBookmarkClass = async (course, professorName, isBookmarked, setIsBookmarked) => {
+//   try {
+//     const userID = auth.currentUser.email.split("@")[0];
+//     const userDocRef = doc(db, "Users", userID);
+//     const userDocSnap = await getDoc(userDocRef);
+
+//     if (userDocSnap.exists()) {
+//       const userData = userDocSnap.data();
+//       console.log(userData);
+//       const { myClasses, classesToTake, recsForYou } = userData;
+
+//       // Check if the class is already in "myClasses"
+//       if (myClasses.some((myClass) => myClass.course === course)) {
+//         // Class is already in "myClasses", do nothing
+//         return;
+//       }
+
+//       // Toggle bookmark state and update Firestore accordingly
+//       if (isBookmarked) {
+//         // Remove the class from "classesToTake" or "recsForYou" if already bookmarked
+//         if (classesToTake.some((classToTake) => classToTake.course === course)) {
+//           await updateDoc(userDocRef, {
+//             classesToTake: arrayRemove({ course, professorName })
+//           });
+//         } 
+//         setIsBookmarked(false);
+//       } else {
+//         // Add the class to "classesToTake" if not already bookmarked
+//         if (recsForYou.some((recForYou) => recForYou.course === course)) {
+//           const updatedRecsForYou = recsForYou.filter(rec => rec.course !== course);
+//           console.log("inRecsForYou");
+//           await updateDoc(userDocRef, {
+//             recsForYou: updatedRecsForYou,
+//           });
+//         } 
+//         await updateDoc(userDocRef, {
+//           classesToTake: arrayUnion({ course, professorName })
+//         });
+//         setIsBookmarked(true);
+//       }
+//     } else {
+//       console.error("User document not found");
+//     }
+//   } catch (error) {
+//     console.error("Error updating document: ", error);
+//   }
+// };
+
+// export function Bookmark({ course, professorName }) {
+//   const [isBookmarked, setIsBookmarked] = useState(false); // State to manage the bookmark button
+
+//   const handleBookmarkPress = () => {
+//     handleBookmarkClass(course, professorName, isBookmarked, setIsBookmarked);
+//   };
+
+//   return (
+//     <TouchableOpacity onPress={handleBookmarkPress}>
+//       <Ionicons
+//         name={isBookmarked ? "bookmark" : "bookmark-outline"}
+//         size={24}
+//         color={isBookmarked ? "gray" : "black"}
+//       />
+//     </TouchableOpacity>
+//   );
+// }
 
 export function Heart() {
   const [isLiked, setIsLiked] = useState(false); // State to manage the like button

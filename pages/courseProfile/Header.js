@@ -43,7 +43,7 @@ const CourseHeader = ({ navigation, classID }) => {
         <TouchableOpacity onPress={handleAdd}>
           <Ionicons name="add" size={24} color="black" />
         </TouchableOpacity>
-        <Bookmark />
+        <Bookmark course={classID} professorName={""} />
       </View>
     </View>
   );

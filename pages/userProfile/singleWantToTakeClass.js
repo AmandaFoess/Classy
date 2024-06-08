@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text, StyleSheet, View, Image } from "react-native";
 import { Add, Bookmark } from "../../assets/icons";
 
-function SingleSavedClass({ course, professorName}) {
+function SingleSavedClass({ course, professorName, userI}) {
     return (
         <View style={[styles.singleUnsavedClass, styles.singleFlexBox, { borderBottomWidth: 1, borderBottomColor: '#D3D3D3', paddingRight: 5, paddingLeft: 10 }]}>
             <View style={styles.singleFlexBox}>
@@ -18,7 +18,7 @@ function SingleSavedClass({ course, professorName}) {
                 </View>
                 <View style={styles.addAndSave}>
                     <Add width={20} height={20} />
-                    <Bookmark width={20} height={20} />
+                    <Bookmark  course={course} professorName={professorName} width={20} height={20} />
                 </View>
             </View>
         </View>);
