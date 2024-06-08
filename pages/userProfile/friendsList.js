@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -23,7 +29,7 @@ const FriendsList = ({ route, navigation }) => {
   }, [userId]);
 
   const handleFriendPress = (friendId) => {
-    navigation.navigate("User Profile", { userId: friendId });
+    navigation.navigate("User Profile", { objectID: friendId });
   };
 
   return (
@@ -32,7 +38,10 @@ const FriendsList = ({ route, navigation }) => {
         data={friends}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.friendItem} onPress={() => handleFriendPress(item)}>
+          <TouchableOpacity
+            style={styles.friendItem}
+            onPress={() => handleFriendPress(item)}
+          >
             <Text style={styles.friendName}>{item}</Text>
           </TouchableOpacity>
         )}
@@ -45,14 +54,14 @@ const FriendsList = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     padding: 20,
   },
   friendItem: {
     padding: 15,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   friendName: {
     fontSize: 16,

@@ -10,17 +10,14 @@ import {
 import SingleClassRanking from "./singleMyClassRanking";
 import SingleUnsavedClass from "./singleRecsForYouClass";
 import SingleSavedClass from "./singleWantToTakeClass";
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 import { useEffect, useState } from "react";
-import { collection, getDocs, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../../firebase";
+import { collection, getDoc, doc } from "firebase/firestore";
 import { BrokenPage } from "../Authentication/brokenPage";
-import { useNavigation, useRoute } from '@react-navigation/native';
+import Spinner from "react-native-loading-spinner-overlay";
 
-const UserProfile = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const { userId } = route.params;
-
+const UserProfile = ({ navigation, route }) => {
   const [activeTab, setActiveTab] = useState("myClasses");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,78 +26,43 @@ const UserProfile = () => {
   const [initializing, setInitializing] = useState(true);
   const [numClasses, setNumClasses] = useState(0);
   const [numFriends, setNumFriends] = useState(0);
-  const [requestSent, setRequestSent] = useState(false);
-  const [alreadyFriends, setAlreadyFriends] = useState(false);
 
-  // Handle User State Changes
-  useEffect(() => {
-    const subscriber = auth.onAuthStateChanged((user) => {
-      setUser(user);
-      if (initializing) setInitializing(false);
-    });
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  const { objectID } = route.params;
+  console.log(objectID);
 
-  // Fetch user data
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchProfile = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "Users"));
-        const userMap = new Map();
-
-        querySnapshot.forEach((doc) => {
-          userMap.set(doc.id, doc.data());
-        });
-
-        setUserMap(userMap);
+        const docRef = doc(db, "Users", objectID); // Reference to the document
+        const docSnap = await getDoc(docRef); // Fetch the document
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setUserData(data);
+          setNumFriends(data.friends ? data.friends.length : 0);
+          setNumClasses(data.myClasses ? data.myClasses.length : 0);
+        } else {
+          console.log(`No course found with ID: ${objectID}`);
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user data: ", error);
         setLoading(false);
       }
     };
-    if (userId) {
-      fetchUserData();
-    }
-  }, [userId]);
 
-  // Fetch specific user data
-  useEffect(() => {
-    if (userMap.size > 0) {
-      const userData = userMap.get(userId);
-      if (userData) {
-        setUserData(userData);
-        setNumFriends(userData.friends ? userData.friends.length : 0);
-        setNumClasses(userData.myClasses ? userData.myClasses.length : 0);
-        if (user && userData.friends && userData.friends.includes(user.email.split("@")[0])) {
-          setAlreadyFriends(true);
-        }
-      } else {
-        setUserData(null);
-      }
-    }
-  }, [userMap, userId, user]);
-
-  const sendFriendRequest = async () => {
-    if (!user) return;
-
-    const currentUserID = user.email.split("@")[0];
-    const userDocRef = doc(db, "Users", userId);
-
-    try {
-      await updateDoc(userDocRef, {
-        friendRequests: arrayUnion(currentUserID),
-      });
-      setRequestSent(true);
-    } catch (error) {
-      console.error("Error sending friend request: ", error);
-    }
-  };
-
-  if (initializing) return null;
+    fetchProfile();
+  }, [objectID]);
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={styles.container}>
+        <Spinner
+          visible={loading}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+    );
   }
 
   if (!userData) {
@@ -131,7 +93,7 @@ const UserProfile = () => {
   }
 
   const handleFriendsPress = () => {
-    navigation.navigate("FriendsList", { userId });
+    navigation.navigate("Friends List", { userId: objectID });
   };
 
   return (
@@ -148,37 +110,30 @@ const UserProfile = () => {
               {bio}
             </Text>
             <View style={styles.buttonWrapper}>
-              {user && user.email.split("@")[0] !== userId && (
-                <View style={[styles.button, styles.buttonFlexBox]}>
-                  {alreadyFriends ? (
-                    <Pressable
-                      style={[styles.button1, styles.button1Typo, { backgroundColor: 'green' }]}
-                      disabled
-                    >
-                      <Text style={{ color: 'white' }}>Friends</Text>
-                    </Pressable>
-                  ) : (
-                    <Pressable
-                      style={[styles.button1, styles.button1Typo]}
-                      onPress={sendFriendRequest}
-                      disabled={requestSent}
-                    >
-                      <Text>{requestSent ? "Request Sent" : "Send Friend Request"}</Text>
-                    </Pressable>
-                  )}
-                </View>
-              )}
-            
+              <View style={[styles.button, styles.buttonFlexBox]}>
+                <Pressable
+                  style={[styles.button1, styles.button1Typo]}
+                  onPress={() => {
+                    auth.signOut().then(() => console.log("User signed out!"));
+                  }}
+                >
+                  <Text>Sign Out</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
           <View style={styles.frameGroup}>
-            <TouchableOpacity style={styles.parent} onPress={handleFriendsPress}>
+            <TouchableOpacity
+              style={styles.parent}
+              onPress={handleFriendsPress}
+            >
               <Text style={[styles.text, styles.textTypo1]}>{numFriends}</Text>
               <Text style={[styles.friends, styles.button1Typo]}>Friends</Text>
             </TouchableOpacity>
 
             <View style={styles.group}>
               <Text style={[styles.text, styles.textTypo1]}>{numClasses}</Text>
+
               <Text style={[styles.friends, styles.button1Typo]}>
                 Classes Ranked
               </Text>
@@ -226,14 +181,14 @@ const UserProfile = () => {
       </View>
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item.course}
+        keyExtractor={(item, index) => item.course + index}
         renderItem={({ item }) => {
           if (activeTab === "myClasses") {
             return (
               <SingleClassRanking
                 course={item.course}
                 quarterYearOffered={item.quarterYearOffered}
-                rank={item.rank}
+                rank={item.rank.toFixed(1)}
                 professorName={item.professorName}
               />
             );
@@ -483,6 +438,9 @@ const styles = StyleSheet.create({
     height: 56,
     justifyContent: "center",
     alignItems: "center",
+  },
+  spinnerTextStyle: {
+    color: "#FFF",
   },
 });
 
