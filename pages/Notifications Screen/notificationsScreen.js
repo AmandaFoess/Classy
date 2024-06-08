@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View, FlatList } from "react-native";
 import { db } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { collection, getDocs } from "firebase/firestore";
 
 const NotificationsScreen = ({ navigation }) => {
   const [notifications, setNotifications] = useState([]);
@@ -10,22 +9,12 @@ const NotificationsScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const auth = getAuth();
-        const user = auth.currentUser;
-
-        if (user) {
-          const userRef = doc(db, "Users", user.uid);
-          const userDoc = await getDoc(userRef);
-
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            setNotifications(userData.notifications || []);
-          } else {
-            console.log("No such document!");
-          }
-        } else {
-          console.log("User is not logged in");
-        }
+        const querySnapshot = await getDocs(collection(db, "Notification"));
+        const notificationsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setNotifications(notificationsData);
       } catch (error) {
         console.error("Error fetching notifications: ", error);
       }
@@ -44,9 +33,7 @@ const NotificationsScreen = ({ navigation }) => {
       <View style={styles.notificationText}>
         <Text style={styles.name}>{item.userID}</Text>
         <Text style={styles.action}>{item.action}</Text>
-        <Text style={styles.timeAgo}>
-          {new Date(item.timestamp.seconds * 1000).toLocaleDateString()}
-        </Text>
+        <Text style={styles.timeAgo}>{new Date(item.timestamp.seconds * 1000).toLocaleDateString()}</Text>
       </View>
     </View>
   );
@@ -56,7 +43,7 @@ const NotificationsScreen = ({ navigation }) => {
       <FlatList
         data={notifications}
         renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );
@@ -65,37 +52,34 @@ const NotificationsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: "#fff",
-    paddingHorizontal: 10,
   },
   notificationItem: {
     flexDirection: "row",
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: "#aeb1ba",
-    paddingVertical: 10,
+    marginBottom: 20,
   },
   profilePic: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     marginRight: 10,
   },
   notificationText: {
     flex: 1,
+    justifyContent: "center",
   },
   name: {
-    fontWeight: "700",
-    fontSize: 15,
-    color: "#000",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   action: {
-    fontSize: 15,
-    color: "#000",
+    fontSize: 14,
+    color: "#555",
   },
   timeAgo: {
-    fontSize: 10,
-    color: "#aeb1ba",
+    fontSize: 12,
+    color: "#999",
   },
 });
 
