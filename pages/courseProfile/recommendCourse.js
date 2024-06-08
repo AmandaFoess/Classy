@@ -1,3 +1,88 @@
+// import * as React from "react";
+// import { Text, StyleSheet, View, FlatList, Modal, TouchableOpacity } from "react-native";
+// import { useState, useEffect } from "react";
+// import { SearchBar } from "react-native-elements";
+// import { Ionicons } from "@expo/vector-icons";
+// import { db, auth } from "../../firebase";
+// import { collection, getDocs, updateDoc, arrayUnion, doc } from "firebase/firestore";
+// import { useRoute } from "@react-navigation/native";
+
+// const RecommendCourse = ({ navigation }) => {
+//   const [search, setSearch] = useState("");
+//   const [users, setUsers] = useState([]);
+//   const [filteredUsers, setFilteredUsers] = useState([]);
+//   const [modalVisible, setModalVisible] = useState(false);
+//   const [selectedUser, setSelectedUser] = useState(null);
+//   const [currentUserID, setCurrentUserID] = useState(null);
+
+//   const route = useRoute(); // Use useRoute hook to get the route
+//   const { classID } = route.params; // Extract classID from route params
+//   const courseID = classID; // Get course from navigation params
+
+//   useEffect(() => {
+//     const fetchUsers = async () => {
+//       const querySnapshot = await getDocs(collection(db, "Users"));
+//       const usersList = [];
+//       querySnapshot.forEach((doc) => {
+//         usersList.push({ id: doc.id, ...doc.data() });
+//       });
+//       setUsers(usersList);
+//       setFilteredUsers(usersList);
+//     };
+
+//     const getCurrentUser = () => {
+//       const user = auth.currentUser;
+//       if (user) {
+//         setCurrentUserID(user.uid);
+//       } else {
+//         // Handle user not signed in
+//         // For example, redirect to login page
+//       }
+//     };
+
+//     fetchUsers();
+//     getCurrentUser();
+//   }, []);
+
+//   const handleBackPress = () => {
+//     navigation.goBack();
+//   };
+
+//   const updateSearch = (search) => {
+//     setSearch(search);
+//     if (search) {
+//       const filtered = users.filter((user) =>
+//         user.id.toLowerCase().includes(search.toLowerCase())
+//       );
+//       setFilteredUsers(filtered);
+//     } else {
+//       setFilteredUsers(users);
+//     }
+//   };
+
+//   const handleUserPress = async (user) => {
+//     setSelectedUser(user);
+//     setModalVisible(true);
+
+//     try {
+//       const userRef = doc(db, "Users", user.id);
+//       await updateDoc(userRef, {
+//         recsForYou: arrayUnion({
+//           course: courseID,
+//           professorName: "John Doe",
+//           rank: 5,
+//           uid: currentUserID
+//         })
+//       });
+//     } catch (error) {
+//       console.error("Error updating document: ", error);
+//     }
+//   };
+
+//   const closeModal = () => {
+//     setModalVisible(false);
+//     setSelectedUser(null);
+//   };
 import * as React from "react";
 import { Text, StyleSheet, View, FlatList, Modal, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
@@ -5,6 +90,7 @@ import { SearchBar } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 import { db, auth } from "../../firebase";
 import { collection, getDocs, updateDoc, arrayUnion, doc } from "firebase/firestore";
+import { useRoute } from "@react-navigation/native";
 
 const RecommendCourse = ({ navigation }) => {
   const [search, setSearch] = useState("");
@@ -13,6 +99,10 @@ const RecommendCourse = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentUserID, setCurrentUserID] = useState(null);
+
+  const route = useRoute(); // Use useRoute hook to get the route
+  const { classID} = route.params; // Extract classID, professorName, and rank from route params
+  const courseID = classID; // Get course from navigation params
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -60,13 +150,12 @@ const RecommendCourse = ({ navigation }) => {
     setModalVisible(true);
 
     try {
+      const userID = auth.currentUser.email.split("@")[0];
       const userRef = doc(db, "Users", user.id);
       await updateDoc(userRef, {
         recsForYou: arrayUnion({
-          course: "CS106A",
-          professorName: "John Doe",
-          rank: 5,
-          uid: currentUserID
+          course: courseID,
+          recommender: userID,
         })
       });
     } catch (error) {

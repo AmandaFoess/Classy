@@ -16,7 +16,7 @@ const CourseHeader = ({ navigation, classID }) => {
   };
 
   const handleRecommend = () => {
-    navigation.navigate("Recommend");
+    navigation.navigate("Recommend", {classID: classID});
   };
 
   const handleAdd = () => {
