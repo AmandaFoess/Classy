@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import Svg, { Path, G, Defs, Rect, ClipPath } from "react-native-svg";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import {
   doc,
@@ -9,22 +9,18 @@ import {
   arrayRemove,
   getDoc,
 } from "firebase/firestore";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 
 // Function to handle bookmarking a class
-const handleBookmarkClass = async (
-  userID,
-  course,
-  professorName,
-  isBookmarked,
-  setIsBookmarked
-) => {
+const handleBookmarkClass = async (course, professorName, isBookmarked, setIsBookmarked) => {
   try {
-    const userDocRef = doc(db, "Users", "UserID1"); // MUST UPDATE WITH ACTUAL USER ID ONCE SET UP
+    const userID = auth.currentUser.email.split("@")[0];
+    const userDocRef = doc(db, "Users", userID);
     const userDocSnap = await getDoc(userDocRef);
 
     if (userDocSnap.exists()) {
       const userData = userDocSnap.data();
+      console.log(userData);
       const { myClasses, classesToTake, recsForYou } = userData;
 
       // Check if the class is already in "myClasses"
@@ -35,29 +31,24 @@ const handleBookmarkClass = async (
 
       // Toggle bookmark state and update Firestore accordingly
       if (isBookmarked) {
-        //console.log();
         // Remove the class from "classesToTake" or "recsForYou" if already bookmarked
-        if (
-          classesToTake.some((classToTake) => classToTake.course === course)
-        ) {
+        if (classesToTake.some((classToTake) => classToTake.course === course)) {
           await updateDoc(userDocRef, {
-            classesToTake: arrayRemove({ course, professorName }),
+            classesToTake: arrayRemove({ course, professorName })
           });
-        }
+        } 
         setIsBookmarked(false);
       } else {
         // Add the class to "classesToTake" if not already bookmarked
         if (recsForYou.some((recForYou) => recForYou.course === course)) {
-          const updatedRecsForYou = recsForYou.filter(
-            (rec) => rec.course !== course
-          );
+          const updatedRecsForYou = recsForYou.filter(rec => rec.course !== course);
           console.log("inRecsForYou");
           await updateDoc(userDocRef, {
             recsForYou: updatedRecsForYou,
           });
-        }
+        } 
         await updateDoc(userDocRef, {
-          classesToTake: arrayUnion({ course, professorName }),
+          classesToTake: arrayUnion({ course, professorName })
         });
         setIsBookmarked(true);
       }
@@ -69,17 +60,11 @@ const handleBookmarkClass = async (
   }
 };
 
-export function Bookmark({ userID, course, professorName }) {
+export function Bookmark({ course, professorName }) {
   const [isBookmarked, setIsBookmarked] = useState(false); // State to manage the bookmark button
 
   const handleBookmarkPress = () => {
-    handleBookmarkClass(
-      userID,
-      course,
-      professorName,
-      isBookmarked,
-      setIsBookmarked
-    );
+    handleBookmarkClass(course, professorName, isBookmarked, setIsBookmarked);
   };
 
   return (
