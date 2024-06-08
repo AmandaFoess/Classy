@@ -10,11 +10,9 @@ import {
 import SingleClassRanking from "./singleMyClassRanking";
 import SingleUnsavedClass from "./singleRecsForYouClass";
 import SingleSavedClass from "./singleWantToTakeClass";
-import { auth } from "../../firebase";
-
+import { auth, db } from "../../firebase";
 import { useEffect, useState } from "react";
-import { db } from "../../firebase";
-import { collection, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { BrokenPage } from "../Authentication/brokenPage";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -22,46 +20,11 @@ const UserProfile = ({ navigation, route }) => {
   const [activeTab, setActiveTab] = useState("myClasses");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [userMap, setUserMap] = useState(new Map());
-  const [user, setUser] = useState(null);
-  const [initializing, setInitializing] = useState(true);
   const [numClasses, setNumClasses] = useState(0);
   const [numFriends, setNumFriends] = useState(0);
 
   const { objectID } = route.params;
   console.log(objectID);
-
-  /* // Handle User State Changes
-  useEffect(() => {
-    const subscriber = auth.onAuthStateChanged((user) => {
-      setUser(user);
-      if (initializing) setInitializing(false);
-    });
-    return subscriber; // unsubscribe on unmount
-  }, []); */
-
-  // Fetch user data
-  /* useEffect(() => {
-    setLoading(true);
-    const fetchUserData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "Users"));
-        const userMap = new Map();
-
-        querySnapshot.forEach((doc) => {
-          userMap.set(doc.id, doc.data());
-        });
-
-        setUserMap(userMap);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user data: ", error);
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []); */
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -69,9 +32,10 @@ const UserProfile = ({ navigation, route }) => {
         const docRef = doc(db, "Users", objectID); // Reference to the document
         const docSnap = await getDoc(docRef); // Fetch the document
         if (docSnap.exists()) {
-          setUserData(docSnap.data());
-          setNumFriends(userData.friends ? userData.friends.length : 0);
-          setNumClasses(userData.myClasses ? userData.myClasses.length : 0);
+          const data = docSnap.data();
+          setUserData(data);
+          setNumFriends(data.friends ? data.friends.length : 0);
+          setNumClasses(data.myClasses ? data.myClasses.length : 0);
         } else {
           console.log(`No course found with ID: ${objectID}`);
         }
@@ -84,23 +48,6 @@ const UserProfile = ({ navigation, route }) => {
 
     fetchProfile();
   }, [objectID]);
-
-  //Fetch specific user data
-  /* useEffect(() => {
-    //console.log(objectID);
-    if (objectID && userMap.size > 0) {
-      const userID = objectID;
-      const userID = user.email.split("@")[0]; // Extract userID dynamically
-      if (userMap.has(userID)) {
-        const userData = userMap.get(userID);
-        setUserData(userData);
-        setNumFriends(userData.friends ? userData.friends.length : 0);
-        setNumClasses(userData.myClasses ? userData.myClasses.length : 0);
-      } else {
-        setUserData(null);
-      }
-    }
-  }, [userMap]); */
 
   if (loading) {
     return (
@@ -121,7 +68,6 @@ const UserProfile = ({ navigation, route }) => {
   const username = userData.email;
   const name = username.split("@")[0];
   const initial = name[0].toUpperCase();
-  const classesRanked = userData.classesRanked;
   const bio = "";
 
   let filteredData;
